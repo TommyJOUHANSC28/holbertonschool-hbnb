@@ -16,7 +16,6 @@ Elle vous permet de :
 - Gérer les équipements associés aux annonces
 
 
-
 # Architecture générale (High-Level Package Diagram) - "Task 2"
 
 
