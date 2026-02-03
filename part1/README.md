@@ -279,4 +279,6 @@ Les diagrammes de séquence décrivent le **flux complet d’une requête API**.
 ##  Projet académique
 
 HBnB – Holberton School  
-Documentation technique UML
+Documentation technique UML 
+
+[HBNB UML Tâche 3](UML/task3.pdf) 
