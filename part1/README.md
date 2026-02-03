@@ -16,10 +16,10 @@ Elle vous permet de :
 - Gérer les équipements associés aux annonces
 
 
-# Architecture générale (High-Level Package Diagram) - "Task 2"
+# Architecture générale (High-Level Package Diagram) - "Task 0"
 
 
-![HBNB UML Tâche 0](UML/Task0.jpg)
+![HBNB UML Tâche 0](UML/task0.png)
 
 Le projet suit une architecture en couches :
 
@@ -27,36 +27,18 @@ Les 3 couches principales
 
 <u> 1/ Couche de présentation </u>
 
-Il s’agit du point d’entrée du système.
+Il suffit de représenter trois blocs distincts (les couches), qui contiennent chacun des éléments spécifiques :
 
-Il contient :
+Presentation Layer (Services, API) : C'est la porte d'entrée. Elle contient les points d'accès (endpoints) et les services qui communiquent avec l'utilisateur.
 
-API de service, interface utilisateur Web, API REST
+Business Logic Layer (Models) : Le cœur du système. C'est ici que se trouvent les règles métier et les objets principaux (User, Place, Review, Amenity).
 
-Rôle :
-
-- Recevoir les requêtes utilisateur (HTTP/API)
-
-- Ne pas contenir de logique métier
-
-- Appeler la couche de logique métier
-
-Exemple :
-
-« Un utilisateur souhaite créer un lieu → la requête arrive ici »
+Persistence Layer : La gestion des données. Elle contient les classes chargées de sauvegarder et récupérer les informations dans la base de données (Repositories ou DAOs).
 
 
-<u> 2/ Couche de logique métier </u>
+<u> 2/ Implémentation du Pattern Façade </u>
 
-Il s’agit du cœur du projet.
-
-Il contient :
-
-Modèle de base, Utilisateur, Lieu, Avis, Équipement
-
-Rôle :
-
-Appliquer les règles métier, vérifier les données, décider des actions à effectuer avant l’enregistrement dans la base de données
+Le rôle : Au lieu que la couche de Présentation appelle directement dix classes différentes dans la couche Business, elle appelle une interface unique (la Façade).
 
 Exemple :
 
@@ -65,37 +47,10 @@ Exemple :
 La note est-elle comprise entre 1 et 5 ?»
 
 
-<u> 3/ Couche de persistance </u>
-
-Il s’agit de la couche qui communique avec la base de données.
-
-Il contient :
-
-DatabaseAccess, UserRepository, PlaceRepository, ReviewRepository et AmenityRepository
-
-Rôle :
-
-Enregistrer, lire, modifier et supprimer les données des utilisateurs.
-
-Important :
-
-La logique métier ne communique jamais directement avec la base de données ; elle utilise cette couche.
-
-Modèle de conception Façade (très important).
-
-Le modèle de conception Façade permet de :
-
-- Simplifier les appels entre les couches.
-
-- Masquer la complexité interne.
-
-La couche de présentation appelle une interface unique, sans connaître les détails internes.
-
-
 
 # Diagramme de classes détaillé pour la couche de logique métier (Detailed Class Diagram for the Business Logic Layer ) - "Task 1"
 
-![HBNB UML Tâche 1](UML/Task1.jpg)
+![HBNB UML Tâche 1](UML/task1.png)
 
 Attributs:
 
