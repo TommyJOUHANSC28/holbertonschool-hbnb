@@ -48,8 +48,7 @@ Elle est responsable de :
 
 Elle contient principalement :
 - des endpoints REST (`/users`, `/places`, `/reviews`, `/amenities`),
-- des contrôleurs,
-- des DTOs (Data Transfer Objects).
+- des contrôleurs
 
 Cette couche ne contient **aucune logique métier complexe**.
 
@@ -282,3 +281,11 @@ HBnB – Holberton School
 Documentation technique UML 
 
 [HBNB UML Tâche 3](UML/task3.pdf) 
+
+
+## Outils utilisés 
+
+Pour les diagrammes:
+- Lucid (https://lucid.app/documents/) pour la simplicité et finition des diagrammes 
+- Mermaid (Mermaid) pour coder les diagrammes de bases avant finition sur Lucid
+- Gamma.app (https://gamma.app/docs/HBnB-Documentation-Technique-UML-qv4bnh7yitrwnh9?mode=doc) pour preparer la documentation
