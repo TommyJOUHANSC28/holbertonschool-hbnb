@@ -285,8 +285,11 @@ Documentation technique UML
 
 ## Outils utilisés
 
+
 Pour les diagrammes:
 
 Lucid (https://lucid.app/documents/) pour la simplicité et finition des diagrammes
+
 Mermaid (https://mermaid.live/) pour coder les diagrammes de bases avant finition sur Lucid
+
 Gamma.app (https://gamma.app/docs/HBnB-Documentation-Technique-UML-qv4bnh7yitrwnh9?mode=doc) pour preparer la documentation
