@@ -282,3 +282,4 @@ UML Technical Documentation
 
 PDF Export:  
 https://assets.api.gamma.app/export/pdf/gyee6k4t82ctpm0/7e870eff823757feeaabef32372d42f7/HBnB-UML-Technical-Documentation.pdf
+
