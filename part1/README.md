@@ -1,155 +1,148 @@
-# HBnB – Documentation Technique UML
+# HBnB – UML Technical Documentation
 
-##  Présentation du projet
+## Project Overview
 
-HBnB est une application backend de location de logements inspirée d’Airbnb.
-Elle permet aux utilisateurs de :
-- créer un compte,
-- publier des logements,
-- consulter des logements disponibles,
-- laisser des avis,
-- gérer les équipements associés aux logements.
+HBnB is a backend housing rental application inspired by Airbnb.  
+It allows users to:
+- create an account,
+- publish properties,
+- browse available properties,
+- leave reviews,
+- manage amenities associated with properties.
 
-Ce dépôt contient la **documentation technique UML** du projet.
-Elle décrit l’architecture, les entités métier et les flux d’interaction de l’API.
-
----
-
-## Objectifs de la documentation
-
-Cette documentation a pour but de :
-- expliquer clairement l’architecture du projet,
-- décrire les responsabilités de chaque couche,
-- présenter les entités principales et leurs relations,
-- illustrer le fonctionnement de l’API à travers des diagrammes de séquence.
-
-Elle est destinée aux :
-- développeurs,
-- architectes logiciels,
-- testeurs,
-- mainteneurs du projet.
+This repository contains the **UML technical documentation** of the project.  
+It describes the architecture, business entities, and API interaction flows.
 
 ---
 
-## Architecture générale
+## Documentation Objectives
 
-Le projet HBnB utilise une **architecture à trois couches**.
-Chaque couche a un rôle précis et communique uniquement avec la couche voisine.
+The purpose of this documentation is to:
+- clearly explain the project architecture,
+- describe the responsibilities of each layer,
+- present the main entities and their relationships,
+- illustrate how the API works through sequence diagrams.
 
-### Couche Présentation (Presentation Layer)
-
-La couche présentation est le **point d’entrée de l’application**.
-
-Elle est responsable de :
-- recevoir les requêtes HTTP du client,
-- valider les données de base (formats, champs obligatoires),
-- appeler la logique métier appropriée,
-- retourner une réponse HTTP au client.
-
-Elle contient principalement :
-- des endpoints REST (`/users`, `/places`, `/reviews`, `/amenities`),
-- des contrôleurs
-
-Cette couche ne contient **aucune logique métier complexe**.
+It is intended for:
+- developers,
+- software architects,
+- testers,
+- project maintainers.
 
 ---
 
-### Couche Métier (Business Logic Layer)
+## Overall Architecture
 
-La couche métier contient **l’intelligence de l’application**.
+The HBnB project uses a **three-layer architecture**.  
+Each layer has a specific role and communicates only with its neighboring layer.
 
-Elle est responsable de :
-- appliquer les règles métier,
-- vérifier la cohérence des données,
-- coordonner les opérations entre la présentation et la persistance.
+### Presentation Layer
 
-Elle utilise le **pattern Facade** via une interface centrale :
+The presentation layer is the **entry point of the application**.
+
+Responsibilities:
+- receiving HTTP requests from clients,
+- validating basic data (formats, required fields),
+- calling the appropriate business logic,
+- returning an HTTP response to the client.
+
+Main components:
+- REST endpoints (`/users`, `/places`, `/reviews`, `/amenities`)
+- controllers
+
+This layer contains **no complex business logic**.
+
+---
+
+### Business Logic Layer
+
+The business logic layer contains the **intelligence of the application**.
+
+Responsibilities:
+- applying business rules,
+- checking data consistency,
+- coordinating operations between presentation and persistence layers.
+
+It uses the **Facade pattern** through a central interface:
 - `HBnBFacade`
 
-Exemples de règles métier :
-- un email utilisateur doit être unique,
-- un utilisateur ne peut pas laisser deux avis sur le même logement,
-- le prix d’un logement doit être positif.
+Examples of business rules:
+- a user email must be unique,
+- a user cannot leave two reviews for the same property,
+- a property price must be positive.
 
-Cette couche décide **quoi faire** et **comment le faire**.
-
----
-
-### Couche Persistance (Persistence Layer)
-
-La couche persistance est responsable de la **gestion des données**.
-
-Elle contient :
-- des repositories (`UserRepository`, `PlaceRepository`, etc.),
-- la logique d’accès à la base de données,
-- les opérations CRUD (Create, Read, Update, Delete).
-
-Ses responsabilités :
-- sauvegarder les objets métier,
-- récupérer les données depuis la base,
-- mettre à jour ou supprimer les données.
-
-La logique métier **ne communique jamais directement** avec la base de données.
+This layer decides **what to do** and **how to do it**.
 
 ---
 
-## Pattern de conception utilisé
+### Persistence Layer
 
-### Pattern Facade
+The persistence layer is responsible for **data management**.
 
-Le **Facade Pattern** est utilisé pour :
-- simplifier les échanges entre les couches,
-- réduire le couplage,
-- offrir une interface unique à la couche présentation.
+It contains:
+- repositories (`UserRepository`, `PlaceRepository`, etc.),
+- database access logic,
+- CRUD operations (Create, Read, Update, Delete).
 
-La couche présentation appelle uniquement le **Facade**, sans connaître
-les détails internes de la logique métier.
+Responsibilities:
+- storing business objects,
+- retrieving data from the database,
+- updating or deleting records.
 
----
-
-##  Diagrammes UML
-
-### Diagramme de Paquets (Tâche 0)
-
-Il montre :
-- les trois couches de l’architecture,
-- le sens de circulation des données,
-- la position centrale du Facade.
-
-Les données circulent toujours :
-
-![HBNB UML Tâche 0](UML/task0.png)
-
+The business logic layer **never communicates directly** with the database.
 
 ---
 
-### Diagramme de Classes (Tâche 1)
+## Design Pattern Used
 
-[HBNB UML Tâche 1](UML/task1.png)
+### Facade Pattern
 
-#### Entités principales
+The **Facade Pattern** is used to:
+- simplify communication between layers,
+- reduce coupling,
+- provide a single interface to the presentation layer.
+
+The presentation layer interacts only with the **Facade**, without knowing the
+internal details of the business logic.
+
+---
+
+## UML Diagrams
+
+### Package Diagram (Task 0)
+
+This diagram shows:
+- the three architectural layers,
+- the direction of data flow,
+- the central position of the Facade.
+
+![HBNB UML Task 0](UML/task0.png)
+
+---
+
+### Class Diagram (Task 1)
+
+![HBNB UML Task 1](UML/task1.png)
+
+#### Main Entities
 
 ##### User
-Représente un utilisateur de l’application.
-
-Attributs :
+Attributes:
 - id
 - email
 - password
 - first_name
 - last_name
 
-Responsabilités :
-- gestion du profil utilisateur,
-- authentification,
-- publication d’avis.
+Responsibilities:
+- user profile management,
+- authentication,
+- publishing reviews.
 
 ---
 
 ##### Place
-Représente un logement mis en location.
-
-Attributs :
+Attributes:
 - id
 - owner_id
 - name
@@ -157,142 +150,135 @@ Attributs :
 - price
 - location
 
-Responsabilités :
-- gestion des informations du logement,
-- association avec les équipements,
-- réception des avis.
+Responsibilities:
+- managing property information,
+- associating amenities,
+- receiving reviews.
 
 ---
 
 ##### Review
-Représente un avis laissé par un utilisateur.
-
-Attributs :
+Attributes:
 - id
 - place_id
 - user_id
 - rating
 - comment
 
-Responsabilités :
-- création et gestion des avis,
-- contribution à la note moyenne d’un logement.
+Responsibilities:
+- creating and managing reviews,
+- contributing to a property’s average rating.
 
 ---
 
 ##### Amenity
-Représente un équipement ou service.
-
-Attributs :
+Attributes:
 - id
 - name
 - description
 
-Responsabilités :
-- gestion du catalogue d’équipements,
-- association avec les logements.
+Responsibilities:
+- managing the amenities catalog,
+- associating amenities with properties.
 
 ---
 
-#### Relations entre les entités
+#### Entity Relationships
 
-- Un **User** peut posséder plusieurs **Place** (1:N)
-- Une **Place** peut avoir plusieurs **Review** (1:N)
-- Un **User** peut écrire plusieurs **Review** (1:N)
-- Une **Place** peut avoir plusieurs **Amenity** (N:N via table intermédiaire)
-
----
-
-##  Diagrammes de Séquence (Tâche 2)
-
-Les diagrammes de séquence décrivent le **flux complet d’une requête API**.
-
-### Création d’un utilisateur
-
-[HBNB UML Tâche 2](UML/task2.1.inscription.png)
-
-1. Requête POST `/users`
-2. Validation des données par la RestAPI
-3. Application des règles métier
-4. Vérification de l’unicité de l’email
-5. Sauvegarde en base
-6. Réponse HTTP `201 Created`
+- A **User** can own multiple **Place** entities (1:N)
+- A **Place** can have multiple **Review** entities (1:N)
+- A **User** can write multiple **Review** entities (1:N)
+- A **Place** can have multiple **Amenity** entities (N:N via a junction table)
 
 ---
 
-### Création d’une propriété
+## Sequence Diagrams (Task 2)
 
-[HBNB UML Tâche 2](UML/task2.1.creation.png)
+### User Creation
 
-1. Requête POST `/places`
-2. Vérification de l’utilisateur
-3. Validation métier (prix, données)
-4. Sauvegarde de la propriété
-5. Association des équipements
-6. Réponse HTTP `201 Created`
+![HBNB UML Task 2 - User](UML/task2.1.inscription.png)
 
----
-
-### Création d’un avis
-
-[HBNB UML Tâche 2](UML/task2.1.review.png)
-
-1. Requête POST `/reviews`
-2. Vérification utilisateur et propriété
-3. Validation métier (pas de doublon)
-4. Sauvegarde de l’avis
-5. Mise à jour de la note moyenne
-6. Réponse HTTP `201 Created`
+1. POST `/users`
+2. Data validation
+3. Business rules application
+4. Email uniqueness check
+5. Database persistence
+6. HTTP response `201 Created`
 
 ---
 
-### Récupération des propriétés
+### Property Creation
 
-[HBNB UML Tâche 2](UML/task2.1.liste.png)
+![HBNB UML Task 2 - Place](UML/task2.1.creation.png)
 
-1. Requête GET `/places`
-2. Validation des filtres
-3. Application des règles métier
-4. Récupération paginée
-5. Réponse HTTP `200 OK`
-
----
-
-##  Qualités techniques du projet
-
-- Séparation claire des responsabilités
-- Architecture modulaire et maintenable
-- Facilité de test unitaire
-- Évolutivité du système
-- Respect des bonnes pratiques backend
+1. POST `/places`
+2. User verification
+3. Business validation
+4. Property persistence
+5. Amenities association
+6. HTTP response `201 Created`
 
 ---
 
-##  Auteurs
+### Review Creation
+
+![HBNB UML Task 2 - Review](UML/task2.1.review.png)
+
+1. POST `/reviews`
+2. User and property verification
+3. Business validation
+4. Review persistence
+5. Average rating update
+6. HTTP response `201 Created`
+
+---
+
+### Property Retrieval
+
+![HBNB UML Task 2 - List](UML/task2.1.liste.png)
+
+1. GET `/places`
+2. Filter validation
+3. Business rules application
+4. Paginated retrieval
+5. HTTP response `200 OK`
+
+---
+
+## Technical Qualities
+
+- Clear separation of responsibilities
+- Modular and maintainable architecture
+- Easy unit testing
+- Scalable system design
+- Backend best practices compliance
+
+---
+
+## Authors
 
 - **James Roussel**
 - **Tommy Jouhans**
 
 ---
 
-##  Projet académique
+## Academic Project
 
 HBnB – Holberton School  
-Documentation technique UML 
+UML Technical Documentation
 
-[HBNB UML Tâche 3](UML/task3.pdf) 
+[HBNB UML Task 3](UML/task3.pdf)
 
+---
 
-## Outils utilisés
+## Tools Used
 
+### Diagrams
+- **Lucid** – https://lucid.app/documents/
+- **Mermaid** – https://mermaid.live/
 
-Pour les diagrammes:
+### Documentation
+- **Gamma.app** – https://gamma.app/
 
-Lucid (https://lucid.app/documents/) pour la simplicité et finition des diagrammes
-
-Mermaid (https://mermaid.live/) pour coder les diagrammes de bases avant finition sur Lucid
-
-
-Pour la documentation:
-
-Gamma.app (https://gamma.app/docs/HBnB-Documentation-Technique-UML-qv4bnh7yitrwnh9?mode=doc) pour preparer la documentation du projet HBnB
+PDF Export:  
+https://assets.api.gamma.app/export/pdf/gyee6k4t82ctpm0/7e870eff823757feeaabef32372d42f7/HBnB-UML-Technical-Documentation.pdf
