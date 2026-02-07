@@ -279,6 +279,7 @@ UML Technical Documentation
 
 ### Documentation
 - **Gamma.app** – https://gamma.app/
-
-PDF Export:  
-https://assets.api.gamma.app/export/pdf/gyee6k4t82ctpm0/7e870eff823757feeaabef32372d42f7/HBnB-UML-Technical-Documentation.pdf
+- **See the online documentation**:
+ - https://gamma.app/docs/HBnB-UML-Technical-Documentation-gyee6k4t82ctpm0
+ - https://hbnb-uml-technical-docum-uihii9o.gamma.site/
+ 
