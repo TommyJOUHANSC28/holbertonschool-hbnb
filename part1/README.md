@@ -141,7 +141,7 @@ Attributes:
 - String first_name
 - String last_name
 - String email
-- String password
+- String _password
 - Boulean is_admin
 
 Methods:
@@ -177,11 +177,11 @@ Responsibilities:
 
 ##### Review
 Attributes:
-- String text
+- String comment
 - Integer rating
 
 Methods:
-- update_text()
+- update_comment()
 - update_rating()
 
 Responsibilities:
