@@ -126,13 +126,28 @@ This diagram shows:
 
 #### Main Entities
 
+##### BaseModel
+Attributes:
+- UUID id_basemodel
+- DateTime created_at
+- DateTime updated_at
+
+Responsibilities:
+- providing common attributes and methods for all entities,
+- ensuring consistent data management.
+
 ##### User
 Attributes:
-- id
-- email
-- password
-- first_name
-- last_name
+- String first_name
+- String last_name
+- String email
+- String password
+- Boulean is_admin
+
+Methods:
+- register()
+- update_profile()
+- delete_profile()
 
 Responsibilities:
 - user profile management,
@@ -143,12 +158,15 @@ Responsibilities:
 
 ##### Place
 Attributes:
-- id
-- owner_id
-- name
-- description
-- price
-- location
+- String title
+- String description
+- Float price
+- String location
+- Float latitude
+- Float longitude
+
+Methods:
+- update_place()
 
 Responsibilities:
 - managing property information,
@@ -159,11 +177,12 @@ Responsibilities:
 
 ##### Review
 Attributes:
-- id
-- place_id
-- user_id
-- rating
-- comment
+- String text
+- Integer rating
+
+Methods:
+- update_text()
+- update_rating()
 
 Responsibilities:
 - creating and managing reviews,
@@ -173,9 +192,8 @@ Responsibilities:
 
 ##### Amenity
 Attributes:
-- id
-- name
-- description
+- String name
+- String description
 
 Responsibilities:
 - managing the amenities catalog,
