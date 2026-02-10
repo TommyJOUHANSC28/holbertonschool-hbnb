@@ -177,11 +177,11 @@ Responsibilities:
 
 ##### Review
 Attributes:
-- String text
+- String comment
 - Integer rating
 
 Methods:
-- update_text()
+- update_comment()
 - update_rating()
 
 Responsibilities:
