@@ -141,7 +141,7 @@ Attributes:
 - String first_name
 - String last_name
 - String email
-- String password
+- String _password
 - Boulean is_admin
 
 Methods:
