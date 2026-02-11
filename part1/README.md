@@ -300,3 +300,4 @@ UML Technical Documentation
 - **See the online documentation**:
  - https://gamma.app/docs/HBnB-UML-Technical-Documentation-gyee6k4t82ctpm0
  - https://hbnb-uml-technical-docum-uihii9o.gamma.site/
+ - https://drive.google.com/file/d/109L16Tifo6BkHqRK2HzatK0xbd6OY_0d/view?usp=drive_link
