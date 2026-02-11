@@ -204,8 +204,7 @@ Responsibilities:
 
 #### Entity Relationships
 
-- A **User** can create multiple **Place** entities (1:N)
-- A **Place** is owned only be one **User** entities (1)
+- A **User** can owns multiple **Place** entities (1:N)
 - A **Place** can have multiple **Review** entities (1:N)
 - A **User** can write multiple **Review** entities (1:N)
 - A **Place** can have multiple **Amenity** entities (N:N via a junction table)
