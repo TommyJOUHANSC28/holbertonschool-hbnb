@@ -128,9 +128,9 @@ This diagram shows:
 
 ##### BaseModel
 Attributes:
-- UUID id_basemodel
-- DateTime created_at
-- DateTime updated_at
+- id_basemodel : UUID
+- created_at : DateTime
+- updated_at : DateTime
 
 Responsibilities:
 - providing common attributes and methods for all entities,
@@ -138,16 +138,16 @@ Responsibilities:
 
 ##### User
 Attributes:
-- String first_name
-- String last_name
-- String email
-- String _password
-- Boulean is_admin
+- first_name : String
+- last_name : String
+- email : String
+- _password : String
+- is_admin : Boulean
 
 Methods:
-- register()
-- update_profile()
-- delete_profile()
+- register() : void
+- update_profile() : void
+- delete_profile() : void
 
 Responsibilities:
 - user profile management,
@@ -158,15 +158,15 @@ Responsibilities:
 
 ##### Place
 Attributes:
-- String title
-- String description
-- Float price
-- String location
-- Float latitude
-- Float longitude
+- title : String
+- description: String
+- price : Float
+- location : String
+- latitude : Float
+- longitude : Float
 
 Methods:
-- update_place()
+- update_place() : void
 
 Responsibilities:
 - managing property information,
@@ -177,12 +177,12 @@ Responsibilities:
 
 ##### Review
 Attributes:
-- String comment
-- Integer rating
+- comment : String 
+- rating : Integer 
 
 Methods:
-- update_comment()
-- update_rating()
+- update_comment() : void
+- update_rating() : void
 
 Responsibilities:
 - creating and managing reviews,
@@ -192,8 +192,8 @@ Responsibilities:
 
 ##### Amenity
 Attributes:
-- String name
-- String description
+- name : String
+- description : String
 
 Responsibilities:
 - managing the amenities catalog,
@@ -203,7 +203,8 @@ Responsibilities:
 
 #### Entity Relationships
 
-- A **User** can own multiple **Place** entities (1:N)
+- A **User** can create multiple **Place** entities (1:N)
+- A **Place** is owned only be one **User** entities (1)
 - A **Place** can have multiple **Review** entities (1:N)
 - A **User** can write multiple **Review** entities (1:N)
 - A **Place** can have multiple **Amenity** entities (N:N via a junction table)
@@ -300,4 +301,4 @@ UML Technical Documentation
 - **See the online documentation**:
  - https://gamma.app/docs/HBnB-UML-Technical-Documentation-gyee6k4t82ctpm0
  - https://hbnb-uml-technical-docum-uihii9o.gamma.site/
- - https://drive.google.com/file/d/1V7xsqEiHC2eYBewXYjCGEVhuNhs96gsg/view?usp=sharing
+ - https://drive.google.com/file/d/1fz_xTaMLzI5lCSwwnhcy-Pzgie4NR9tK/view?usp=drive_link
