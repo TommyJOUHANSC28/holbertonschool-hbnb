@@ -145,9 +145,9 @@ Attributes:
 - is_admin : Boulean
 
 Methods:
-- register() : void
-- update_profile() : void
-- delete_profile() : void
+- register()
+- update_profile()
+- delete_profile()
 
 Responsibilities:
 - user profile management,
@@ -158,7 +158,8 @@ Responsibilities:
 
 ##### Place
 Attributes:
-- title : String
+- title_place : String
+- size_place : Float
 - description: String
 - price : Float
 - location : String
@@ -166,7 +167,7 @@ Attributes:
 - longitude : Float
 
 Methods:
-- update_place() : void
+- update_place()
 
 Responsibilities:
 - managing property information,
@@ -181,8 +182,8 @@ Attributes:
 - rating : Integer 
 
 Methods:
-- update_comment() : void
-- update_rating() : void
+- update_comment()
+- update_rating()
 
 Responsibilities:
 - creating and managing reviews,
@@ -300,5 +301,4 @@ UML Technical Documentation
 - **Gamma.app** – https://gamma.app/
 - **See the online documentation**:
  - https://gamma.app/docs/HBnB-UML-Technical-Documentation-gyee6k4t82ctpm0
- - https://hbnb-uml-technical-docum-uihii9o.gamma.site/
- - https://drive.google.com/file/d/1fz_xTaMLzI5lCSwwnhcy-Pzgie4NR9tK/view?usp=drive_link
+ - https://drive.google.com/file/d/1SA5z_Tbe2YsyKM83F0GWyaAmMBoQirm8/view?usp=drive_link
