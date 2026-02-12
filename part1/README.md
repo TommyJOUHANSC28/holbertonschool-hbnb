@@ -177,7 +177,7 @@ Responsibilities:
 ##### Review
 Attributes:
 - comment : String 
-- rating : Integer 
+- rating : Float 
 
 Methods:
 - update_comment()
