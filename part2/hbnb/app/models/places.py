@@ -8,18 +8,27 @@ class Place(BaseModel):
 
     def __init__(self, id, title, description, price, latitude, longitude):
         super().__init__()
-        self.id = id
         self.title = title
         self.description = description
         self.price = price
         self.longitude = longitude
+
+        self.owner = owner
         self.amenities = []
         self.reviews = []
 
-    def add_amenity(self, amenity):
-        if amenity not in self.amenities:
-            self.amenities.append(amenity)
+        owner.place.append(self)
 
-    def add_review(self, review):
-        self.reviews.append(review)
+    def create(self):
+        print(f"Place {self.id} created")
 
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self.save()
+
+    def delete(self):
+        print(f"Place {self.id} deleted")
+
+    def get_review(self):
+        return self.reviews
