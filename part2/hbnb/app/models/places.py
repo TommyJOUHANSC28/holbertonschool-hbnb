@@ -1,34 +1,26 @@
 #!/usr/bin/python3
-
-"""Class place"""
-from part2.hbnb.app.models.base_model import BaseModel
+from base_model import BaseModel
 
 
 class Place(BaseModel):
-
-    def __init__(self, id, title, description, price, latitude, longitude):
+    """Class place"""
+    def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
         self.title = title
         self.description = description
         self.price = price
+        self.latitude = latitude
         self.longitude = longitude
 
-        self.owner = owner
-        self.amenities = []
-        self.reviews = []
+        # relations
+        self.owner = owner        # User (1)
+        self.reviews = []         # has (0..*)
+        self.amenities = []       # includes (0..*)
 
-        owner.place.append(self)
+    def add_review(self, review):
+        """Add a review to the place."""
+        self.reviews.append(review)
 
-    def create(self):
-        print(f"Place {self.id} created")
-
-    def update(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        self.save()
-
-    def delete(self):
-        print(f"Place {self.id} deleted")
-
-    def get_review(self):
-        return self.reviews
+    def add_amenity(self, amenity):
+        """Add an amenity to the place."""
+        self.amenities.append(amenity)

@@ -1,11 +1,24 @@
 #!/usr/bin/python3
 
-"""Class Amenity"""
-from part2.hbnb.app.models.base_model import BaseModel
+
+from base_model import BaseModel
+
 
 
 class Amenity(BaseModel):
-    def __init__(self, name):
+    """Class Amenity"""
+    def __init__(self, name, description):
         super().__init__()
         self.name = name
         self.description = description
+
+    def create(self):
+        print(f"Amenity {self.name} created")
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self.save()
+
+    def delete(self):
+        print(f"Amenity {self.name} deleted")
