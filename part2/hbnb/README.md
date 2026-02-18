@@ -1,21 +1,27 @@
-# HBnb Part 2: Implementation of Business Logic and API Endpoints
-## By Tommy JOUHANS and James ROUSSEL
+# HBnB – Modular REST API (Part 2) 
+# By Tommy JOUHANS and James ROUSSEL
 
-## HBnB – Task 0: Project Setup & Initialization
+## Project Overview
 
-## Overview
+HBnB is a modular RESTful API built with **Flask** and **flask-restx**.
 
-This task focuses on setting up the foundational structure of the HBnB application using a modular and scalable architecture.
+This project implements a clean and scalable layered architecture including:
 
-The goal is to prepare the project for future implementation by:
+- Presentation Layer (API)
+- Business Logic Layer (Models + Facade)
+- Persistence Layer (Repository Pattern)
 
-- Creating a clean project structure
-- Implementing a layered architecture
-- Setting up Flask with flask-restx
-- Implementing an in-memory repository
-- Preparing the Facade pattern for communication between layers
+The application manages:
 
-At this stage, no full business logic or API endpoints are implemented yet. The objective is to ensure that the project is correctly structured and ready for development.
+- Users
+- Places
+- Reviews
+- Amenities
+
+At this stage:
+- Data is stored in memory
+- No authentication (JWT) yet
+- The architecture is prepared for future database integration
 
 ---
 
@@ -23,86 +29,150 @@ At this stage, no full business logic or API endpoints are implemented yet. The 
 
 The project follows a **3-layer architecture**:
 
+Presentation Layer → Business Logic Layer → Persistence Layer
 
-### 1️/ Presentation Layer
-- Built using Flask and flask-restx
-- Handles HTTP requests and responses
-- Communicates only with the Facade layer
-
-### 2️/ Business Logic Layer
-- Contains domain models (User, Place, Review, Amenity)
-- Implements business rules and validation
-- Uses the Facade pattern to centralize logic
-
-### 3️/ Persistence Layer
-- Implements a generic repository interface
-- Uses an in-memory repository for storage
-- Designed to be replaced later by a database (SQLAlchemy in Part 3)
+(API) (Facade + Models) (Repository)
 
 
+---
 
-#  Components Description
+## 1️/ Presentation Layer (`app/api/`)
 
-## app/__init__.py
-Creates the Flask application using the **App Factory Pattern** and initializes the REST API.
+Built with:
+- Flask
+- flask-restx
 
-## api/v1/
-Will contain the REST API endpoints (to be implemented in later tasks).
+Responsibilities:
+- Handle HTTP requests
+- Validate request payload
+- Call the Facade
+- Return JSON responses
 
-## models/
-Will contain the business entities:
-- User
-- Place
-- Review
-- Amenity
+The API is versioned under:
 
-## services/facade.py
+/api/v1/
+
+
+Example endpoints:
+
+POST /users
+
+GET /users
+
+GET /users/<id>
+
+POST /places
+
+GET /places
+
+POST /reviews
+
+GET /reviews
+
+POST /amenities
+
+GET /amenities
+
+
+
+The API never accesses the repository directly.  
+All calls go through the Facade.
+
+---
+
+## 2️/ Business Logic Layer (`app/models/` + `app/services/`)
+
+### Models (`app/models/`)
+
+Entities:
+
+- `BaseModel`
+- `User`
+- `Place`
+- `Review`
+- `Amenity`
+
+Each model:
+- Inherits from `BaseModel`
+- Has a unique UUID
+- Contains timestamps (`created_at`, `updated_at`)
+- Implements `update()` and `to_dict()`
+
+Relationships:
+
+- A User owns multiple Places
+- A User writes multiple Reviews
+- A Place has multiple Reviews
+- A Place includes multiple Amenities
+
+---
+
+### Facade (`app/services/facade.py`)
+
 Implements the **Facade Pattern**.
 
-This layer:
-- Acts as an intermediary between Presentation and Persistence layers
-- Prevents direct repository access from the API
-- Centralizes business logic
+Responsibilities:
+- Centralize business logic
+- Validate relationships
+- Interact with repositories
+- Prevent direct repository access from API
 
-## persistence/repository.py
+Example:
 
-Defines:
+facade.create_user(data)
+facade.create_place(data)
 
-- `Repository` (abstract base class)
-- `InMemoryRepository` (concrete implementation)
+3️/ Persistence Layer (app/persistence/)
 
-Responsible for:
-- Adding objects
-- Retrieving objects
-- Updating objects
-- Deleting objects
+Implements the Repository Pattern.
 
-The in-memory repository stores data in a Python dictionary.
+Repository Interface
 
----
+Defines abstract methods:
 
-#  Design Patterns Used
+add()
 
-###  Facade Pattern
-Provides a simplified interface between layers.
+get()
 
-###  Repository Pattern
-Abstracts data storage to allow future database replacement.
+get_all()
 
-###  App Factory Pattern
-Enables scalable Flask configuration and easier testing.
+update()
 
----
+delete()
 
-#  Installation & Setup
+get_by_attribute()
 
+InMemoryRepository
+
+Stores objects in a dictionary:
+
+
+{
+   "uuid1": object1,
+   "uuid2": object2
+}
+
+This layer is designed to be replaced later by a database implementation (SQLAlchemy).
+
+Design Patterns Used
+## Facade Pattern
+
+Provides a unified interface to the business logic layer.
+
+## Repository Pattern
+
+## Abstracts data storage and allows easy replacement of storage implementation.
+
+ App Factory Pattern
+
+Used in app/__init__.py to create scalable Flask applications.
+
+## Installation & Setup
 ## 1️/ Clone the repository
-
-bash
 git clone <repository_url>
 cd hbnb
 
-## 2️/ Create a virtual environment (recommended)
+## 2/Create a virtual environment (recommended)
 python3 -m venv venv
 source venv/bin/activate
 
@@ -120,59 +190,65 @@ flask-restx
 python run.py
 
 
-If correctly configured, Flask should start successfully.
+If correctly configured, the application runs at:
 
-Swagger documentation will be available at:
+http://127.0.0.1:5000/
+
+
+Swagger documentation is available at:
 
 http://127.0.0.1:5000/api/v1/
 
+## Testing the API
 
-(Note: API endpoints will be implemented in later tasks.)
+You can test endpoints using:
 
-Objectives Achieved in Task 0
+Postman
 
-Modular project structure created
+curl
 
-Flask application initialized
+Swagger UI
 
-In-memory repository implemented
+Example:
 
-Facade pattern prepared
+curl -X POST http://127.0.0.1:5000/users \
+-H "Content-Type: application/json" \
+-d '{"first_name":"John","last_name":"Doe","email":"john@example.com","password":"1234"}'
 
-Application ready for future development
+## Future Improvements
 
-# Next Steps
+Planned next steps:
 
-In upcoming tasks, we will:
+Implement JWT authentication
 
-Implement business logic inside models
+Add role-based access control
 
-Complete facade methods
+Replace InMemoryRepository with SQLAlchemy
 
-Create RESTful CRUD endpoints
+Add advanced serialization
 
-Add validation logic
+Add filtering & pagination
 
-Implement data serialization
+Write full unit tests
 
-Introduce authentication (JWT) in a later phase
+# Learning Objectives Achieved
 
-# Learning Goals
+This project demonstrates:
 
-This task helps reinforce:
-
-Modular application design
+Clean architecture design
 
 Separation of concerns
 
-Clean API architecture
+REST API development with Flask
 
-Design patterns in Python
+Implementation of design patterns in Python
 
-Scalable Flask project organization
+Modular and scalable backend structure
 
-## Important Note
+## Important Notes
 
-Authentication and role-based access control will be implemented in a later part of the project.
+Data is currently stored in memory.
 
+Restarting the server resets all stored data.
 
+Authentication will be implemented in the next phase.
