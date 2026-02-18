@@ -39,42 +39,9 @@ The project follows a **3-layer architecture**:
 - Uses an in-memory repository for storage
 - Designed to be replaced later by a database (SQLAlchemy in Part 3)
 
----
-
-#  Project Structure
-
-hbnb/
-├── app/
-│ ├── init.py # Flask application factory
-│ ├── api/
-│ │ ├── init.py
-│ │ └── v1/
-│ │ ├── init.py
-│ │ ├── users.py
-│ │ ├── places.py
-│ │ ├── reviews.py
-│ │ ├── amenities.py
-│ ├── models/
-│ │ ├── init.py
-│ │ ├── user.py
-│ │ ├── place.py
-│ │ ├── review.py
-│ │ ├── amenity.py
-│ ├── services/
-│ │ ├── init.py
-│ │ ├── facade.py
-│ ├── persistence/
-│ ├── init.py
-│ ├── repository.py
-├── run.py
-├── config.py
-├── requirements.txt
-├── README.md
 
 
----
-
-# ⚙ Components Description
+#  Components Description
 
 ## app/__init__.py
 Creates the Flask application using the **App Factory Pattern** and initializes the REST API.
