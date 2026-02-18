@@ -5,30 +5,13 @@ from base_model import BaseModel
 
 class Review(BaseModel):
 
-    def __init__(self, comment, rating, author, place):
+    def __init__(self, comment, rating, user_id, place_id):
         super().__init__()
+
+        if rating < 0 or rating > 5:
+            raise ValueError("Rating must be between 0 and 5")
+
         self.comment = comment
         self.rating = rating
-
-        # relations
-        self.author = author   # User (1)
-        self.place = place     # Place (1)
-
-        author.reviews.append(self)
-        place.reviews.append(self)
-
-    def create(self):
-        print("Review created")
-
-    def read(self):
-        return self.comment
-
-    def update(self, comment=None, rating=None):
-        if comment:
-            self.comment = comment
-        if rating:
-            self.rating = rating
-        self.save()
-
-    def delete(self):
-        print("Review deleted")
+        self.user_id = user_id
+        self.place_id = place_id

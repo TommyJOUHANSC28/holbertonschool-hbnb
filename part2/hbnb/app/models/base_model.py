@@ -12,11 +12,14 @@ class BaseModel:
         self.created_at = datetime.now
         self.updated_at = datetime.now
 
-    def save(self):
-        self.updated_at = datetime.now()
-
     def update(self, data):
         for key, value in data.items():
             if hasattr(self, key):
                 setattr(self, key, value)
-        self.save()
+        self.updated_at = datetime.utcnow()
+
+    def to_dict(self):
+        return {
+            key: value
+            for key, value in self.__dict__.items()
+        }
