@@ -1,13 +1,7 @@
 #!/usr/bin/python3
-from flask import Flask
 from app import create_app
 
-app = create_app('development')
+app = create_app()
 
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return "Welcome to HBnB"
-
-app.run(host="localhost", port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
