@@ -13,6 +13,9 @@ class User(BaseModel):
         self.password = password
         self.is_admin = True if is_admin is True else False
 
+        self.places = places[]
+        self.review = reviews[]
+
     def register(self):
         print(f"User {self.email} registered")
 
