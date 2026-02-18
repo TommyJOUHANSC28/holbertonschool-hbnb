@@ -1,6 +1,5 @@
-from part2.hbnb.app.persistence.repository import InMemoryRepository
-
-from part2.hbnb.app.models import users, places, amenities, reviews
+from app.persistence.repository import InMemoryRepository
+from app.models import users, places, amenities, reviews
 
 
 
@@ -41,10 +40,4 @@ class HBnBFacade:
         place_id = self.get_place(place_id)
         place = self.place_repository.get(place_id)
 
-
-if __name__ == "__main__":
-user = User()
-place = Place()
-amenities = Amenities()
-reviews = Review()
 facade = HBnBFacade()

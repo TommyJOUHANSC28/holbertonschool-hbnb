@@ -1,6 +1,2 @@
 flask
 flask-restx
-flask-sqlalchemy
-flask-restful
-flask-marshmallow
-marshmallow-sqlalchemy
