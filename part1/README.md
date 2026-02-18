@@ -116,7 +116,7 @@ This diagram shows:
 - the direction of data flow,
 - the central position of the Facade.
 
-![HBNB UML Task 0](UML/task1.png)
+![HBNB UML Task 0](UML/task0.png)
 
 ---
 
