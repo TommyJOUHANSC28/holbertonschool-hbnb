@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-from flask_restx import Namespace, Resource
-
-ns = Namespace('places', description='Places operations')
-
-@ns.route('/')
-class PlaceList(Resource):
-    def get(self):
-        return {"message": "List of places"}
-=======
 from flask_restx import Namespace, Resource, fields
 from app.services.facade import facade
 
@@ -71,4 +61,3 @@ class PlaceResource(Resource):
         if not success:
             ns.abort(404, f"Place {place_id} not found")
         return {'message': 'Place deleted successfully'}, 200
->>>>>>> 2dc6a37 (add the file  code)
