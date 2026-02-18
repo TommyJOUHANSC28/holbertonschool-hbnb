@@ -1,5 +1,7 @@
 from app.persistence.repository import InMemoryRepository
 
+
+
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
@@ -16,3 +18,4 @@ class HBnBFacade:
     def get_place(self, place_id):
         # Logic will be implemented in later tasks
         pass
+facade = HBnBFacade()

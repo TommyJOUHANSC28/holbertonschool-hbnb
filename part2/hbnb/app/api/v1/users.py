@@ -1,7 +1,8 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import facade
+from app.services.facade import HBnBFacade
 
 ns = Namespace('users', description='User operations')
+face = HBnBFacade()
 
 # --- Model for input validation & Swagger doc ---
 user_model = ns.model('User', {
