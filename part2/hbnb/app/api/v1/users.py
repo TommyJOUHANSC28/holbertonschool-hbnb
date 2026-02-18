@@ -1,10 +1,10 @@
+#!/usr/bin/python3
 """
 Users API endpoints
 Handles all HTTP requests related to users
 """
-from flask_restx import Namespace, Resource, fields, _http
+from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from app.api.v1.apiRessources import compare_data_and_model
 
 ns = Namespace('users', description='User operations')
 

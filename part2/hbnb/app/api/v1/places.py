@@ -1,5 +1,10 @@
-from flask_restx import Namespace, Resource, fields, _http
-from app.services.facade import facade
+#!/usr/bin/python3
+"""
+Places API endpoints
+Handles all HTTP requests related to places
+"""
+from flask_restx import Namespace, Resource, fields
+from app.services import facade
 
 ns = Namespace('places', description='Place operations')
 

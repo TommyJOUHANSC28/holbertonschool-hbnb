@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+"""
+Reviews API endpoints
+Handles all HTTP requests related to reviews
+"""
 from flask_restx import Namespace, Resource, fields, _http
 from app.services.facade import facade
 

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Amenities API endpoints
 Handles all HTTP requests related to amenities

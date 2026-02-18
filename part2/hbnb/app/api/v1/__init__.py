@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from flask_restx import Namespace
 from .users import api as users_ns
 from .places import api as places_ns
