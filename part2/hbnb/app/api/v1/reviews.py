@@ -3,8 +3,9 @@
 Reviews API endpoints
 Handles all HTTP requests related to reviews
 """
-from flask_restx import Namespace, Resource, fields, _http
-from app.services.facade import facade
+from http import HTTPStatus
+from flask_restx import Namespace, Resource, fields
+from app.services import facade
 
 ns = Namespace('reviews', description='Review operations')
 

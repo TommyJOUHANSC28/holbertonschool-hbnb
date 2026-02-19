@@ -3,9 +3,10 @@
 Amenities API endpoints
 Handles all HTTP requests related to amenities
 """
-from flask_restx import Namespace, Resource, fields, _http
-from app.services import facade
-from app.api.v1.apiRessources import compare_data_and_model
+from http import HTTPStatus
+from http import HTTPStatus
+from flask_restx import Namespace, Resource, fields
+from .app.services import facade
 
 ns = Namespace('amenities', description='Amenity operations')
 

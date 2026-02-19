@@ -9,7 +9,7 @@ def create_app(config_name='default'):
     app = Flask(__name__)
 
     # Load configuration
-    from config import config
+    from part2.hbnb.config import config
     app.config.from_object(config[config_name])
 
     # Initialize REST API with Flask-RESTX
