@@ -540,7 +540,196 @@ def test_user_creation():
     assert user.is_admin is False
 
 
+## Task 2 : User Endpoints Implementation
 
+## Overview
+
+This section implements the main CRUD operations for user management in the HBnB application.
+
+Implemented endpoints:
+
+- POST /api/v1/users/
+- GET /api/v1/users/
+- GET /api/v1/users/<user_id>
+- PUT /api/v1/users/<user_id>
+
+The DELETE operation is not implemented in this phase.
+
+---
+
+## Business Logic Integration
+
+All user operations are handled through the `HBnBFacade`.
+
+The API layer does not directly interact with the repository.
+
+Flow:
+
+Client → API → Facade → Repository → Model
+
+---
+
+## Password Security
+
+User passwords are never included in API responses.
+
+The `to_dict()` method removes the password field before returning JSON data.
+
+---
+
+## Endpoint Details
+
+### Create User
+
+POST /api/v1/users/
+
+Response:
+- 201 Created
+- 400 Bad Request (email already exists or invalid input)
+
+---
+
+### Retrieve User by ID
+
+GET /api/v1/users/<user_id>
+
+Response:
+- 200 OK
+- 404 Not Found
+
+---
+
+### Retrieve All Users
+
+GET /api/v1/users/
+
+Response:
+- 200 OK
+
+Returns a list of users (without passwords).
+
+---
+
+### Update User
+
+PUT /api/v1/users/<user_id>
+
+Response:
+- 200 OK
+- 404 Not Found
+- 400 Bad Request
+
+---
+
+## Testing
+
+Endpoints can be tested using:
+
+- Swagger UI
+- Postman
+- cURL
+
+Example:
+
+
+curl -X POST http://localhost:5000/api/v1/users/ \
+
+-H "Content-Type: application/json" \
+
+-d '{"first_name":"John","last_name":"Doe","email":"john@example.com","password":"1234"}'
+
+Status Codes Summary
+
+201 → User successfully created
+
+200 → Successful retrieval or update
+
+400 → Invalid input or duplicate email
+
+404 → User not found
+
+
+# Task 3 : Amenity Endpoints Implementation
+
+## Overview
+
+This section implements the CRUD operations for Amenity management in the HBnB application.
+
+Implemented endpoints:
+
+- POST /api/v1/amenities/
+- GET /api/v1/amenities/
+- GET /api/v1/amenities/<amenity_id>
+- PUT /api/v1/amenities/<amenity_id>
+
+The DELETE operation is not implemented in this phase.
+
+---
+
+## Business Logic Integration
+
+All Amenity operations are handled via the `HBnBFacade`.
+
+Flow:
+
+Client → API → Facade → Repository → Amenity Model
+
+The API layer never directly accesses the repository.
+
+---
+
+## Endpoint Details
+
+### Create Amenity
+
+POST /api/v1/amenities/
+
+Response:
+- 201 Created
+- 400 Bad Request (invalid input)
+
+---
+
+### Retrieve All Amenities
+
+GET /api/v1/amenities/
+
+Response:
+- 200 OK
+
+Returns a list of all amenities.
+
+---
+
+### Retrieve Amenity by ID
+
+GET /api/v1/amenities/<amenity_id>
+
+Response:
+- 200 OK
+- 404 Not Found
+
+---
+
+### Update Amenity
+
+PUT /api/v1/amenities/<amenity_id>
+
+Response:
+- 200 OK
+- 404 Not Found
+- 400 Bad Request
+
+---
+
+## Example
+
+Create amenity:
+
+
+curl -X POST http://localhost:5000/api/v1/amenities/ \
+-H "Content-Type: application/json" \
+-d '{"name":"Wi-Fi"}'
 
 
 # Authors
