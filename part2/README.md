@@ -810,7 +810,7 @@ Example response:
 - 404 → Place not found
 
 
-# Task 4 : Review Endpoints Implementation
+# Task 5 : Review Endpoints Implementation
 
 ## Overview
 
@@ -853,6 +853,72 @@ When a review is created, it is also attached to the corresponding Place.
 - 200 → Success
 - 400 → Invalid input
 - 404 → Not found
+
+
+
+# Task 6 : Testing and Validation
+
+## Overview
+
+This section validates all implemented API endpoints.
+
+Both manual and automated tests were performed.
+
+---
+
+## Validation Rules Implemented
+
+### User
+- first_name required
+- last_name required
+- valid email format
+- unique email
+
+### Place
+- title required
+- price ≥ 0
+- latitude between -90 and 90
+- longitude between -180 and 180
+- owner must exist
+- amenities must exist
+
+### Review
+- text required
+- rating between 1 and 5
+- user must exist
+- place must exist
+
+### Amenity
+- name required
+- max 50 characters
+
+---
+
+## Manual Testing
+
+Tests were executed using cURL and Swagger UI.
+
+Swagger documentation available at:
+
+http://127.0.0.1:5000/api/v1/
+
+All endpoints were validated for:
+
+- Successful operations
+- Invalid input handling
+- Boundary values
+- Non-existing resources
+
+---
+
+## Automated Testing
+
+Unit tests were implemented using Python unittest.
+
+To run tests:
+
+
+python -m unittest discover tests
 
 
 # Authors
