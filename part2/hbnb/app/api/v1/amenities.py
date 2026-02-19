@@ -1,113 +1,66 @@
-#!/usr/bin/python3
 """
-Amenities API endpoints
-Handles all HTTP requests related to amenities
+Amenity API endpoints.
+Handles CRUD operations (no DELETE in Part 2).
 """
-from http import HTTPStatus
-from http import HTTPStatus
+
 from flask_restx import Namespace, Resource, fields
-from .app.services import facade
+from app.services.facade import HBnBFacade
 
-ns = Namespace('amenities', description='Amenity operations')
+api = Namespace("amenities", description="Amenity operations")
 
-# Define the amenity model for input validation and documentation
-amenity_model = ns.model('Amenity', {
-    'name': fields.String(required=True, description='Name of the amenity')
-})
+facade = HBnBFacade()
 
-# Define the response model for returning amenity data
-amenity_response_model = ns.model('AmenityResponse', {
-    'id': fields.String(
-        required=True,
-        description='Unique identifier for the amenity'),
-    'name': fields.String(required=True,
-                          description='Name of the amenity')
+amenity_model = api.model("Amenity", {
+    "name": fields.String(required=True)
 })
 
 
-@ns.route('/')
+@api.route("/")
 class AmenityList(Resource):
-    @ns.doc('Create a new amenity')
-    @ns.marshal_with(amenity_response_model,
-                      code=_http.HTTPStatus.CREATED,
-                      description='Amenity successfully created')
-    @ns.expect(amenity_model, validate=False)
-    @ns.response(201, 'Amenity successfully created',
-                  amenity_response_model)
-    @ns.response(400, 'Name already assigned / Invalid input data')
+    """
+    Handles amenity collection operations.
+    """
+
+    @api.expect(amenity_model, validate=True)
+    @api.response(201, "Amenity created")
+    @api.response(400, "Invalid input")
     def post(self):
-        """Register a new amenity"""
-        amenity_data = ns.payload
+        """Create amenity"""
         try:
-            compare_data_and_model(amenity_data, amenity_model)
-            new_amenity = facade.create_amenity(amenity_data)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        return new_amenity, 201
+            amenity = facade.create_amenity(api.payload)
+            return amenity.to_dict(), 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
-    @ns.doc('Retrieve all amenities')
-    @ns.marshal_list_with(
-        amenity_response_model,
-        code=_http.HTTPStatus.OK,
-        description='List of amenities retrieved successfully')
-    @ns.response(200, 'List of amenities retrieved successfully')
+    @api.response(200, "Amenities retrieved")
     def get(self):
-        """Retrieve a list of all amenities"""
-        return facade.get_all_amenities(), 200
+        """Get all amenities"""
+        amenities = facade.amenity_repo.get_all()
+        return [a.to_dict() for a in amenities], 200
 
 
-@ns.route('/<amenity_id>')
-@ns.param('amenity_id', 'The amenity identifier')
+@api.route("/<string:amenity_id>")
 class AmenityResource(Resource):
-    @ns.doc('Get amenity by ID')
-    @ns.marshal_with(
-        amenity_response_model,
-        code=_http.HTTPStatus.OK,
-        description='Amenity details retrieved successfully')
-    @ns.response(200, 'Amenity details retrieved successfully')
-    @ns.response(400, 'Invalid ID: not a UUID4 / Invalid input data')
-    @ns.response(404, 'Amenity not found')
+    """
+    Handles single amenity operations.
+    """
+
+    @api.response(200, "Amenity retrieved")
+    @api.response(404, "Amenity not found")
     def get(self, amenity_id):
-        """Get amenity details by ID"""
-        try:
-            amenity = facade.get_amenity(amenity_id)
-        except Exception as e:
-            ns.abort(400, error=str(e))
+        """Get amenity by ID"""
+        amenity = facade.get_amenity(amenity_id)
         if not amenity:
-            ns.abort(404, error='Amenity not found')
-        return amenity, 200
+            return {"error": "Amenity not found"}, 404
+        return amenity.to_dict(), 200
 
-    @ns.doc('Update an amenity')
-    @ns.marshal_with(amenity_response_model,
-                      code=_http.HTTPStatus.OK,
-                      description='Amenity updated successfully')
-    @ns.expect(amenity_model, validate=False)
-    @ns.response(200, 'Amenity updated successfully')
-    @ns.response(400, 'Invalid input data')
-    @ns.response(404, 'Amenity not found')
+    @api.expect(amenity_model, validate=True)
+    @api.response(200, "Amenity updated")
+    @api.response(404, "Amenity not found")
     def put(self, amenity_id):
-        """Update an amenity's information"""
-        amenity_data = ns.payload
-        try:
-            compare_data_and_model(amenity_data, amenity_model)
-            updated_amenity = facade.update_amenity(amenity_id,
-                                                    amenity_data)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        if not updated_amenity:
-            ns.abort(404, error='Amenity not found')
-        return updated_amenity, 200
-
-    @ns.doc('Delete an amenity')
-    @ns.response(204, 'Amenity deleted successfully')
-    @ns.response(400, 'Invalid ID: not a UUID4')
-    @ns.response(404, 'Amenity not found')
-    def delete(self, amenity_id):
-        """Delete an amenity"""
-        try:
-            success = facade.delete_amenity(amenity_id)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        if not success:
-            ns.abort(404, error='Amenity not found')
-        return '', 204
+        """Update amenity"""
+        amenity = facade.get_amenity(amenity_id)
+        if not amenity:
+            return {"error": "Amenity not found"}, 404
+        amenity.update(api.payload)
+        return amenity.to_dict(), 200

@@ -1,4 +1,7 @@
-#!/usr/bin/python3
+"""
+Application entry point.
+"""
+
 from app import create_app
 
 app = create_app()

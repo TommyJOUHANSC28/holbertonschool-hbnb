@@ -1,17 +1,37 @@
-#!/usr/bin/python3
+"""
+Review entity model.
+"""
 
 from .base_model import BaseModel
 
 
 class Review(BaseModel):
+    """
+    Represents a review for a place.
+    """
 
-    def __init__(self, comment, rating, user_id, place_id):
+    def __init__(self, text, rating, user, place):
         super().__init__()
 
-        if rating < 0 or rating > 5:
-            raise ValueError("Rating must be between 0 and 5")
+        if not text or not text.strip():
+            raise ValueError("Review text cannot be empty")
 
-        self.comment = comment
+        if not (1 <= rating <= 5):
+            raise ValueError("Rating must be between 1 and 5")
+
+        self.text = text
         self.rating = rating
-        self.user_id = user_id
-        self.place_id = place_id
+        self.user = user
+        self.place = place
+
+    def to_dict(self):
+        """
+        Serializes review.
+        """
+        return {
+            "id": self.id,
+            "text": self.text,
+            "rating": self.rating,
+            "user_id": self.user.id,
+            "place_id": self.place.id
+        }
