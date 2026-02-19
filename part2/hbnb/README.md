@@ -728,8 +728,87 @@ Create amenity:
 
 
 curl -X POST http://localhost:5000/api/v1/amenities/ \
+
 -H "Content-Type: application/json" \
+
 -d '{"name":"Wi-Fi"}'
+
+# Task 4 : Place Endpoints Implementation
+
+## Overview
+
+This section implements CRUD operations for Place management.
+
+Implemented endpoints:
+
+- POST /api/v1/places/
+- GET /api/v1/places/
+- GET /api/v1/places/<place_id>
+- PUT /api/v1/places/<place_id>
+
+DELETE is not implemented in this phase.
+
+---
+
+## Relationships Handling
+
+Place is linked to:
+
+- Owner (User)
+- Amenities (many-to-many)
+
+Validations ensure:
+
+- Owner exists
+- Amenities exist
+- Price ≥ 0
+- Latitude between -90 and 90
+- Longitude between -180 and 180
+
+---
+
+## Advanced Serialization
+
+Place responses include:
+
+- Owner details
+- List of amenities
+
+Example response:
+
+{
+
+  "id": "...",
+
+  "title": "Cozy Apartment",
+
+  "price": 100,
+
+  "owner": {
+
+    "first_name": "John",
+
+    "last_name": "Doe"
+
+  },
+
+  "amenities": [
+
+    {"name": "Wi-Fi"}
+
+  ]
+
+}
+
+---
+
+## Status Codes
+
+- 201 → Place created
+- 200 → Success
+- 400 → Invalid input
+- 404 → Place not found
+
 
 
 # Authors
