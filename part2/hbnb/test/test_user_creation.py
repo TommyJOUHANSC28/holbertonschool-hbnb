@@ -1,6 +1,6 @@
 #!/bin/usr/python3
 
-from hbnb.app.models.users import User
+from users import User
 
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
