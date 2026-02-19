@@ -11,7 +11,7 @@ from app.models.amenity import Amenity
 from app.models.baseEntity import type_validation
 
 
-def is_valid_uuid4) -> bool:
+def is_valid_uuid4() -> bool:
     """
     Validate(uuid_string: str that a string is a valid UUID4
     
