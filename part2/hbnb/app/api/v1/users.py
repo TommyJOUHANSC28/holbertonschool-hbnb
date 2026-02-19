@@ -3,8 +3,10 @@
 Users API endpoints
 Handles all HTTP requests related to users
 """
+from http import HTTPStatus
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+
 
 ns = Namespace('users', description='User operations')
 
@@ -35,7 +37,7 @@ user_response_model = ns.model('UserResponse', {
 class UserList(Resource):
     @ns.doc('Create a new user')
     @ns.marshal_with(user_response_model,
-                      code=_http.HTTPStatus.CREATED,
+                      code=HTTPStatus.CREATED,
                       description='User successfully created')
     @ns.expect(user_model, validate=False)
     @ns.response(201, 'User successfully created')
@@ -52,7 +54,7 @@ class UserList(Resource):
 
     @ns.doc('Retrieve all users')
     @ns.marshal_list_with(user_response_model,
-                          code=_http.HTTPStatus.OK,
+                          code=HTTPStatus.OK,
                           description='List of users retrieved successfully')
     @ns.response(200, 'List of users retrieved successfully')
     def get(self):
@@ -65,7 +67,7 @@ class UserList(Resource):
 class UserResource(Resource):
     @ns.doc('Get user by ID')
     @ns.marshal_with(user_response_model,
-                      code=_http.HTTPStatus.OK,
+                      code=HTTPStatus.OK,
                       description='User details retrieved successfully')
     @ns.response(200, 'User details retrieved successfully')
     @ns.response(400, 'Invalid ID: not a UUID4 / Invalid input data')
@@ -82,7 +84,7 @@ class UserResource(Resource):
 
     @ns.doc('Update a user')
     @ns.marshal_with(user_response_model,
-                      code=_http.HTTPStatus.OK,
+                      code=HTTPStatus.OK,
                       description='User updated successfully')
     @ns.expect(user_model, validate=False)
     @ns.response(200, 'User successfully updated')

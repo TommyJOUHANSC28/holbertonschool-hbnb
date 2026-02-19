@@ -1,6 +1,4 @@
-#!/usr/bin/python3
-
-from hbnb.app.models.users import User
+from app.models.amenities import Amenity
 
 def test_amenity_creation():
     amenity = Amenity(name="Wi-Fi")

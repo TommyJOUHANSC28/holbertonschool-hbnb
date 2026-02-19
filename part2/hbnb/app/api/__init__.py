@@ -1,9 +1,8 @@
-#!/usr/bin/python3
 from flask_restx import Namespace
-from .users import api as users_ns
-from .places import api as places_ns
-from .reviews import api as reviews_ns
-from .amenities import api as amenities_ns
+from app.api import ns as users_ns
+from .places import ns as places_ns
+from .reviews import ns as reviews_ns
+from .amenities import ns as amenities_ns
 
 def register_namespaces(api):
     api.add_namespace(users_ns, path="/users")

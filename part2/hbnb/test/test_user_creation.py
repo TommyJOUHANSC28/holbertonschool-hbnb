@@ -1,6 +1,4 @@
-#!/bin/usr/python3
-
-from users import User
+from app.models.user import User
 
 def test_user_creation():
     user = User(first_name="John", last_name="Doe", email="john.doe@example.com")
