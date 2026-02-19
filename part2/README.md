@@ -1,7 +1,7 @@
 # HBnb Part 2: Implementation of Business Logic and API Endpoints
 ## By Tommy JOUHANS and James ROUSSEL
 
-## HBnB – Task 0: Project Setup & Initialization
+## Task 0: Project Setup & Initialization
 
 ## Overview
 
@@ -175,4 +175,377 @@ Scalable Flask project organization
 
 Authentication and role-based access control will be implemented in a later part of the project.
 
+## Task 1: Core Business Logic Classes
 
+##  Overview
+
+Part 2 of the HBnB project focuses on implementing the core business logic and REST API endpoints based on the architecture designed in Part 1.
+
+This phase includes:
+
+- Implementation of domain models (User, Place, Review, Amenity)
+- Strict attribute validation
+- Entity relationships management
+- Facade pattern implementation
+- In-memory persistence using Repository pattern
+- Full CRUD REST API using Flask and flask-restx
+- Advanced serialization with nested objects
+- Unit testing of business logic
+
+Authentication (JWT) and database integration will be implemented in Part 3.
+
+---
+
+#  Architecture
+
+The project follows a clean 3-layer architecture:
+
+Presentation Layer → Business Logic Layer → Persistence Layer
+(API) (Facade + Models) (Repository)
+
+yaml
+Copier le code
+
+---
+
+## 1️/ Presentation Layer (`app/api/`)
+
+Built using:
+
+- Flask
+- flask-restx
+
+Responsibilities:
+
+- Handle HTTP requests
+- Validate request payloads
+- Call the Facade
+- Return structured JSON responses
+
+All API routes are versioned under:
+
+/api/v1/
+
+arduino
+Copier le code
+
+Swagger documentation is available at:
+
+http://127.0.0.1:5000/api/v1/
+
+yaml
+Copier le code
+
+---
+
+## 2️/ Business Logic Layer (`app/models/` + `app/services/`)
+
+### 🔹 BaseModel
+
+All entities inherit from `BaseModel`.
+
+Common attributes:
+
+- `id` (UUID string)
+- `created_at`
+- `updated_at`
+
+Common methods:
+
+- `save()`
+- `update(data)`
+- `to_dict()`
+
+UUIDs are used instead of numeric IDs for:
+
+- Global uniqueness
+- Security (non-sequential IDs)
+- Scalability in distributed systems
+
+---
+
+###  User
+
+Attributes:
+
+- `first_name` (required, max 50 chars)
+- `last_name` (required, max 50 chars)
+- `email` (required, unique, valid format)
+- `password` (required)
+- `is_admin` (default: False)
+
+Validations:
+
+- Email format validation (regex)
+- Length constraints
+- Email uniqueness enforced in Facade
+
+Relationships:
+
+- A user can own multiple places
+- A user can write multiple reviews
+
+---
+
+###  Place
+
+Attributes:
+
+- `title` (required, max 100 chars)
+- `description` (optional)
+- `price` (positive float)
+- `latitude` (-90 to 90)
+- `longitude` (-180 to 180)
+- `owner` (User instance)
+
+Relationships:
+
+- One-to-many: Place → Reviews
+- Many-to-many: Place → Amenities
+
+Validations:
+
+- Price must be positive
+- Coordinates must be within valid geographic ranges
+- Owner must exist
+
+---
+
+###  Review
+
+Attributes:
+
+- `text` (required)
+- `rating` (integer 1–5)
+- `user` (User instance)
+- `place` (Place instance)
+
+Validations:
+
+- Rating must be between 1 and 5
+- Place and User must exist
+
+---
+
+###  Amenity
+
+Attributes:
+
+- `name` (required, max 50 chars)
+
+---
+
+# Facade Pattern (`app/services/facade.py`)
+
+The `HBnBFacade` class centralizes business logic and acts as the single entry point between the API and the persistence layer.
+
+Responsibilities:
+
+- Validate relationships
+- Ensure entity existence
+- Enforce email uniqueness
+- Manage object creation and updates
+- Coordinate repository operations
+
+Example:
+
+
+facade.create_user(data)
+
+facade.create_place(data)
+
+
+Benefits:
+
+Loose coupling
+
+Clean API layer
+
+Easy maintainability
+
+### Future database integration without API changes
+
+
+Persistence Layer (app/persistence/)
+
+Implements the Repository pattern.
+
+Repository Interface
+
+Defines:
+
+add()
+
+get()
+
+get_all()
+
+update()
+
+delete()
+
+get_by_attribute()
+
+InMemoryRepository
+
+
+### Stores objects in Python dictionaries:
+
+{
+
+    "uuid1": object1,
+
+    "uuid2": object2
+}
+
+Characteristics:
+
+Fast access
+
+No database required
+
+Data lost when application stops
+
+Designed to be replaced in Part 3
+
+REST API – Full CRUD
+
+CRUD operations implemented for:
+
+Users
+
+Places
+
+Reviews
+
+Amenities
+
+Example:
+
+POST    /users
+
+GET     /users
+
+GET     /users/<id>
+
+PUT     /users/<id>
+
+DELETE  /users/<id>
+
+
+Users:
+
+POST    /users
+
+GET     /users
+
+GET     /users/<id>
+
+PUT     /users/<id>
+
+DELETE  /users/<id>
+
+
+Similar endpoints exist for Places, Reviews, and Amenities.
+
+### Advanced Serialization
+
+Nested relationships are included in responses.
+
+Example:
+
+GET /places/<id>
+
+
+Response includes:
+
+Owner details (first_name, last_name)
+
+Amenities list
+
+Reviews list
+
+Example JSON:
+
+{
+
+  "id": "...",
+
+  "title": "Cozy Apartment",
+
+  "price": 100,
+
+  "owner": {
+
+    "id": "...",
+
+
+    "first_name": "John",
+
+    "last_name": "Doe"
+  
+},
+
+
+  "amenities": [
+
+    {"name": "Wi-Fi"},
+
+    {"name": "Parking"}
+
+  ],
+
+  "reviews": [
+
+    {
+
+
+      "text": "Great stay!",
+
+      "rating": 5
+
+    }
+ ]
+
+}
+
+### Unit Testing
+
+Basic unit tests verify:
+
+Object creation
+
+Validation rules
+
+Relationship integrity
+
+Update functionality
+
+Tests cover:
+
+User creation
+
+Place ownership
+
+Review linking
+
+Amenity creation
+
+Example test:
+
+def test_user_creation():
+
+    user = User("John","Doe", "john@example.com", "1234")
+    assert user.first_name == "John"
+    assert user.is_admin is False
+
+
+
+
+
+# Authors
+
+- **James Roussel**
+- **Tommy Jouhans**
+
+---
