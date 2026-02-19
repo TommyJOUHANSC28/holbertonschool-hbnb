@@ -810,6 +810,50 @@ Example response:
 - 404 → Place not found
 
 
+# Task 5 : Review Endpoints Implementation
+
+## Overview
+
+This section implements full CRUD operations for Reviews.
+
+Implemented endpoints:
+
+- POST /api/v1/reviews/
+- GET /api/v1/reviews/
+- GET /api/v1/reviews/<review_id>
+- PUT /api/v1/reviews/<review_id>
+- DELETE /api/v1/reviews/<review_id>
+- GET /api/v1/places/<place_id>/reviews
+
+---
+
+## Validation Rules
+
+- text cannot be empty
+- rating must be between 1 and 5
+- user_id must exist
+- place_id must exist
+
+---
+
+## Relationship Handling
+
+Each review is linked to:
+
+- A User
+- A Place
+
+When a review is created, it is also attached to the corresponding Place.
+
+---
+
+## Status Codes
+
+- 201 → Review created
+- 200 → Success
+- 400 → Invalid input
+- 404 → Not found
+
 
 # Authors
 
