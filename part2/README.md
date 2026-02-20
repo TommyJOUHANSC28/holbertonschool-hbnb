@@ -22,7 +22,7 @@ This project implements the Business Logic Layer and REST API Layer of the HBnB 
 
 ## Project Structure
 
-[HBNB UML Task 3](part2/images/tree.png)
+[HBNB TREE](part2/images/tree.png)
 
 ## Installation
 
