@@ -1,6 +1,59 @@
 # HBnb Part 2: Implementation of Business Logic and API Endpoints
 ## By Tommy JOUHANS and James ROUSSEL
 
+## Project Overview
+
+This project implements the Business Logic Layer and REST API Layer of the HBnB application using:
+
+- Python
+
+- Flask
+
+- Flask-RESTx
+
+- In-memory persistence
+
+- Facade Design Pattern
+
+- Unit Testing (unittest)
+
+- Swagger documentation
+
+
+## Project Structure
+
+[HBNB UML Task 3](part2/images/tree.png)
+
+## Installation
+
+# Clone project
+
+git clone <repo_url>
+
+cd hbnb
+
+# Create virtual environment
+
+python -m venv venv
+
+source venv/bin/activate  # Mac/Linux
+
+venv\Scripts\activate     # Windows
+
+## Install dependencies
+pip install flask flask-restx
+
+## Install dependencies
+pip install -r requirements.txt
+
+## Run Application
+- python run.py
+
+- Swagger available at:
+
+http://127.0.0.1:5000/api/v1/
+
+
 ## Task 0: Project Setup & Initialization
 
 ## Overview
@@ -94,31 +147,6 @@ Enables scalable Flask configuration and easier testing.
 
 ---
 
-#  Installation & Setup
-
-## 1️/ Clone the repository
-
-bash
-git clone <repository_url>
-cd hbnb
-
-## 2️/ Create a virtual environment (recommended)
-python3 -m venv venv
-source venv/bin/activate
-
-## 3️/ Install dependencies
-pip install -r requirements.txt
-
-
-Dependencies:
-
-flask
-
-flask-restx
-
-▶ Running the Application
-python run.py
-
 
 If correctly configured, Flask should start successfully.
 
@@ -141,6 +169,21 @@ Facade pattern prepared
 
 Application ready for future development
 
+
+## Test Repository (Bash)
+
+Bash: 
+
+python 
+
+
+>>> from app.persistence.repository import InMemoryRepository
+
+>>> repo = InMemoryRepository()
+
+>>> print(repo.get_all())
+
+
 # Next Steps
 
 In upcoming tasks, we will:
@@ -156,6 +199,7 @@ Add validation logic
 Implement data serialization
 
 Introduce authentication (JWT) in a later phase
+
 
 # Learning Goals
 
@@ -174,6 +218,8 @@ Scalable Flask project organization
 ## Important Note
 
 Authentication and role-based access control will be implemented in a later part of the project.
+
+
 
 ## Task 1: Core Business Logic Classes
 
@@ -366,27 +412,27 @@ Easy maintainability
 ### Future database integration without API changes
 
 
-Persistence Layer (app/persistence/)
+- Persistence Layer (app/persistence/)
 
-Implements the Repository pattern.
+- Implements the Repository pattern.
 
-Repository Interface
+- Repository Interface
 
-Defines:
+### Defines:
 
-add()
+- add()
 
-get()
+- get()
 
-get_all()
+- get_all()
 
-update()
+- update()
 
-delete()
+- delete()
 
-get_by_attribute()
+- get_by_attribute()
 
-InMemoryRepository
+- InMemoryRepository
 
 
 ### Stores objects in Python dictionaries:
@@ -398,52 +444,52 @@ InMemoryRepository
     "uuid2": object2
 }
 
-Characteristics:
+### Characteristics:
 
-Fast access
+- Fast access
 
-No database required
+- No database required
 
-Data lost when application stops
+- Data lost when application stops
 
-Designed to be replaced in Part 3
+- Designed to be replaced in Part 3
 
-REST API – Full CRUD
+- REST API – Full CRUD
 
 CRUD operations implemented for:
 
-Users
+- Users
 
-Places
+- Places
 
-Reviews
+- Reviews
 
-Amenities
+- Amenities
 
 Example:
 
-POST    /users
+- POST    /users
 
-GET     /users
+- GET     /users
 
-GET     /users/<id>
+- GET     /users/<id>
 
-PUT     /users/<id>
+- PUT     /users/<id>
 
-DELETE  /users/<id>
+- DELETE  /users/<id>
 
 
 Users:
 
-POST    /users
+- POST    /users
 
-GET     /users
+- GET     /users
 
-GET     /users/<id>
+- GET     /users/<id>
 
-PUT     /users/<id>
+- PUT     /users/<id>
 
-DELETE  /users/<id>
+- DELETE  /users/<id>
 
 
 Similar endpoints exist for Places, Reviews, and Amenities.
@@ -454,16 +500,16 @@ Nested relationships are included in responses.
 
 Example:
 
-GET /places/<id>
+- GET /places/<id>
 
 
 Response includes:
 
-Owner details (first_name, last_name)
+- Owner details (first_name, last_name)
 
-Amenities list
+- Amenities list
 
-Reviews list
+- Reviews list
 
 Example JSON:
 
@@ -513,23 +559,23 @@ Example JSON:
 
 Basic unit tests verify:
 
-Object creation
+- Object creation
 
-Validation rules
+- Validation rules
 
-Relationship integrity
+- Relationship integrity
 
-Update functionality
+- Update functionality
 
 Tests cover:
 
-User creation
+- User creation
 
-Place ownership
+- Place ownership
 
-Review linking
+- Review linking
 
-Amenity creation
+- Amenity creation
 
 Example test:
 
@@ -631,22 +677,36 @@ Endpoints can be tested using:
 
 Example:
 
+### Bash Tests
 
-curl -X POST http://localhost:5000/api/v1/users/ \
+### Create User
+
+curl -X POST http://127.0.0.1:5000/api/v1/users/ \
 
 -H "Content-Type: application/json" \
 
--d '{"first_name":"John","last_name":"Doe","email":"john@example.com","password":"1234"}'
+-d '{"first_name":"John", "last_name":"Doe", "email":"john@example.com"}'
+
+### Invalid Email
+
+curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+
+-H "Content-Type: application/json" \
+
+-d '{"first_name":"John","last_name":"Doe","email":"bad"}'
+
+
+
 
 Status Codes Summary
 
-201 → User successfully created
+- 201 → User successfully created
 
-200 → Successful retrieval or update
+- 200 → Successful retrieval or update
 
-400 → Invalid input or duplicate email
+- 400 → Invalid input or duplicate email
 
-404 → User not found
+- 404 → User not found
 
 
 # Task 3 : Amenity Endpoints Implementation
@@ -733,6 +793,8 @@ curl -X POST http://localhost:5000/api/v1/amenities/ \
 
 -d '{"name":"Wi-Fi"}'
 
+
+
 # Task 4 : Place Endpoints Implementation
 
 ## Overview
@@ -802,6 +864,28 @@ Example response:
 
 ---
 
+### Bash Test
+
+curl -X POST http://127.0.0.1:5000/api/v1/places/ \
+
+-H "Content-Type: application/json" \
+
+-d '{
+
+"title":"Apartment",
+
+"description":"Nice",
+
+"price":100,
+
+"latitude":40,
+
+"longitude":-70,
+
+"owner_id":"<USER_ID>"
+
+}'
+
 ## Status Codes
 
 - 201 → Place created
@@ -809,6 +893,7 @@ Example response:
 - 400 → Invalid input
 - 404 → Place not found
 
+_____
 
 # Task 5 : Review Endpoints Implementation
 
@@ -847,6 +932,29 @@ When a review is created, it is also attached to the corresponding Place.
 
 ---
 
+### Bash Tests
+### Create Review
+
+curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
+
+-H "Content-Type: application/json" \
+
+-d '{
+
+"text":"Great place",
+
+"rating":5,
+
+"user_id":"<USER_ID>",
+
+"place_id":"<PLACE_ID>"
+
+}'
+
+### Delete Review
+curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
+
+
 ## Status Codes
 
 - 201 → Review created
@@ -855,6 +963,7 @@ When a review is created, it is also attached to the corresponding Place.
 - 404 → Not found
 
 
+----
 
 # Task 6 : Testing and Validation
 
