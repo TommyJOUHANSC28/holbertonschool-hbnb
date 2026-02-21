@@ -1,8 +1,8 @@
-#!/bin/usr/python
 
-from places import Place
-from users import User
-from reviews import Review
+import unittest
+from app.models.place import Place
+from app.models.user import User
+from app.models.review import Review
 
 def test_place_creation():
     owner = User(first_name="Alice", last_name="Smith", email="alice.smith@example.com")

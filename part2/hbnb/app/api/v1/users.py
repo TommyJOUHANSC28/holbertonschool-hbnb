@@ -5,20 +5,16 @@ DELETE is not implemented in Part 2.
 """
 
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade
-
-api = Namespace("reviews", description="Review operations")
-
-facade = HBnBFacade()
+from hbnb.app.services import facade
 
 api = Namespace("users", description="User operations")
 
 
 
 user_model = api.model("User", {
-    "first_name": fields.String(required=True),
-    "last_name": fields.String(required=True),
-    "email": fields.String(required=True)
+    "first_name": fields.String(required=True, description='First name of the user'),
+    "last_name": fields.String(required=True, description='First name of the user'),
+    "email": fields.String(required=True, description='First name of the user')
 })
 
 

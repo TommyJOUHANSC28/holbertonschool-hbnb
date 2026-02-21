@@ -4,11 +4,11 @@ Full CRUD including DELETE.
 """
 
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade
+from hbbn.app.services import facade
 
 api = Namespace("reviews", description="Review operations")
 
-facade = HBnBFacade()
+
 
 review_model = api.model("Review", {
     "text": fields.String(required=True),

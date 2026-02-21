@@ -4,6 +4,6 @@ Persistence layer package.
 Provides access to repository implementations.
 """
 
-from .repository import InMemoryRepository
+from hbnb.app.persistence.repository import InMemoryRepository
 
 __all__ = ["InMemoryRepository"]

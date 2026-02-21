@@ -3,7 +3,7 @@ Amenity endpoint tests.
 """
 
 import unittest
-from app import create_app
+from hbnb.app import create_app
 
 
 class TestAmenityEndpoints(unittest.TestCase):

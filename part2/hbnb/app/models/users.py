@@ -4,7 +4,7 @@ Handles validation and serialization.
 """
 
 import re
-from .base_model import BaseModel
+from hbnb.app.base_model import BaseModel
 
 
 class User(BaseModel):
@@ -24,10 +24,17 @@ class User(BaseModel):
         if not re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
             raise ValueError("Invalid email format")
 
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.is_admin = is_admin
+        def __init__(self, email, first_name, last_name, password, user_id, is_admin=False):
+            super().__init__()
+            self.email = email
+            self.first_name = first_name
+            self.last_name = last_name
+            self.password = password
+            self.is_admin = is_admin
+            self.user_id = user_id
+
+            self.places = []
+            self.reviews = []
 
     def to_dict(self):
         """

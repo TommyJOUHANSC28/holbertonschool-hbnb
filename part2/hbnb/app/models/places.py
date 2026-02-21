@@ -3,7 +3,7 @@ Place entity model.
 Includes relationships with User, Review and Amenity.
 """
 
-from .base_model import BaseModel
+from hbnb.app.base_model import BaseModel
 
 
 class Place(BaseModel):

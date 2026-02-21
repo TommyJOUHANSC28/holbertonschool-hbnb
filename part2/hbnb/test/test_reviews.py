@@ -3,7 +3,7 @@ Review endpoint tests.
 """
 
 import unittest
-from app import create_app
+from hbnb.app import create_app
 
 
 class TestReviewEndpoints(unittest.TestCase):

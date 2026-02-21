@@ -2,7 +2,7 @@
 Review entity model.
 """
 
-from .base_model import BaseModel
+from hbnb.app.base_model import BaseModel
 
 
 class Review(BaseModel):

@@ -5,7 +5,7 @@ Includes review retrieval for a place.
 """
 
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade
+from hbnb.app.services import facade
 
 api = Namespace("places", description="Place operations")
 
