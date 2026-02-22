@@ -22,7 +22,7 @@ The goal is to build:
 
 ## Project Structure
 
-![HBNB tree](images/hbnb-tree.png)
+![HBNB tree](images/hbnb_tree.png)
 
 ---
 
@@ -40,19 +40,21 @@ The project follows a strict 3-layer architecture:
 ## 1️/ Clone the repository
 
 Bash:
-
+```shell
 - git clone <repository_url>
 - cd part2
+```
 
 ## 2️/ Create a virtual environment (recommended)
-
+```shell
 - python3 -m venv venv
 - source venv/bin/activate
+```
 
 ## 3️/ Install dependencies
-
+```shell
 - pip install -r requirements.txt
-
+```
 
 Dependencies:
 
@@ -60,8 +62,9 @@ Dependencies:
 - flask-restx
 
 ▶ Running the Application
+```shell
 - python -m hbnb.run
-
+```
 
 If correctly configured, Flask should start successfully.
 
@@ -98,7 +101,7 @@ Registers namespaces:
 
 ### persistence/repository.py
 
-
+```python
 class InMemoryRepository:
     def __init__(self):
         self._storage = {}
@@ -122,7 +125,7 @@ class InMemoryRepository:
         if obj_id in self._storage:
             del self._storage[obj_id]
 
-
+```
 ---
 ## TASK 1 – Core Business Models
 
@@ -134,7 +137,7 @@ Provides:
 - created_at
 - updated_at
 - update() method
-
+```python
 class BaseModel:
     def __init__(self):
         self.id = str(uuid.uuid4())
@@ -146,6 +149,7 @@ class BaseModel:
             if hasattr(self, key):
                 setattr(self, key, value)
         self.updated_at = datetime.now()
+```
 
 ### User Model
 
@@ -155,8 +159,10 @@ Validations:
 - last_name required
 - valid email format
 
+```python
 if not re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
     raise ValueError("Invalid email format")
+```
 
 ### Place Model
 
@@ -178,19 +184,20 @@ Supports both:
 - user_id + place_id (API)
 
 Rating validation:
-
+```python
 if not (1 <= rating <= 5):
     raise ValueError("Rating must be between 1 and 5")
+```
 
 ### Amenity Model
-
+```python
 class Amenity(BaseModel):
     def __init__(self, name, description=None):
         if not name:
             raise ValueError("Amenity name is required")
         super().__init__()
+```
 ---
-
 ### TASK 2 – User Endpoints
 ### POST /api/v1/users
 - Creates a new user
@@ -198,18 +205,21 @@ class Amenity(BaseModel):
 - Returns created user with 201 status
 - Error handling for missing fields and invalid email
 
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+```shell
+curl -X POST http://127.0.0.1:5000/api/v1/users \
 -H "Content-Type: application/json" \
 -d '{"first_name":"Alice","last_name":"Smith","email":"alice@example.com"}'
+```
 
 ### GET /api/v1/users/
 - Retrieves all users
 - Returns list of users with 200 status
 - Supports pagination (optional)
 - Error handling for empty database
-
+- 
+```shell
 curl http://127.0.0.1:5000/api/v1/users/
-
+```
 ### PUT /api/v1/users/<user_id>
 - Updates user information
 - Validates input data
@@ -231,9 +241,11 @@ Validation errors return:
 - Returns created amenity with 201 status
 - Error handling for missing fields
 
+```shell
 curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 -H "Content-Type: application/json" \
 -d '{"name":"Wi-Fi"}'
+```
 
 ### GET /api/v1/amenities/
 - Retrieves all amenities
@@ -241,8 +253,9 @@ curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 - Supports pagination (optional)
 - Error handling for empty database
 
+```shell
 curl http://127.0.0.1:5000/api/v1/amenities/
-
+```
 ---
 
 ### TASK 4 – Place Endpoints
@@ -257,6 +270,7 @@ curl http://127.0.0.1:5000/api/v1/amenities/
 - 400 Bad Request
 - 404 Not Found
 
+```shell
 curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 -H "Content-Type: application/json" \
 -d '{
@@ -267,6 +281,7 @@ curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 "longitude":-70,
 "owner_id":"<USER_ID>"
 }'
+```
 
 ### Validations
 
@@ -279,7 +294,7 @@ curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 ## TASK 5 – Review Endpoints
 
 ### Create Review
-
+```shell
 curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 -H "Content-Type: application/json" \
 -d '{
@@ -288,15 +303,17 @@ curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 "user_id":"<USER_ID>",
 "place_id":"<PLACE_ID>"
 }'
-
+```
 ### Delete Review
 
+```shell
 curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
+```
 
 ### GET Reviews for Place
-
+```shell
 curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
-
+```
 ---
 
 
@@ -305,8 +322,9 @@ curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
 ### Automated Tests
 
 Run tests with:
-
+```shell
 python -m unittest discover -s hbnb/tests
+```
 
 - ### Manual Testing
 - Start the Flask application
