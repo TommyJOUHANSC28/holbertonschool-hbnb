@@ -345,8 +345,9 @@ This implementation provides:
 ---
 ## Authors
 
-Tommy Jouhans
-James Roussel
+- Tommy Jouhans
+
+- James Roussel
 
 ---
 ## Key Strengths of This Implementation
