@@ -9,7 +9,7 @@ from hbnb.app.services import facade
 
 api = Namespace("places", description="Place operations")
 
-facade = HBnBFacade()
+
 
 place_model = api.model("Place", {
     "title": fields.String(required=True),
@@ -38,7 +38,7 @@ class PlaceList(Resource):
     @api.response(200, "Places retrieved")
     def get(self):
         """Get all places"""
-        places = facade.place_repo.get_all()
+        places = facade.get_all_places()
         return [p.to_dict() for p in places], 200
 
 

@@ -9,6 +9,7 @@ from hbnb.app.services import facade
 api = Namespace("amenities", description="Amenity operations")
 
 
+
 amenity_model = api.model("Amenity", {
     "name": fields.String(required=True)
 })
@@ -34,7 +35,7 @@ class AmenityList(Resource):
     @api.response(200, "Amenities retrieved")
     def get(self):
         """Get all amenities"""
-        amenities = facade.amenity_repo.get_all()
+        amenities = facade.get_all_amenities()
         return [a.to_dict() for a in amenities], 200
 
 

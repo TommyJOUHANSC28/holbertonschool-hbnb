@@ -4,7 +4,7 @@ Full CRUD including DELETE.
 """
 
 from flask_restx import Namespace, Resource, fields
-from hbbn.app.services import facade
+from hbnb.app.services import facade
 
 api = Namespace("reviews", description="Review operations")
 
@@ -46,7 +46,7 @@ class ReviewResource(Resource):
     @api.response(404, "Review not found")
     def get(self, review_id):
         """Get review by ID"""
-        review = facade.review_repo.get(review_id)
+        reviews = facade.get_all_reviews()
         if not review:
             return {"error": "Review not found"}, 404
         return review.to_dict(), 200

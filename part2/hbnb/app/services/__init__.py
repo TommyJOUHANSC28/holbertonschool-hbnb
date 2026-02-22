@@ -1,12 +1,11 @@
 """
-Services package.
-
-Initializes the Facade singleton instance.
+Services package initializer.
+Provides a singleton facade instance.
 """
 
-from hbnb.app.facade import HBnBFacade
+from hbnb.app.services.facade import HBnBFacade
 
-# Singleton instance of the Facade
+# Singleton instance
 facade = HBnBFacade()
 
 __all__ = ["facade", "HBnBFacade"]
