@@ -1,129 +1,73 @@
-#!/usr/bin/python3
 """
-Reviews API endpoints
-Handles all HTTP requests related to reviews
+Review API endpoints.
+Full CRUD including DELETE.
 """
-from flask_restx import Namespace, Resource, fields, _http
-from app.services.facade import facade
 
-ns = Namespace('reviews', description='Review operations')
+from flask_restx import Namespace, Resource, fields
+from hbnb.app.services import facade
 
-# --- Input model: POST / PUT ---
-review_model = ns.model('Review', {
-    'text':     fields.String (required=True, description='Text of the review'),
-    'rating':   fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id':  fields.String (required=True, description='ID of the user'),
-    'place_id': fields.String (required=True, description='ID of the place')
-})
+api = Namespace("reviews", description="Review operations")
 
-# --- Output model: GET ---
-review_response_model = ns.model('ReviewResponse', {
-    'id':       fields.String (required=True, description='ID of the review'),
-    'text':     fields.String (required=True, description='Text of the review'),
-    'rating':   fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id':  fields.String(attribute=lambda r: r.user.id,
-                              required=True, description='ID of the user'),
-    'place_id': fields.String(attribute=lambda r: r.place.id,
-                              required=True, description='ID of the place')
+
+
+review_model = api.model("Review", {
+    "text": fields.String(required=True),
+    "rating": fields.Integer(required=True),
+    "user_id": fields.String(required=True),
+    "place_id": fields.String(required=True)
 })
 
 
-@ns.route('/')
+@api.route("/")
 class ReviewList(Resource):
 
-    @ns.doc('list_reviews')
-    @ns.marshal_list_with(review_response_model,
-                          code=_http.HTTPStatus.OK,
-                          description='List of reviews retrieved successfully')
-    @ns.response(200, 'List of reviews retrieved successfully')
-    def get(self):
-        """Retrieve a list of all reviews"""
-        return facade.get_all_reviews(), 200
-
-    @ns.doc('create_review')
-    @ns.marshal_with(review_response_model,
-                     code=_http.HTTPStatus.CREATED,
-                     description='Review successfully created')
-    @ns.expect(review_model, validate=True)
-    @ns.response(201, 'Review successfully created')
-    @ns.response(400, 'Invalid input data')
+    @api.expect(review_model, validate=True)
+    @api.response(201, "Review created")
+    @api.response(400, "Invalid input")
     def post(self):
-        """Register a new review"""
+        """Create review"""
         try:
-            review = facade.create_review(ns.payload)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        return review, 201
+            review = facade.create_review(api.payload)
+            return review.to_dict(), 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
+
+    @api.response(200, "Reviews retrieved")
+    def get(self):
+        """Get all reviews"""
+        reviews = facade.review_repo.get_all()
+        return [r.to_dict() for r in reviews], 200
 
 
-@ns.route('/<string:review_id>')
-@ns.param('review_id', 'The review unique identifier')
+@api.route("/<string:review_id>")
 class ReviewResource(Resource):
 
-    @ns.doc('get_review')
-    @ns.marshal_with(review_response_model,
-                     code=_http.HTTPStatus.OK,
-                     description='Review details retrieved successfully')
-    @ns.response(200, 'Review details retrieved successfully')
-    @ns.response(400, 'Invalid ID: not a UUID4')
-    @ns.response(404, 'Review not found')
+    @api.response(200, "Review retrieved")
+    @api.response(404, "Review not found")
     def get(self, review_id):
-        """Get review details by ID"""
-        try:
-            review = facade.get_review(review_id)
-        except Exception as e:
-            ns.abort(400, error=str(e))
+        """Get review by ID"""
+        reviews = facade.get_all_reviews()
         if not review:
-            ns.abort(404, error='Review not found')
-        return review, 200
+            return {"error": "Review not found"}, 404
+        return review.to_dict(), 200
 
-    @ns.doc('update_review')
-    @ns.marshal_with(review_response_model,
-                     code=_http.HTTPStatus.OK,
-                     description='Review updated successfully')
-    @ns.expect(review_model, validate=False)
-    @ns.response(200, 'Review updated successfully')
-    @ns.response(400, 'Invalid input data')
-    @ns.response(404, 'Review not found')
+    @api.expect(review_model, validate=True)
+    @api.response(200, "Review updated")
+    @api.response(404, "Review not found")
     def put(self, review_id):
-        """Update a review's information"""
-        try:
-            updated_review = facade.update_review(review_id, ns.payload)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        if not updated_review:
-            ns.abort(404, error='Review not found')
-        return updated_review, 200
+        """Update review"""
+        review = facade.review_repo.get(review_id)
+        if not review:
+            return {"error": "Review not found"}, 404
+        review.update(api.payload)
+        return review.to_dict(), 200
 
-    @ns.doc('delete_review')
-    @ns.response(200, 'Review deleted successfully')
-    @ns.response(404, 'Review not found')
+    @api.response(200, "Review deleted")
+    @api.response(404, "Review not found")
     def delete(self, review_id):
-        """Delete a review by ID"""
-        try:
-            facade.delete_review(review_id)
-        except Exception as e:
-            ns.abort(404, error=str(e))
-        return {'message': f'Review {review_id} deleted successfully'}, 200
-
-
-@ns.route('/places/<string:place_id>/reviews')
-@ns.param('place_id', 'The place unique identifier')
-class PlaceReviewList(Resource):
-
-    @ns.doc('get_reviews_by_place')
-    @ns.marshal_list_with(review_response_model,
-                          code=_http.HTTPStatus.OK,
-                          description='List of reviews for the place retrieved successfully')
-    @ns.response(200, 'List of reviews retrieved successfully')
-    @ns.response(400, 'Invalid ID')
-    @ns.response(404, 'Place not found')
-    def get(self, place_id):
-        """Get all reviews for a specific place"""
-        try:
-            reviews = facade.get_reviews_by_place(place_id)
-        except Exception as e:
-            ns.abort(400, error=str(e))
-        if not reviews:
-            ns.abort(404, error='Place not found')
-        return reviews, 200
+        """Delete review"""
+        review = facade.review_repo.get(review_id)
+        if not review:
+            return {"error": "Review not found"}, 404
+        facade.delete_review(review_id)
+        return {"message": "Review deleted successfully"}, 200

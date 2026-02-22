@@ -1,32 +1,28 @@
-#!/usr/bin/python
+"""
+Application factory for HBnB API.
+Initializes Flask app and registers all namespaces.
+"""
+
 from flask import Flask
 from flask_restx import Api
 
-def create_app(config_name='default'):
+from hbnb.app.api.v1.users import api as users_ns
+from hbnb.app.api.v1.places import api as places_ns
+from hbnb.app.api.v1.amenities import api as amenities_ns
+from hbnb.app.api.v1.reviews import api as reviews_ns
+
+
+def create_app():
+    """
+    Creates and configures the Flask application.
+    """
     app = Flask(__name__)
 
-    # Load configuration
-    from config import config
-    app.config.from_object(config[config_name])
+    api = Api(app, version="1.0", title="HBnB API", description="HBnB Application REST API", doc="/api/v1/")
 
-    # Initialize REST API with Flask-RESTX
-    api = Api(
-        app,
-        version='1.0',
-        title='HBnB API',
-        description='REST API for the HBnB (Airbnb) clone',
-        doc='/api/v1/'
-    )
-
-    # Register namespaces (RESTX blueprints)
-    from app.api.v1.users import ns as users_ns
-    from app.api.v1.places import ns as places_ns
-    from app.api.v1.reviews import ns as reviews_ns
-    from app.api.v1.amenities import ns as amenities_ns
-
-    api.add_namespace(users_ns,     path='/api/v1/users')
-    api.add_namespace(places_ns,    path='/api/v1/places')
-    api.add_namespace(reviews_ns,   path='/api/v1/reviews')
-    api.add_namespace(amenities_ns, path='/api/v1/amenities')
+    api.add_namespace(users_ns, path="/api/v1/users")
+    api.add_namespace(places_ns, path="/api/v1/places")
+    api.add_namespace(amenities_ns, path="/api/v1/amenities")
+    api.add_namespace(reviews_ns, path="/api/v1/reviews")
 
     return app

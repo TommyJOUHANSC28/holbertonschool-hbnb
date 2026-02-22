@@ -1,152 +1,70 @@
 # HBnb Part 2: Implementation of Business Logic and API Endpoints
-## By Tommy JOUHANS and James ROUSSEL
+## Business Logic & REST API Implementation
+### Authors: Tommy Jouhans & James Roussel
+---
 
-## Project Overview
+## Project Objective
 
-This project implements the Business Logic Layer and REST API Layer of the HBnB application using:
+This phase implements the complete Business Logic Layer and REST API Layer of the HBnB application.
 
-- Python
+The goal is to build:
 
-- Flask
-
-- Flask-RESTx
-
+- A modular scalable architecture
+- Strict data validation
+- Full RESTful API
 - In-memory persistence
-
-- Facade Design Pattern
-
-- Unit Testing (unittest)
-
+- Relationship management between entities
+- Unit and manual testing
 - Swagger documentation
 
 
+---
+
 ## Project Structure
 
-[HBNB TREE](images/tree.png)
-
-## Installation
-
-# Clone project
-
-git clone <repo_url>
-
-cd hbnb
-
-# Create virtual environment
-
-python -m venv venv
-
-source venv/bin/activate  # Mac/Linux
-
-venv\Scripts\activate     # Windows
-
-## Install dependencies
-pip install flask flask-restx
-
-## Install dependencies
-pip install -r requirements.txt
-
-## Run Application
-- python run.py
-
-- Swagger available at:
-
-http://127.0.0.1:5000/api/v1/
-
-
-## Task 0: Project Setup & Initialization
-
-## Overview
-
-This task focuses on setting up the foundational structure of the HBnB application using a modular and scalable architecture.
-
-The goal is to prepare the project for future implementation by:
-
-- Creating a clean project structure
-- Implementing a layered architecture
-- Setting up Flask with flask-restx
-- Implementing an in-memory repository
-- Preparing the Facade pattern for communication between layers
-
-At this stage, no full business logic or API endpoints are implemented yet. The objective is to ensure that the project is correctly structured and ready for development.
+![HBNB tree](images/hbnb_tree.png)
 
 ---
 
-# Architecture Overview
 
-The project follows a **3-layer architecture**:
+## Architecture Overview
 
+The project follows a strict 3-layer architecture:
 
-### 1️/ Presentation Layer
-- Built using Flask and flask-restx
-- Handles HTTP requests and responses
-- Communicates only with the Facade layer
-
-### 2️/ Business Logic Layer
-- Contains domain models (User, Place, Review, Amenity)
-- Implements business rules and validation
-- Uses the Facade pattern to centralize logic
-
-### 3️/ Persistence Layer
-- Implements a generic repository interface
-- Uses an in-memory repository for storage
-- Designed to be replaced later by a database (SQLAlchemy in Part 3)
-
-
-
-#  Components Description
-
-## app/__init__.py
-Creates the Flask application using the **App Factory Pattern** and initializes the REST API.
-
-## api/v1/
-Will contain the REST API endpoints (to be implemented in later tasks).
-
-## models/
-Will contain the business entities:
-- User
-- Place
-- Review
-- Amenity
-
-## services/facade.py
-Implements the **Facade Pattern**.
-
-This layer:
-- Acts as an intermediary between Presentation and Persistence layers
-- Prevents direct repository access from the API
-- Centralizes business logic
-
-## persistence/repository.py
-
-Defines:
-
-- `Repository` (abstract base class)
-- `InMemoryRepository` (concrete implementation)
-
-Responsible for:
-- Adding objects
-- Retrieving objects
-- Updating objects
-- Deleting objects
-
-The in-memory repository stores data in a Python dictionary.
+![HBNB UML Task 0](images/task0.png)
 
 ---
 
-#  Design Patterns Used
+#  Installation & Setup
 
-###  Facade Pattern
-Provides a simplified interface between layers.
+## 1️/ Clone the repository
 
-###  Repository Pattern
-Abstracts data storage to allow future database replacement.
+Bash:
+```shell
+- git clone <repository_url>
+- cd part2
+```
 
-###  App Factory Pattern
-Enables scalable Flask configuration and easier testing.
+## 2️/ Create a virtual environment (recommended)
+```shell
+- python3 -m venv venv
+- source venv/bin/activate
+```
 
----
+## 3️/ Install dependencies
+```shell
+- pip install -r requirements.txt
+```
 
+Dependencies:
+
+- flask
+- flask-restx
+
+▶ Running the Application
+```shell
+- python -m hbnb.run
+```
 
 If correctly configured, Flask should start successfully.
 
@@ -154,885 +72,290 @@ Swagger documentation will be available at:
 
 http://127.0.0.1:5000/api/v1/
 
-
-(Note: API endpoints will be implemented in later tasks.)
-
-Objectives Achieved in Task 0
-
-Modular project structure created
-
-Flask application initialized
-
-In-memory repository implemented
-
-Facade pattern prepared
-
-Application ready for future development
-
-
-## Test Repository (Bash)
-
-Bash: 
-
-python 
-
-
->>> from app.persistence.repository import InMemoryRepository
-
->>> repo = InMemoryRepository()
-
->>> print(repo.get_all())
-
-
-# Next Steps
-
-In upcoming tasks, we will:
-
-Implement business logic inside models
-
-Complete facade methods
-
-Create RESTful CRUD endpoints
-
-Add validation logic
-
-Implement data serialization
-
-Introduce authentication (JWT) in a later phase
-
-
-# Learning Goals
-
-This task helps reinforce:
-
-Modular application design
-
-Separation of concerns
-
-Clean API architecture
-
-Design patterns in Python
-
-Scalable Flask project organization
-
-## Important Note
-
-Authentication and role-based access control will be implemented in a later part of the project.
-
-
-
-## Task 1: Core Business Logic Classes
-
-##  Overview
-
-Part 2 of the HBnB project focuses on implementing the core business logic and REST API endpoints based on the architecture designed in Part 1.
-
-This phase includes:
-
-- Implementation of domain models (User, Place, Review, Amenity)
-- Strict attribute validation
-- Entity relationships management
-- Facade pattern implementation
-- In-memory persistence using Repository pattern
-- Full CRUD REST API using Flask and flask-restx
-- Advanced serialization with nested objects
-- Unit testing of business logic
-
-Authentication (JWT) and database integration will be implemented in Part 3.
-
 ---
 
-#  Architecture
+## TASK 0 – Project Initialization
 
-The project follows a clean 3-layer architecture:
+### Objective
 
-Presentation Layer → Business Logic Layer → Persistence Layer
-(API) (Facade + Models) (Repository)
+Set up scalable architecture using:
 
-yaml
-Copier le code
+Flask App Factory Pattern
 
+Repository Pattern
+
+Facade Pattern
+
+In-memory storage
+
+### Key Files
+
+app/init.py
+
+Registers namespaces:
+
+- api.add_namespace(users_ns, path="/api/v1/users")
+- api.add_namespace(places_ns, path="/api/v1/places")
+- api.add_namespace(amenities_ns, path="/api/v1/amenities")
+- api.add_namespace(reviews_ns, path="/api/v1/reviews")
+
+### persistence/repository.py
+
+```python
+class InMemoryRepository:
+    def __init__(self):
+        self._storage = {}
+
+    def add(self, obj):
+        self._storage[obj.id] = obj
+
+    def get(self, obj_id):
+        return self._storage.get(obj_id)
+
+    def get_all(self):
+        return list(self._storage.values())
+
+    def update(self, obj_id, data):
+        obj = self.get(obj_id)
+        if obj:
+            obj.update(data)
+        return obj
+
+    def delete(self, obj_id):
+        if obj_id in self._storage:
+            del self._storage[obj_id]
+
+```
 ---
+## TASK 1 – Core Business Models
 
-## 1️/ Presentation Layer (`app/api/`)
+###  BaseModel
 
-Built using:
+Provides:
 
-- Flask
-- flask-restx
+- UUID id
+- created_at
+- updated_at
+- update() method
+```python
+class BaseModel:
+    def __init__(self):
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
 
-Responsibilities:
+    def update(self, data):
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.updated_at = datetime.now()
+```
 
-- Handle HTTP requests
-- Validate request payloads
-- Call the Facade
-- Return structured JSON responses
-
-All API routes are versioned under:
-
-/api/v1/
-
-arduino
-Copier le code
-
-Swagger documentation is available at:
-
-http://127.0.0.1:5000/api/v1/
-
-yaml
-Copier le code
-
----
-
-## 2️/ Business Logic Layer (`app/models/` + `app/services/`)
-
-### 🔹 BaseModel
-
-All entities inherit from `BaseModel`.
-
-Common attributes:
-
-- `id` (UUID string)
-- `created_at`
-- `updated_at`
-
-Common methods:
-
-- `save()`
-- `update(data)`
-- `to_dict()`
-
-UUIDs are used instead of numeric IDs for:
-
-- Global uniqueness
-- Security (non-sequential IDs)
-- Scalability in distributed systems
-
----
-
-###  User
-
-Attributes:
-
-- `first_name` (required, max 50 chars)
-- `last_name` (required, max 50 chars)
-- `email` (required, unique, valid format)
-- `password` (required)
-- `is_admin` (default: False)
+### User Model
 
 Validations:
 
-- Email format validation (regex)
-- Length constraints
-- Email uniqueness enforced in Facade
-
-Relationships:
-
-- A user can own multiple places
-- A user can write multiple reviews
-
----
-
-###  Place
-
-Attributes:
-
-- `title` (required, max 100 chars)
-- `description` (optional)
-- `price` (positive float)
-- `latitude` (-90 to 90)
-- `longitude` (-180 to 180)
-- `owner` (User instance)
-
-Relationships:
-
-- One-to-many: Place → Reviews
-- Many-to-many: Place → Amenities
-
-Validations:
-
-- Price must be positive
-- Coordinates must be within valid geographic ranges
-- Owner must exist
-
----
-
-###  Review
-
-Attributes:
-
-- `text` (required)
-- `rating` (integer 1–5)
-- `user` (User instance)
-- `place` (Place instance)
-
-Validations:
-
-- Rating must be between 1 and 5
-- Place and User must exist
-
----
-
-###  Amenity
-
-Attributes:
-
-- `name` (required, max 50 chars)
-
----
-
-# Facade Pattern (`app/services/facade.py`)
-
-The `HBnBFacade` class centralizes business logic and acts as the single entry point between the API and the persistence layer.
-
-Responsibilities:
-
-- Validate relationships
-- Ensure entity existence
-- Enforce email uniqueness
-- Manage object creation and updates
-- Coordinate repository operations
-
-Example:
-
-
-facade.create_user(data)
-
-facade.create_place(data)
-
-
-Benefits:
-
-Loose coupling
-
-Clean API layer
-
-Easy maintainability
-
-### Future database integration without API changes
-
-
-- Persistence Layer (app/persistence/)
-
-- Implements the Repository pattern.
-
-- Repository Interface
-
-### Defines:
-
-- add()
-
-- get()
-
-- get_all()
-
-- update()
-
-- delete()
-
-- get_by_attribute()
-
-- InMemoryRepository
-
-
-### Stores objects in Python dictionaries:
-
-{
-
-    "uuid1": object1,
-
-    "uuid2": object2
-}
-
-### Characteristics:
-
-- Fast access
-
-- No database required
-
-- Data lost when application stops
-
-- Designed to be replaced in Part 3
-
-- REST API – Full CRUD
-
-CRUD operations implemented for:
-
-- Users
-
-- Places
-
-- Reviews
-
-- Amenities
-
-Example:
-
-- POST    /users
-
-- GET     /users
-
-- GET     /users/<id>
-
-- PUT     /users/<id>
-
-- DELETE  /users/<id>
-
-
-Users:
-
-- POST    /users
-
-- GET     /users
-
-- GET     /users/<id>
-
-- PUT     /users/<id>
-
-- DELETE  /users/<id>
-
-
-Similar endpoints exist for Places, Reviews, and Amenities.
-
-### Advanced Serialization
-
-Nested relationships are included in responses.
-
-Example:
-
-- GET /places/<id>
-
-
-Response includes:
-
-- Owner details (first_name, last_name)
-
-- Amenities list
-
-- Reviews list
-
-Example JSON:
-
-{
-
-  "id": "...",
-
-  "title": "Cozy Apartment",
-
-  "price": 100,
-
-  "owner": {
-
-    "id": "...",
-
-
-    "first_name": "John",
-
-    "last_name": "Doe"
-  
-},
-
-
-  "amenities": [
-
-    {"name": "Wi-Fi"},
-
-    {"name": "Parking"}
-
-  ],
-
-  "reviews": [
-
-    {
-
-
-      "text": "Great stay!",
-
-      "rating": 5
-
-    }
- ]
-
-}
-
-### Unit Testing
-
-Basic unit tests verify:
-
-- Object creation
-
-- Validation rules
-
-- Relationship integrity
-
-- Update functionality
-
-Tests cover:
-
-- User creation
-
-- Place ownership
-
-- Review linking
-
-- Amenity creation
-
-Example test:
-
-def test_user_creation():
-
-    user = User("John","Doe", "john@example.com", "1234")
-    assert user.first_name == "John"
-    assert user.is_admin is False
-
-
-## Task 2 : User Endpoints Implementation
-
-## Overview
-
-This section implements the main CRUD operations for user management in the HBnB application.
-
-Implemented endpoints:
-
-- POST /api/v1/users/
-- GET /api/v1/users/
-- GET /api/v1/users/<user_id>
-- PUT /api/v1/users/<user_id>
-
-The DELETE operation is not implemented in this phase.
-
----
-
-## Business Logic Integration
-
-All user operations are handled through the `HBnBFacade`.
-
-The API layer does not directly interact with the repository.
-
-Flow:
-
-Client → API → Facade → Repository → Model
-
----
-
-## Password Security
-
-User passwords are never included in API responses.
-
-The `to_dict()` method removes the password field before returning JSON data.
-
----
-
-## Endpoint Details
-
-### Create User
-
-POST /api/v1/users/
-
-Response:
-- 201 Created
-- 400 Bad Request (email already exists or invalid input)
-
----
-
-### Retrieve User by ID
-
-GET /api/v1/users/<user_id>
-
-Response:
-- 200 OK
-- 404 Not Found
-
----
-
-### Retrieve All Users
-
-GET /api/v1/users/
-
-Response:
-- 200 OK
-
-Returns a list of users (without passwords).
-
----
-
-### Update User
-
-PUT /api/v1/users/<user_id>
-
-Response:
-- 200 OK
-- 404 Not Found
-- 400 Bad Request
-
----
-
-## Testing
-
-Endpoints can be tested using:
-
-- Swagger UI
-- Postman
-- cURL
-
-Example:
-
-### Bash Tests
-
-### Create User
-
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
-
--H "Content-Type: application/json" \
-
--d '{"first_name":"John", "last_name":"Doe", "email":"john@example.com"}'
-
-### Invalid Email
-
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
-
--H "Content-Type: application/json" \
-
--d '{"first_name":"John","last_name":"Doe","email":"bad"}'
-
-
-
-
-Status Codes Summary
-
-- 201 → User successfully created
-
-- 200 → Successful retrieval or update
-
-- 400 → Invalid input or duplicate email
-
-- 404 → User not found
-
-
-# Task 3 : Amenity Endpoints Implementation
-
-## Overview
-
-This section implements the CRUD operations for Amenity management in the HBnB application.
-
-Implemented endpoints:
-
-- POST /api/v1/amenities/
-- GET /api/v1/amenities/
-- GET /api/v1/amenities/<amenity_id>
-- PUT /api/v1/amenities/<amenity_id>
-
-The DELETE operation is not implemented in this phase.
-
----
-
-## Business Logic Integration
-
-All Amenity operations are handled via the `HBnBFacade`.
-
-Flow:
-
-Client → API → Facade → Repository → Amenity Model
-
-The API layer never directly accesses the repository.
-
----
-
-## Endpoint Details
-
-### Create Amenity
-
-POST /api/v1/amenities/
-
-Response:
-- 201 Created
-- 400 Bad Request (invalid input)
-
----
-
-### Retrieve All Amenities
-
-GET /api/v1/amenities/
-
-Response:
-- 200 OK
-
-Returns a list of all amenities.
-
----
-
-### Retrieve Amenity by ID
-
-GET /api/v1/amenities/<amenity_id>
-
-Response:
-- 200 OK
-- 404 Not Found
-
----
-
-### Update Amenity
-
-PUT /api/v1/amenities/<amenity_id>
-
-Response:
-- 200 OK
-- 404 Not Found
-- 400 Bad Request
-
----
-
-## Example
-
-Create amenity:
-
-
-curl -X POST http://localhost:5000/api/v1/amenities/ \
-
--H "Content-Type: application/json" \
-
--d '{"name":"Wi-Fi"}'
-
-
-
-# Task 4 : Place Endpoints Implementation
-
-## Overview
-
-This section implements CRUD operations for Place management.
-
-Implemented endpoints:
-
-- POST /api/v1/places/
-- GET /api/v1/places/
-- GET /api/v1/places/<place_id>
-- PUT /api/v1/places/<place_id>
-
-DELETE is not implemented in this phase.
-
----
-
-## Relationships Handling
-
-Place is linked to:
-
-- Owner (User)
-- Amenities (many-to-many)
-
-Validations ensure:
-
-- Owner exists
-- Amenities exist
-- Price ≥ 0
-- Latitude between -90 and 90
-- Longitude between -180 and 180
-
----
-
-## Advanced Serialization
-
-Place responses include:
-
-- Owner details
-- List of amenities
-
-Example response:
-
-{
-
-  "id": "...",
-
-  "title": "Cozy Apartment",
-
-  "price": 100,
-
-  "owner": {
-
-    "first_name": "John",
-
-    "last_name": "Doe"
-
-  },
-
-  "amenities": [
-
-    {"name": "Wi-Fi"}
-
-  ]
-
-}
-
----
-
-### Bash Test
-
-curl -X POST http://127.0.0.1:5000/api/v1/places/ \
-
--H "Content-Type: application/json" \
-
--d '{
-
-"title":"Apartment",
-
-"description":"Nice",
-
-"price":100,
-
-"latitude":40,
-
-"longitude":-70,
-
-"owner_id":"<USER_ID>"
-
-}'
-
-## Status Codes
-
-- 201 → Place created
-- 200 → Success
-- 400 → Invalid input
-- 404 → Place not found
-
-_____
-
-# Task 5 : Review Endpoints Implementation
-
-## Overview
-
-This section implements full CRUD operations for Reviews.
-
-Implemented endpoints:
-
-- POST /api/v1/reviews/
-- GET /api/v1/reviews/
-- GET /api/v1/reviews/<review_id>
-- PUT /api/v1/reviews/<review_id>
-- DELETE /api/v1/reviews/<review_id>
-- GET /api/v1/places/<place_id>/reviews
-
----
-
-## Validation Rules
-
-- text cannot be empty
-- rating must be between 1 and 5
-- user_id must exist
-- place_id must exist
-
----
-
-## Relationship Handling
-
-Each review is linked to:
-
-- A User
-- A Place
-
-When a review is created, it is also attached to the corresponding Place.
-
----
-
-### Bash Tests
-### Create Review
-
-curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
-
--H "Content-Type: application/json" \
-
--d '{
-
-"text":"Great place",
-
-"rating":5,
-
-"user_id":"<USER_ID>",
-
-"place_id":"<PLACE_ID>"
-
-}'
-
-### Delete Review
-curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
-
-
-## Status Codes
-
-- 201 → Review created
-- 200 → Success
-- 400 → Invalid input
-- 404 → Not found
-
-
-----
-
-# Task 6 : Testing and Validation
-
-## Overview
-
-This section validates all implemented API endpoints.
-
-Both manual and automated tests were performed.
-
----
-
-## Validation Rules Implemented
-
-### User
 - first_name required
 - last_name required
 - valid email format
-- unique email
 
-### Place
-- title required
+```python
+if not re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
+    raise ValueError("Invalid email format")
+```
+
+### Place Model
+
+Validations:
 - price ≥ 0
-- latitude between -90 and 90
-- longitude between -180 and 180
-- owner must exist
-- amenities must exist
+- latitude ∈ [-90, 90]
+- longitude ∈ [-180, 180]
 
-### Review
-- text required
-- rating between 1 and 5
-- user must exist
-- place must exist
+Supports both:
 
-### Amenity
-- name required
-- max 50 characters
+- owner object (tests)
+- owner_id (API)
+
+### Review Model
+
+Supports both:
+
+- user + place objects (tests)
+- user_id + place_id (API)
+
+Rating validation:
+```python
+if not (1 <= rating <= 5):
+    raise ValueError("Rating must be between 1 and 5")
+```
+
+### Amenity Model
+```python
+class Amenity(BaseModel):
+    def __init__(self, name, description=None):
+        if not name:
+            raise ValueError("Amenity name is required")
+        super().__init__()
+```
+---
+### TASK 2 – User Endpoints
+### POST /api/v1/users
+- Creates a new user
+- Validates input data
+- Returns created user with 201 status
+- Error handling for missing fields and invalid email
+
+```shell
+curl -X POST http://127.0.0.1:5000/api/v1/users \
+-H "Content-Type: application/json" \
+-d '{"first_name":"Alice","last_name":"Smith","email":"alice@example.com"}'
+```
+
+### GET /api/v1/users/
+- Retrieves all users
+- Returns list of users with 200 status
+- Supports pagination (optional)
+- Error handling for empty database
+- 
+```shell
+curl http://127.0.0.1:5000/api/v1/users/
+```
+### PUT /api/v1/users/<user_id>
+- Updates user information
+- Validates input data
+- Returns updated user with 200 status
+- Error handling for invalid user_id and missing fields
+
+Validation errors return:
+
+- 400 Bad Request
+- 404 Not Found
 
 ---
 
-## Manual Testing
+### TASK 3 – Amenity Endpoints
 
-Tests were executed using cURL and Swagger UI.
+### POST /api/v1/amenities
+- Creates a new amenity
+- Validates input data
+- Returns created amenity with 201 status
+- Error handling for missing fields
 
-Swagger documentation available at:
+```shell
+curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
+-H "Content-Type: application/json" \
+-d '{"name":"Wi-Fi"}'
+```
 
-http://127.0.0.1:5000/api/v1/
+### GET /api/v1/amenities/
+- Retrieves all amenities
+- Returns list of amenities with 200 status
+- Supports pagination (optional)
+- Error handling for empty database
 
-All endpoints were validated for:
+```shell
+curl http://127.0.0.1:5000/api/v1/amenities/
+```
+---
 
-- Successful operations
-- Invalid input handling
-- Boundary values
-- Non-existing resources
+### TASK 4 – Place Endpoints
+
+### POST /api/v1/places
+- Creates a new place
+- Validates input data
+- Returns created place with 201 status
+- Error handling for missing fields and invalid data
+- Supports both owner_id and owner object for testing
+- Validation errors return:
+- 400 Bad Request
+- 404 Not Found
+
+```shell
+curl -X POST http://127.0.0.1:5000/api/v1/places/ \
+-H "Content-Type: application/json" \
+-d '{
+"title":"Apartment",
+"description":"Nice",
+"price":100,
+"latitude":40,
+"longitude":-70,
+"owner_id":"<USER_ID>"
+}'
+```
+
+### Validations
+
+- Owner must exist
+- Coordinates valid
+- Price ≥ 0
 
 ---
 
-## Automated Testing
+## TASK 5 – Review Endpoints
 
-Unit tests were implemented using Python unittest.
+### Create Review
+```shell
+curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
+-H "Content-Type: application/json" \
+-d '{
+"text":"Great stay",
+"rating":5,
+"user_id":"<USER_ID>",
+"place_id":"<PLACE_ID>"
+}'
+```
+### Delete Review
 
-To run tests:
+```shell
+curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
+```
+
+### GET Reviews for Place
+```shell
+curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
+```
+---
 
 
-python -m unittest discover tests
+## TASK 6 – Testing & Validation
 
+### Automated Tests
 
-# Authors
+Run tests with:
+```shell
+python -m unittest discover -s hbnb/tests
+```
 
-- **James Roussel**
-- **Tommy Jouhans**
+- ### Manual Testing
+- Start the Flask application
+- Use Postman or curl to test API endpoints
+- Verify correct responses and error handling
+- Check Swagger documentation for API reference
+- http://127.0.0.1:5000/api/v1/
+
+### Conclusion
+This implementation provides:
+- Clean architecture
+- Strict validation
+- Full CRUD REST API
+- Relationship management
+- Automated testing
+- Production-ready structure
 
 ---
+## Authors
+
+Tommy Jouhans
+James Roussel
+
+---
+## Key Strengths of This Implementation
+
+- Clean Architecture
+- Strict Validation
+- Complete REST API
+- Relationship Integrity
+- Test Coverage
+- Swagger Documentation
+- Facade Centralization
+- Repository Abstraction
