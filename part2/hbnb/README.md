@@ -22,7 +22,7 @@ The goal is to build:
 
 ## Project Structure
 
-![HBNB tree](*/images/hbnb-tree.png)
+![HBNB tree](https://github.com/TommyJOUHANSC28/holbertonschool-hbnb/blob/main/part2/images/hbnb-tree.png)
 
 ---
 
@@ -31,7 +31,7 @@ The goal is to build:
 
 The project follows a strict 3-layer architecture:
 
-![HBNB UML Task 0](*/images/task0.png)
+![HBNB UML Task 0](https://github.com/TommyJOUHANSC28/holbertonschool-hbnb/blob/main/part2/images/task0.png)
 
 ---
 
