@@ -22,7 +22,7 @@ The goal is to build:
 
 ## Project Structure
 
-![HBNB tree](images/hbnb_tree.png)
+![HBNB tree](images/hbnb-tree.png)
 
 ---
 
