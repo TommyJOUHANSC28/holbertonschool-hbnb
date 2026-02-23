@@ -85,21 +85,22 @@ class HBnBFacade:
     # =========================
 
     def create_review(self, review_data):
-
-        user = self.user_repo.get(review_data["user_id"])
+        """ Validate place and user existence before creating review """
         place = self.place_repo.get(review_data["place_id"])
-
+        if not place:
+            raise ValueError("Place not found")
+        """ Validate user existence before creating review """
+        user = self.user_repo.get(review_data["user_id"])
         if not user:
             raise ValueError("User not found")
 
-        if not place:
-            raise ValueError("Place not found")
-
+        """ Create review and associate with place """
         review = Review(**review_data)
 
-        self.review_repo.add(review)
-
+        """ Link review to place and add to place's reviews list """
+        review.place = place
         place.reviews.append(review)
+        self.review_repo.add(review)
 
         return review
 
@@ -110,4 +111,14 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def delete_review(self, review_id):
+        review = self.review_repo.get(review_id)
+        if not review:
+            raise ValueError("Review not found")
+
+        """ Also remove review from associated place """
+        place = review.place
+
+        if place and review in place.reviews:
+            place.reviews.remove(review)
+        """ Finally, delete review from repository """
         self.review_repo.delete(review_id)
