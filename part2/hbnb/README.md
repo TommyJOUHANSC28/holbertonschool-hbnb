@@ -336,6 +336,12 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/ \
 }'
 ```
 
+### POST Amenity for Place
+```shell
+ curl -X POST http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/amenities/<AMENITY_ID>
+```
+
+
 ### Validations
 
 - Owner must exist
@@ -362,6 +368,8 @@ curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 ```shell
 curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
 ```
+
+
 
 ### GET Reviews for Place
 ```shell
