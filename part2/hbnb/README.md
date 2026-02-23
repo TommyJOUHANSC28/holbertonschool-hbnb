@@ -206,7 +206,7 @@ class Amenity(BaseModel):
 - Error handling for missing fields and invalid email
 
 ```shell
-curl -X POST http://127.0.0.1:5000/api/v1/users \
+curl -X POST http://127.0.0.1:5000/api/v1/users/ \
 -H "Content-Type: application/json" \
 -d '{"first_name":"Alice","last_name":"Smith","email":"alice@example.com"}'
 ```
