@@ -77,3 +77,16 @@ class PlaceReviewList(Resource):
         if not place:
             return {"error": "Place not found"}, 404
         return [r.to_dict() for r in place.reviews], 200
+
+@api.route("/<string:place_id>/amenities/<string:amenity_id>")
+class PlaceAmenityResource(Resource):
+
+    @api.response(200, "Amenity added to place")
+    @api.response(404, "Place or Amenity not found")
+    def post(self, place_id, amenity_id):
+        """Add amenity to a specific place"""
+        try:
+            place = facade.add_amenity_to_place(place_id, amenity_id)
+            return place.to_dict(), 200
+        except ValueError as e:
+            return {"error": str(e)}, 404
