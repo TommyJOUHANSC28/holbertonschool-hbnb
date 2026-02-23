@@ -226,6 +226,13 @@ curl http://127.0.0.1:5000/api/v1/users/
 - Returns updated user with 200 status
 - Error handling for invalid user_id and missing fields
 
+```shell
+curl -X PUT http://127.0.0.1:5000/api/v1/users/<user_id> \
+-H "Content-Type: application/json" \
+-d '{"first_name":"Bernard","last_name":"Smith","email":"alice2@example.com"}'
+```
+
+
 Validation errors return:
 
 - 400 Bad Request
@@ -256,7 +263,20 @@ curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 ```shell
 curl http://127.0.0.1:5000/api/v1/amenities/
 ```
+
+### PUT /api/v1/amenities/<amenity_id>
+- Updates amenity information
+- Validates input data
+- Returns updated amenity with 200 status
+- Error handling for invalid amenity_id and missing fields
+
+```shell
+curl -X PUT http://127.0.0.1:5000/api/v1/<amenity_id> \
+-H "Content-Type: application/json" \
+-d '{"name":"High Speed WiFi"}'
+```
 ---
+
 
 ### TASK 4 – Place Endpoints
 
@@ -279,6 +299,39 @@ curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 "price":100,
 "latitude":40,
 "longitude":-70,
+"owner_id":"<USER_ID>"
+}'
+```
+
+### GET /api/v1/places/
+- Retrieves all places
+- Returns list of places with 200 status
+
+
+```shell
+curl http://127.0.0.1:5000/api/v1/places/
+
+```
+
+### PUT /api/v1/places/<place_id>
+- Updates place information
+- Validates input data
+- Returns updated place with 200 status
+- Error handling for invalid place_id and missing fields
+- Supports both owner_id and owner object for testing
+- Validation errors return:
+- 400 Bad Request
+- 404 Not Found
+
+```shell
+curl -X PUT http://127.0.0.1:5000/api/v1/places/ \
+-H "Content-Type: application/json" \
+-d '{
+"title":"House",
+"description":"Dijon",
+"price":160,
+"latitude":50,
+"longitude":-40,
 "owner_id":"<USER_ID>"
 }'
 ```
