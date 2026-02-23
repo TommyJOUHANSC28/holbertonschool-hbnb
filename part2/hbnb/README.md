@@ -251,7 +251,7 @@ Validation errors return:
 ```shell
 curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 -H "Content-Type: application/json" \
--d '{"name":"Wi-Fi"}'
+-d '{"name":"Wi-Fi", "description":"Fast and reliable internet connection"}'
 ```
 
 ### GET /api/v1/amenities/
@@ -273,7 +273,7 @@ curl http://127.0.0.1:5000/api/v1/amenities/
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/<amenity_id> \
 -H "Content-Type: application/json" \
--d '{"name":"High Speed WiFi"}'
+-d '{"name":"High Speed WiFi, "description":"Fast and reliable internet connection"}'
 ```
 ---
 
