@@ -44,6 +44,19 @@ class HBnBFacade:
     def get_all_amenities(self):
         return self.amenity_repo.get_all()
 
+    def add_amenity_to_place(self, place_id, amenity_id):
+
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            raise ValueError("Amenity not found")
+
+        place.add_amenities(amenity)
+        return place
+
     # =========================
     # PLACE
     # =========================
