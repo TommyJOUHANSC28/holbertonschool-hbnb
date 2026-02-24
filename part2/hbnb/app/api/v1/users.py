@@ -15,10 +15,15 @@ api = Namespace("users", description="User operations")
 user_model = api.model("User", {
     'id': fields.String(),
     "first_name": fields.String(required=True, description='First name of the user'),
-    "last_name": fields.String(required=True, description='First name of the user'),
-    "email": fields.String(required=True, description='First name of the user')
+    "last_name": fields.String(required=True, description='Last name of the user'),
+    "email": fields.String(required=True, description='Email address of the user')
 })
-
+""" Separate model for updates to allow partial updates (no required fields) """
+user_update_model = api.model("UserUpdate", {
+    "first_name": fields.String(),
+    "last_name": fields.String(),
+    "email": fields.String()
+})
 
 @api.route("/")
 class UserList(Resource):
@@ -26,7 +31,7 @@ class UserList(Resource):
     Handles user collection operations.
     """
 
-    @api.expect(user_model, validate=True)
+    @api.expect(user_update_model, validate=True)
     @api.response(201, "User created")
     @api.response(400, "Invalid input")
     @api.marshal_with(user_model, skip_none=True)
@@ -62,7 +67,7 @@ class UserResource(Resource):
             return {"error": "User not found"}, 404
         return user.to_dict(), 200
 
-    @api.expect(user_model, validate=True)
+    @api.expect(user_update_model, validate=True)
     @api.response(200, "User updated")
     @api.response(404, "User not found")
     @api.marshal_with(user_model, skip_none=True)
