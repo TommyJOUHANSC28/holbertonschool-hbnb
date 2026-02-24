@@ -80,6 +80,14 @@ class HBnBFacade:
     def get_all_places(self):
         return self.place_repo.get_all()
 
+    """ Update place with new data """
+    def update_place(self, place_id, update_data):
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+        place.update(update_data)
+        return place
+
     # =========================
     # REVIEW
     # =========================
