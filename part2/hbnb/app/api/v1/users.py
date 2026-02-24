@@ -13,6 +13,7 @@ api = Namespace("users", description="User operations")
 
 """ Model for creating/updating users. All fields required for creation, optional for updates. """
 user_model = api.model("User", {
+    'id': fields.String(),
     "first_name": fields.String(required=True, description='First name of the user'),
     "last_name": fields.String(required=True, description='First name of the user'),
     "email": fields.String(required=True, description='First name of the user')
@@ -28,6 +29,7 @@ class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, "User created")
     @api.response(400, "Invalid input")
+    @api.marshal_with(user_model, skip_none=True)
     def post(self):
         """Create a new user"""
         try:
@@ -37,6 +39,7 @@ class UserList(Resource):
             return {"error": str(e)}, 400
 
     @api.response(200, "Users retrieved")
+    @api.marshal_with(user_model, skip_none=True)
     def get(self):
         """Get all users"""
         users = facade.get_all_users()
@@ -51,6 +54,7 @@ class UserResource(Resource):
 
     @api.response(200, "User retrieved")
     @api.response(404, "User not found")
+    @api.marshal_with(user_model, skip_none=True)
     def get(self, user_id):
         """Get user by ID"""
         user = facade.get_user(user_id)
@@ -61,6 +65,7 @@ class UserResource(Resource):
     @api.expect(user_model, validate=True)
     @api.response(200, "User updated")
     @api.response(404, "User not found")
+    @api.marshal_with(user_model, skip_none=True)
     def put(self, user_id):
         """Update user"""
         user = facade.get_user(user_id)
