@@ -14,7 +14,7 @@ api = Namespace("places", description="Place operations")
 """ Model for creating/updating places. All fields required for creation, optional for updates. """
 place_model = api.model("Place", {
     "title": fields.String(required=True),
-    "description": fields.String,
+    "description": fields.String(required=True),
     "price": fields.Float(required=True),
     "latitude": fields.Float(required=True),
     "longitude": fields.Float(required=True),
