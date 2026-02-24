@@ -408,6 +408,27 @@ Run tests with:
 python -m unittest discover -s hbnb/tests
 ```
 
+Run test_users with:
+```shell
+python -m unittest hbnb.tests.test_users
+```
+
+Run test_places with:
+```shell
+python -m unittest hbnb.tests.test_places
+```
+
+Run test_amenities with:
+```shell
+python -m unittest hbnb.tests.test_amenities
+```
+Run test_reviews with:
+```shell
+python -m unittest hbnb.tests.test_reviews
+```
+
+
+
 - ### Manual Testing
 - Start the Flask application
 - Use Postman or curl to test API endpoints
