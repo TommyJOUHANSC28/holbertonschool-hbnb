@@ -206,9 +206,9 @@ class Amenity(BaseModel):
 - Error handling for missing fields and invalid email
 
 ```shell
-curl -X POST http://127.0.0.1:5000/api/v1/users/ \
--H "Content-Type: application/json" \
--d '{"first_name":"Alice","last_name":"Smith","email":"alice@example.com"}'
+curl -X POST http://localhost:5000/api/v1/users/ \
+  -H "Content-Type: application/json" \
+  -d '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"}'
 ```
 
 ### GET /api/v1/users/
@@ -229,7 +229,7 @@ curl http://127.0.0.1:5000/api/v1/users/
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/users/<USER_ID> \
 -H "Content-Type: application/json" \
--d '{"first_name":"Bernard","last_name":"Smith","email":"alice2@example.com"}'
+-d '{"first_name":"Jane","Doe":"Smith","email":"jane.doe@example.com"}'
 ```
 
 
@@ -251,7 +251,7 @@ Validation errors return:
 ```shell
 curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 -H "Content-Type: application/json" \
--d '{"name":"Wi-Fi", "description":"Fast and reliable internet connection"}'
+-d '{"name":"Wi-Fi"}'
 ```
 
 ### GET /api/v1/amenities/
@@ -273,7 +273,7 @@ curl http://127.0.0.1:5000/api/v1/amenities/
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<AMENITY_ID> \
 -H "Content-Type: application/json" \
--d '{"name":"High Speed WiFi, "description":"Fast and reliable internet connection"}'
+-d '{"name": "Air Conditioning"}'
 ```
 ---
 
@@ -294,12 +294,12 @@ curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<AMENITY_ID> \
 curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 -H "Content-Type: application/json" \
 -d '{
-"title":"Apartment",
-"description":"Nice",
-"price":100,
-"latitude":40,
-"longitude":-70,
-"owner_id":"<USER_ID>"
+  "title": "Cozy Apartment",
+  "description": "A nice place to stay",
+  "price": 100.0,
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "owner_id":"<USER_ID>"
 }'
 ```
 
@@ -327,12 +327,9 @@ curl http://127.0.0.1:5000/api/v1/places/
 curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 -H "Content-Type: application/json" \
 -d '{
-"title":"House",
-"description":"Dijon",
-"price":160,
-"latitude":50,
-"longitude":-40,
-"owner_id":"<USER_ID>"
+  "title": "Luxury Condo",
+  "description": "An upscale place to stay",
+  "price": 200.0
 }'
 ```
 
@@ -358,7 +355,7 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 -H "Content-Type: application/json" \
 -d '{
-"text":"Great stay",
+"text":"Great place to stay",
 "rating":5,
 "user_id":"<USER_ID>",
 "place_id":"<PLACE_ID>"
@@ -375,10 +372,8 @@ curl http://127.0.0.1:5000/api/v1/review/
 curl -X PUT http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID> \
 -H "Content-Type: application/json" \
 -d '{
-"text":"Unsanitary housing",
-"rating":2,
-"user_id":"<USER_ID>",
-"place_id":"<PLACE_ID>"
+"text": "Amazing stay!",
+"rating": 4
 }'
 ```
 
@@ -407,6 +402,27 @@ Run tests with:
 ```shell
 python -m unittest discover -s hbnb/tests
 ```
+
+Run test_users with:
+```shell
+python -m unittest hbnb.tests.test_users
+```
+
+Run test_places with:
+```shell
+python -m unittest hbnb.tests.test_places
+```
+
+Run test_amenities with:
+```shell
+python -m unittest hbnb.tests.test_amenities
+```
+Run test_reviews with:
+```shell
+python -m unittest hbnb.tests.test_reviews
+```
+
+
 
 - ### Manual Testing
 - Start the Flask application
