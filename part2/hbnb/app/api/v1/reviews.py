@@ -46,7 +46,7 @@ class ReviewResource(Resource):
     @api.response(404, "Review not found")
     def get(self, review_id):
         """Get review by ID"""
-        reviews = facade.get_all_reviews()
+        review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
         return review.to_dict(), 200
@@ -56,7 +56,7 @@ class ReviewResource(Resource):
     @api.response(404, "Review not found")
     def put(self, review_id):
         """Update review"""
-        review = facade.review_repo.get(review_id)
+        review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
         review.update(api.payload)
@@ -66,7 +66,7 @@ class ReviewResource(Resource):
     @api.response(404, "Review not found")
     def delete(self, review_id):
         """Delete review"""
-        review = facade.review_repo.get(review_id)
+        review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
         facade.delete_review(review_id)
