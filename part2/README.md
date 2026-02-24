@@ -227,7 +227,7 @@ curl http://127.0.0.1:5000/api/v1/users/
 - Error handling for invalid user_id and missing fields
 
 ```shell
-curl -X PUT http://127.0.0.1:5000/api/v1/users/<user_id> \
+curl -X PUT http://127.0.0.1:5000/api/v1/users/<USER_ID> \
 -H "Content-Type: application/json" \
 -d '{"first_name":"Bernard","last_name":"Smith","email":"alice2@example.com"}'
 ```
@@ -271,7 +271,7 @@ curl http://127.0.0.1:5000/api/v1/amenities/
 - Error handling for invalid amenity_id and missing fields
 
 ```shell
-curl -X PUT http://127.0.0.1:5000/api/v1/<amenity_id> \
+curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<AMENITY_ID> \
 -H "Content-Type: application/json" \
 -d '{"name":"High Speed WiFi, "description":"Fast and reliable internet connection"}'
 ```
@@ -324,7 +324,7 @@ curl http://127.0.0.1:5000/api/v1/places/
 - 404 Not Found
 
 ```shell
-curl -X PUT http://127.0.0.1:5000/api/v1/places/ \
+curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 -H "Content-Type: application/json" \
 -d '{
 "title":"House",
@@ -338,8 +338,9 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/ \
 
 ### POST Amenity for Place
 ```shell
- curl -X POST http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/amenities/<AMENITY_ID>
+ curl -X POST http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/amenities/<amenities_id>
 ```
+
 
 
 ### Validations
@@ -363,6 +364,24 @@ curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 "place_id":"<PLACE_ID>"
 }'
 ```
+
+### GET Review
+```shell
+curl http://127.0.0.1:5000/api/v1/review/
+```
+
+### PUT Review
+```shell
+curl -X PUT http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID> \
+-H "Content-Type: application/json" \
+-d '{
+"text":"Unsanitary housing",
+"rating":2,
+"user_id":"<USER_ID>",
+"place_id":"<PLACE_ID>"
+}'
+```
+
 ### Delete Review
 
 ```shell
@@ -370,12 +389,14 @@ curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
 ```
 
 
-
 ### GET Reviews for Place
 ```shell
 curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
 ```
 ---
+
+
+
 
 
 ## TASK 6 – Testing & Validation
