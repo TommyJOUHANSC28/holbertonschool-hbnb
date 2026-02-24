@@ -9,7 +9,7 @@ from hbnb.app.services import facade
 api = Namespace("amenities", description="Amenity operations")
 
 
-"""Model for creating/updating amenities. 'name' is required for creation, optional for updates."""
+
 amenity_model = api.model("Amenity", {
     "id": fields.String(),
     "name": fields.String(required=True),
@@ -62,7 +62,6 @@ class AmenityResource(Resource):
     @api.expect(amenity_model, validate=True)
     @api.response(200, "Amenity updated")
     @api.response(404, "Amenity not found")
-    """Update amenity. All fields optional, only provided fields will be updated."""
     @api.marshal_with(amenity_model, skip_none=True)
     def put(self, amenity_id):
         """Update amenity"""

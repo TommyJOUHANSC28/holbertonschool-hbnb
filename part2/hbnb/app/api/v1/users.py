@@ -7,10 +7,11 @@ DELETE is not implemented in Part 2.
 from flask_restx import Namespace, Resource, fields
 from hbnb.app.services import facade
 
+""" Namespace for user-related endpoints. """
 api = Namespace("users", description="User operations")
 
 
-
+""" Model for creating/updating users. All fields required for creation, optional for updates. """
 user_model = api.model("User", {
     "first_name": fields.String(required=True, description='First name of the user'),
     "last_name": fields.String(required=True, description='First name of the user'),
