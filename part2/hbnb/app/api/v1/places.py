@@ -72,7 +72,7 @@ class PlaceResource(Resource):
         if not place:
             return {"error": "Place not found"}, 404
         place.update(api.payload)
-        return place.to_dict(), 200
+        return {"message": "Place updated successfully"}, 200
 
 
 @api.route("/<string:place_id>/reviews")
