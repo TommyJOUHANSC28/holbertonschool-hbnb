@@ -45,6 +45,8 @@ class UserList(Resource):
             user = facade.create_user(api.payload)
             return user.to_dict(), 201
         except ValueError as e:
+            if "already exists" in str(e):
+                return {"error": str(e)}, 409
             return {"error": str(e)}, 400
 
     @api.response(200, "Users retrieved")
