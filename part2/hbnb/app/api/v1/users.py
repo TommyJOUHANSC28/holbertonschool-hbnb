@@ -13,7 +13,7 @@ api = Namespace("users", description="User operations")
 
 """ Model for creating/updating users. All fields required for creation, optional for updates. """
 user_model = api.model("User", {
-    'id': fields.String(),
+    'id': fields.String(readOnly=True, description="User ID"),
     "first_name": fields.String(required=True, description='First name of the user'),
     "last_name": fields.String(required=True, description='Last name of the user'),
     "email": fields.String(required=True, description='Email address of the user')
@@ -25,16 +25,20 @@ user_update_model = api.model("UserUpdate", {
     "email": fields.String()
 })
 
+""" Model for error responses. """
+error_model = api.model("Error", {
+    "error": fields.String(description="Error message")
+})
+
 @api.route("/")
 class UserList(Resource):
     """
     Handles user collection operations.
     """
 
-    @api.expect(user_update_model, validate=True)
-    @api.response(201, "User created")
-    @api.response(400, "Invalid input")
-    @api.marshal_with(user_model, skip_none=True)
+    @api.expect(user_model, validate=True)
+    @api.response(201, "User created", user_model)
+    @api.response(400, "Invalid input data", error_model)
     def post(self):
         """Create a new user"""
         try:
@@ -64,7 +68,7 @@ class UserResource(Resource):
         """Get user by ID"""
         user = facade.get_user(user_id)
         if not user:
-            return {"error": "User not found"}, 404
+            api.abort(404,"User not found"), 404
         return user.to_dict(), 200
 
     @api.expect(user_update_model, validate=True)
@@ -76,5 +80,8 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
-        user.update(api.payload)
-        return user.to_dict(), 200
+        try:
+           user.update(api.payload)
+           return user.to_dict(), 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
