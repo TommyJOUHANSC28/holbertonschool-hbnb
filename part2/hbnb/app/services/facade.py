@@ -19,10 +19,6 @@ class HBnBFacade:
     # =========================
 
     def create_user(self, user_data):
-        """existing = self.user_repo.get_by_attribute("email", user_data["email"])
-        if existing:
-            raise ValueError("Email already exists")"""
-
         user = User(**user_data)
         self.user_repo.add(user)
         return user
