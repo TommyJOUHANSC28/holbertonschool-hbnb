@@ -216,7 +216,7 @@ curl -X POST http://localhost:5000/api/v1/users/ \
   -d '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"}'
 ```
 Test in Postman:
-
+---
 ![POST User](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-user.png)
 
 
@@ -231,7 +231,7 @@ curl http://127.0.0.1:5000/api/v1/users/
 ```
 
 Test in Postman:
-
+---
 ![Get all Users](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-users.png)
 
 
@@ -431,6 +431,8 @@ Test in Postman:
 ```
 
 Test in Postman:
+
+
 ![POST Amenity for Place](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-amenity-for-place.png)
 
 
@@ -495,7 +497,7 @@ curl http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
 
 Test in Postman:
 
-![GET Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-reviews.png)
+![GET Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-reviews.png%20.png)
 
 
 ### PUT Review
@@ -583,9 +585,9 @@ Test in Postman:
 
 ![Text is not empty](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-text-review.png)
 
-![Ensure that user_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-user-review.png)
+![Ensure that user_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-user-reviews.png)
 
-![Ensure that place_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-place-review.png)
+![Ensure that place_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-place-reviews.png)
 
 
 ### Automated Tests
