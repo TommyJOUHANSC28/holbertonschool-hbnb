@@ -22,7 +22,7 @@ The goal is to build:
 
 ## Project Structure
 
-![HBNB tree](https://github.com/TommyJOUHANSC28/holbertonschool-hbnb/blob/main/part2/images/hbnb-tree.png)
+![HBNB tree](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/hbnb-tree.png)
 
 ---
 
@@ -31,7 +31,7 @@ The goal is to build:
 
 The project follows a strict 3-layer architecture:
 
-![HBNB UML Task 0](https://github.com/TommyJOUHANSC28/holbertonschool-hbnb/blob/main/part2/images/task0.png)
+![HBNB UML Task 0](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/task0.png)
 
 ---
 
@@ -67,6 +67,11 @@ Dependencies:
 ```
 
 If correctly configured, Flask should start successfully.
+
+![Running app](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/running-app.png)
+
+![Print server](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/print-server.png)
+
 
 Swagger documentation will be available at:
 
@@ -210,6 +215,10 @@ curl -X POST http://localhost:5000/api/v1/users/ \
   -H "Content-Type: application/json" \
   -d '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"}'
 ```
+Test in Postman:
+
+![POST User](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-user.png)
+
 
 ### GET /api/v1/users/
 - Retrieves all users
@@ -220,6 +229,25 @@ curl -X POST http://localhost:5000/api/v1/users/ \
 ```shell
 curl http://127.0.0.1:5000/api/v1/users/
 ```
+
+Test in Postman:
+
+![Get all Users](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-users.png)
+
+
+### GET /api/v1/users/<user_id>
+- Retrieves user by ID
+- Returns user with 200 status
+- Error handling for invalid user_id
+
+```shell
+curl http://127.0.0.1:5000/api/v1/users/<USER_ID>
+```
+test in Postman:
+
+![Get User by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-users.png)
+
+
 ### PUT /api/v1/users/<user_id>
 - Updates user information
 - Validates input data
@@ -229,8 +257,12 @@ curl http://127.0.0.1:5000/api/v1/users/
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/users/<USER_ID> \
 -H "Content-Type: application/json" \
--d '{"first_name":"Jane","Doe":"Smith","email":"jane.doe@example.com"}'
+-d '{"first_name":"Jane","last_name":"Doe","email":"jane.doe@example.com"}'
 ```
+
+Test in Postman:
+
+![PUT User by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-user.png)
 
 
 Validation errors return:
@@ -254,6 +286,10 @@ curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 -d '{"name":"Wi-Fi"}'
 ```
 
+Test in Postman:
+
+![POST Amenity](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-amenities.png)
+
 ### GET /api/v1/amenities/
 - Retrieves all amenities
 - Returns list of amenities with 200 status
@@ -263,6 +299,24 @@ curl -X POST http://127.0.0.1:5000/api/v1/amenities/ \
 ```shell
 curl http://127.0.0.1:5000/api/v1/amenities/
 ```
+Test in Postman:
+
+![POST Amenity](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-amenities.png)
+
+
+### GET /api/v1/amenities/<amenity_id>
+- Retrieves amenity by ID
+- Returns amenity with 200 status
+- Error handling for invalid amenity_id
+
+```shell
+curl http://127.0.0.1:5000/api/v1/amenities/<AMENITY_ID>
+```
+
+Test in Postman:
+
+![GET Amenity by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-amenities.png)
+
 
 ### PUT /api/v1/amenities/<amenity_id>
 - Updates amenity information
@@ -273,8 +327,12 @@ curl http://127.0.0.1:5000/api/v1/amenities/
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<AMENITY_ID> \
 -H "Content-Type: application/json" \
--d '{"name": "Air Conditioning"}'
+-d '{"name": "Air Conditioning", "description": "Keeps you cool"}'
 ```
+
+Test in Postman:
+
+![PUT Amenity by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-amenities.png)
 ---
 
 
@@ -302,6 +360,11 @@ curl -X POST http://127.0.0.1:5000/api/v1/places/ \
   "owner_id":"<USER_ID>"
 }'
 ```
+Test in Postman:
+
+![POST Place](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-places.png)
+
+
 
 ### GET /api/v1/places/
 - Retrieves all places
@@ -312,6 +375,25 @@ curl -X POST http://127.0.0.1:5000/api/v1/places/ \
 curl http://127.0.0.1:5000/api/v1/places/
 
 ```
+
+Test in Postman:
+![GET all Places](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-places.png)
+
+
+### GET /api/v1/places/<place_id>
+- Retrieves place by ID
+- Returns place with 200 status
+- Error handling for invalid place_id
+
+```shell
+curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<PLACE_ID>
+
+```
+
+Test in Postman:
+
+![GET Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-places.png)
+
 
 ### PUT /api/v1/places/<place_id>
 - Updates place information
@@ -333,15 +415,27 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 }'
 ```
 
+Test in Postman:
+![PUT Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-places.png)
+
+
 ### POST Amenity for Place
+- Associates an amenity with a place
+- Validates place_id and amenity_id
+- Returns updated place with 200 status
+- Error handling for invalid place_id and amenity_id
+
+
 ```shell
  curl -X POST http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/amenities/<amenities_id>
 ```
 
+Test in Postman:
+![POST Amenity for Place](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-amenity-for-place.png)
+
 
 
 ### Validations
-
 - Owner must exist
 - Coordinates valid
 - Price ≥ 0
@@ -351,6 +445,15 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 ## TASK 5 – Review Endpoints
 
 ### Create Review
+- Creates a new review
+- Validates input data
+- Returns created review with 201 status
+- Error handling for missing fields and invalid data
+- Supports both user + place objects (tests) and user_id + place_id (API)
+- Validation errors return:
+- 400 Bad Request
+- 404 Not Found
+
 ```shell
 curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 -H "Content-Type: application/json" \
@@ -361,13 +464,47 @@ curl -X POST http://127.0.0.1:5000/api/v1/reviews/ \
 "place_id":"<PLACE_ID>"
 }'
 ```
+Test in Postman:
+
+![POST Review](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/post-reviews.png)
+
 
 ### GET Review
+- Retrieves all reviews
+- Returns list of reviews with 200 status
+
+
 ```shell
-curl http://127.0.0.1:5000/api/v1/review/
+curl http://127.0.0.1:5000/api/v1/reviews/
+
 ```
 
+Test in Postman:
+
+![GET all Reviews](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-reviews.png)
+
+
+### GET Review by ID
+- Retrieves review by ID
+- Returns review with 200 status
+
+```shell
+curl http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
+
+```
+
+Test in Postman:
+
+![GET Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-reviews.png)
+
+
 ### PUT Review
+- Updates review information
+- Validates input data
+- Returns updated review with 200 status
+- Error handling for invalid review_id and missing fields
+- Supports both user + place objects (tests) and user_id + place_id (API)
+
 ```shell
 curl -X PUT http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID> \
 -H "Content-Type: application/json" \
@@ -377,28 +514,92 @@ curl -X PUT http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID> \
 }'
 ```
 
+Test in Postman:
+
+![PUT Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-reviews.png)
+
+![PUT Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-reviews2.png)
+
 ### Delete Review
+- Deletes a review by ID
+- Returns 204 No Content on success
+- Error handling for invalid review_id
+
 
 ```shell
 curl -X DELETE http://127.0.0.1:5000/api/v1/reviews/<REVIEW_ID>
+
 ```
+
+Test in Postman:
+
+![DELETE Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/delete-id-reviews.png)
+
+![DELETE Review by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/delete-id-reviews2.png)
 
 
 ### GET Reviews for Place
+- Retrieves all reviews for a specific place
+- Returns list of reviews with 200 status
+- Error handling for invalid place_id
+
 ```shell
 curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
-```
----
 
+```
+Test in Postman:
+
+![GET Reviews for Place](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-reviews-for-places.png)
+
+---
 
 
 
 
 ## TASK 6 – Testing & Validation
 
+### Implemented Basic Validations in the Business Logic Layer
+- User: first_name, last_name required; valid email format
+
+![First name is required](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-first-name.png)
+
+![Last name is required](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-last-name.png)
+
+![Email is required](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-mail.png)
+
+![Invalid email format](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/invalid-email.png)
+
+- Place: price ≥ 0; latitude ∈ [-90, 90]; longitude ∈ [-180, 180]
+
+![Price ≥ 0](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/price.png)
+
+![Latitude ∈ (-90, 90)](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/error-latitude.png)
+
+![Longitude ∈ (-180, 180)](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/error-longitude.png)
+
+- Review: rating must be between 1 and 5, text is not empty, ensure that user_id and place_id reference valid entities
+
+![Rating must be between 1 and 5](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/error-rating.png))
+
+![Text is not empty](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-text-review.png)
+
+![Ensure that user_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-user-review.png)
+
+![Ensure that place_id reference valid entities](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/no-place-review.png)
+
+
 ### Automated Tests
+- We test all business logic and API endpoints using Python's unittest framework
+- Tests cover:
+- User creation, retrieval, update
+- Amenity creation, retrieval, update
+- Place creation, retrieval, update, amenity association
+- Review creation, retrieval, update, deletion
+- Validations for all models
+
 
 Run tests with:
+
 ```shell
 python -m unittest discover -s hbnb/tests
 ```
@@ -422,6 +623,9 @@ Run test_reviews with:
 python -m unittest hbnb.tests.test_reviews
 ```
 
+Print All test:
+
+![HBNB UML Task 0](https://github.com/TommyJOUHANSC28/holbertonschool-hbnb/blob/main/part2/images/test-unittest.png)
 
 
 - ### Manual Testing
