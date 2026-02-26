@@ -418,8 +418,7 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 }'
 ```
 
-Test in Postman:
-|:-------|:-------:|-------:|
+
 
 ![PUT Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-places.png)
 
