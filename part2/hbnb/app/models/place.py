@@ -54,7 +54,7 @@ class Place(BaseModel):
         """
         Adds amenities to the place.
         """
-        self.amenities.extend(amenities)
+        self.amenities.append(amenities)
 
     def to_dict(self):
         return {

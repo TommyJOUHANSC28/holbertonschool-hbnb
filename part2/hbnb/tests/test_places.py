@@ -3,18 +3,39 @@ from hbnb.app.models.place import Place
 from hbnb.app.models.user import User
 from hbnb.app.models.review import Review
 
-def test_place_creation():
-    owner = User(first_name="Alice", last_name="Smith", email="alice.smith@example.com")
-    place = Place(title="Cozy Apartment", description="A nice place to stay", price=100, latitude=37.7749, longitude=-122.4194, owner=owner)
 
-    # Adding a review
-    review = Review(text="Great stay!", rating=5, place=place, user=owner)
-    place.add_review(review)
+class TestPlace(unittest.TestCase):
 
-    assert place.title == "Cozy Apartment"
-    assert place.price == 100
-    assert len(place.reviews) == 1
-    assert place.reviews[0].text == "Great stay!"
-    print("Place creation and relationship tests passed!")
+    def test_place_creation(self):
+        owner = User(
+            first_name="Alice",
+            last_name="Smith",
+            email="alice.smith@example.com"
+        )
 
-test_place_creation()
+        place = Place(
+            title="Cozy Apartment",
+            description="A nice place to stay",
+            price=100,
+            latitude=37.7749,
+            longitude=-122.4194,
+            owner=owner
+        )
+
+        review = Review(
+            text="Great stay!",
+            rating=5,
+            place=place,
+            user=owner
+        )
+
+        place.add_review(review)
+
+        self.assertEqual(place.title, "Cozy Apartment")
+        self.assertEqual(place.price, 100)
+        self.assertEqual(len(place.reviews), 1)
+        self.assertEqual(place.reviews[0].text, "Great stay!")
+
+
+if __name__ == "__main__":
+    unittest.main()

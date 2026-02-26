@@ -11,7 +11,9 @@ api = Namespace("amenities", description="Amenity operations")
 
 
 amenity_model = api.model("Amenity", {
-    "name": fields.String(required=True)
+    "id": fields.String(),
+    "name": fields.String(required=True),
+    "description": fields.String()
 })
 
 
@@ -24,6 +26,7 @@ class AmenityList(Resource):
     @api.expect(amenity_model, validate=True)
     @api.response(201, "Amenity created")
     @api.response(400, "Invalid input")
+    @api.marshal_with(amenity_model, skip_none=True)
     def post(self):
         """Create amenity"""
         try:
@@ -33,6 +36,7 @@ class AmenityList(Resource):
             return {"error": str(e)}, 400
 
     @api.response(200, "Amenities retrieved")
+    @api.marshal_with(amenity_model, skip_none=True)
     def get(self):
         """Get all amenities"""
         amenities = facade.get_all_amenities()
@@ -47,6 +51,7 @@ class AmenityResource(Resource):
 
     @api.response(200, "Amenity retrieved")
     @api.response(404, "Amenity not found")
+    @api.marshal_with(amenity_model, skip_none=True)
     def get(self, amenity_id):
         """Get amenity by ID"""
         amenity = facade.get_amenity(amenity_id)
@@ -57,6 +62,7 @@ class AmenityResource(Resource):
     @api.expect(amenity_model, validate=True)
     @api.response(200, "Amenity updated")
     @api.response(404, "Amenity not found")
+    @api.marshal_with(amenity_model, skip_none=True)
     def put(self, amenity_id):
         """Update amenity"""
         amenity = facade.get_amenity(amenity_id)

@@ -18,6 +18,10 @@ def create_app():
     """
     app = Flask(__name__)
 
+    @app.route("/")
+    def home():
+        return "Welcome to the HBnB API! Visit /api/v1/ for documentation."
+
     api = Api(app, version="1.0", title="HBnB API", description="HBnB Application REST API", doc="/api/v1/")
 
     api.add_namespace(users_ns, path="/api/v1/users")
