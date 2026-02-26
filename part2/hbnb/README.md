@@ -243,10 +243,9 @@ Test in Postman:
 ```shell
 curl http://127.0.0.1:5000/api/v1/users/<USER_ID>
 ```
-test in Postman:
+Test in Postman:
 
-![Get User by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-users.png)
-
+![GET User by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-user.png)
 
 ### PUT /api/v1/users/<user_id>
 - Updates user information
@@ -377,6 +376,9 @@ curl http://127.0.0.1:5000/api/v1/places/
 ```
 
 Test in Postman:
+
+---
+
 ![GET all Places](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-places.png)
 
 
@@ -391,6 +393,7 @@ curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<PLACE_ID>
 ```
 
 Test in Postman:
+---
 
 ![GET Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-places.png)
 
@@ -416,6 +419,8 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 ```
 
 Test in Postman:
+|:-------|:-------:|-------:|
+
 ![PUT Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-places.png)
 
 
@@ -550,6 +555,8 @@ curl http://127.0.0.1:5000/api/v1/places/<PLACE_ID>/reviews
 
 ```
 Test in Postman:
+
+---
 
 ![GET Reviews for Place](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-reviews-for-places.png)
 
