@@ -376,6 +376,9 @@ curl http://127.0.0.1:5000/api/v1/places/
 ```
 
 Test in Postman:
+
+---
+
 ![GET all Places](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-all-places.png)
 
 
@@ -390,6 +393,7 @@ curl -X PUT http://127.0.0.1:5000/api/v1/amenities/<PLACE_ID>
 ```
 
 Test in Postman:
+---
 
 ![GET Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/get-id-places.png)
 
@@ -415,6 +419,8 @@ curl -X PUT http://127.0.0.1:5000/api/v1/places/<PLACE_ID> \
 ```
 
 Test in Postman:
+---
+
 ![PUT Place by ID](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part2/images/put-id-places.png)
 
 
