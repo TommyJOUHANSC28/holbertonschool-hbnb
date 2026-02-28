@@ -32,6 +32,6 @@ class BaseModel:
         Updates object attributes dynamically.
         """
         for key, value in data.items():
-            if hasattr(self, key):
+            if hasattr(self, key) and key not in {"id", "created_at", "updated_at"}:
                 setattr(self, key, value)
         self.save()
