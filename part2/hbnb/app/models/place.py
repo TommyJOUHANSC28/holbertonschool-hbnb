@@ -51,11 +51,12 @@ class Place(BaseModel):
         """
         self.reviews.append(review)
 
-    def add_amenities(self, amenities):
+    def add_amenity(self, amenity):
         """
         Adds amenities to the place.
         """
-        self.amenities.append(amenities)
+        if amenity not in self.add_amenities:
+            self.amenities.append(amenity)
 
     def to_dict(self):
         return {
