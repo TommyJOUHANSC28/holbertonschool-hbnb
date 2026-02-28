@@ -13,16 +13,17 @@ class Place(BaseModel):
 
         super().__init__()
 
-        if not title:
+        if not isinstance(title, str) or not title.strip():
             raise ValueError("Title is required")
 
-        if price < 0:
-            raise ValueError("Price must be positive")
+        if not isinstance(price, (int, float)) or price < 0:
+            raise TypeError("Price must be a number")
 
-        if not (-90 <= latitude <= 90):
+
+        if not isinstance(latitude, (int, float)) or not (-90 <= latitude <= 90):
             raise ValueError("Latitude must be between -90 and 90")
 
-        if not (-180 <= longitude <= 180):
+        if not isinstance(longitude, (int, float)) or not (-180 <= longitude <= 180):
             raise ValueError("Longitude must be between -180 and 180")
 
         self.title = title
