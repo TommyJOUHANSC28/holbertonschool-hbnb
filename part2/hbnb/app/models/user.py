@@ -15,11 +15,14 @@ class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
 
-        if not first_name or not first_name.strip():
+        if not isinstance(first_name, str) or not first_name.strip():
             raise ValueError("First name is required")
 
-        if not last_name or not last_name.strip():
+        if not isinstance(last_name, str) or not last_name.strip():
             raise ValueError("Last name is required")
+
+        if not isinstance(email, str) or not email.strip():
+            raise ValueError("Email is required")
 
         if not re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
             raise ValueError("Invalid email format")

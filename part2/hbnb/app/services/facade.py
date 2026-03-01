@@ -19,8 +19,14 @@ class HBnBFacade:
     # =========================
 
     def create_user(self, user_data):
+        existing_user = self.user_repo.get_by_attribute("email", user_data["email"])
+        if existing_user:
+            raise ValueError("Email already exists")
+        
         user = User(**user_data)
+        
         self.user_repo.add(user)
+        
         return user
 
     def get_user(self, user_id):
@@ -94,11 +100,12 @@ class HBnBFacade:
 
     def create_review(self, review_data):
         """ Validate place and user existence before creating review """
+        user = self.user_repo.get(review_data["user_id"])
         place = self.place_repo.get(review_data["place_id"])
+        
         if not place:
             raise ValueError("Place not found")
-        """ Validate user existence before creating review """
-        user = self.user_repo.get(review_data["user_id"])
+        
         if not user:
             raise ValueError("User not found")
 
@@ -106,10 +113,13 @@ class HBnBFacade:
         review = Review(**review_data)
 
         """ Link review to place and add to place's reviews list """
-        review.place = place
-        place.reviews.append(review)
+        
         self.review_repo.add(review)
-
+        
+        place.add_review(review)
+        
+        user.reviews.append(review)
+        
         return review
 
     def get_review(self, review_id):
@@ -130,3 +140,4 @@ class HBnBFacade:
             place.reviews.remove(review)
         """ Finally, delete review from repository """
         self.review_repo.delete(review_id)
+    

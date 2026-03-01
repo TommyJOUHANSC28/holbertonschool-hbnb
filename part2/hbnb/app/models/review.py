@@ -14,11 +14,11 @@ class Review(BaseModel):
 
         super().__init__()
 
-        if not text or not text.strip():
+        if not isinstance(text, str) or not text.strip():
             raise ValueError("Review text cannot be empty")
 
-        if not (1 <= rating <= 5):
-            raise ValueError("Rating must be between 1 and 5")
+        if not isinstance(rating, int) or not (1 <= rating <= 5):
+            raise ValueError("Rating must be an integer between 1 and 5")
 
         self.text = text
         self.rating = rating
