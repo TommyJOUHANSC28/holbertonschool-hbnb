@@ -3,7 +3,7 @@ User API endpoints.
 Handles CRUD operations for users.
 """
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from hbnb.app.services import facade
 from hbnb.app.utils import hash_password
 
@@ -19,15 +19,12 @@ user_model = api.model("User", {
     "is_admin": fields.Boolean(description='Is user an admin', default=False)
 })
 
-# Model for updates (excluding email and password)
+# Model for updates
 user_update_model = api.model("UserUpdate", {
     "first_name": fields.String(description='First name of the user'),
-    "last_name": fields.String(description='Last name of the user')
-})
-
-# Model for error responses
-error_model = api.model("Error", {
-    "error": fields.String(description="Error message")
+    "last_name": fields.String(description='Last name of the user'),
+    "email": fields.String(description='Email address (admin only)'),
+    "password": fields.String(description='User password (admin only)')
 })
 
 
@@ -38,26 +35,36 @@ class UserList(Resource):
     """
     
     @api.expect(user_model, validate=True)
-    @api.response(201, "User created", user_model)
-    @api.response(400, "Invalid input data", error_model)
+    @api.response(201, "User created")
+    @api.response(403, "Admin privileges required")
+    @jwt_required()
     def post(self):
-        """Create a new user"""
+        """Create a new user (Admin only)"""
+        current_user = get_jwt()
+        
+        # Check if user is admin
+        if not current_user.get('is_admin', False):
+            return {"error": "Admin privileges required"}, 403
+        
         try:
             payload = api.payload
+            
+            # Check if email already exists
+            if facade.get_user_by_email(payload["email"]):
+                return {"error": "Email already registered"}, 400
+            
             # Hash the password before storing
             payload["password"] = hash_password(payload["password"])
+            
             user = facade.create_user(payload)
             return {
                 "id": user.id,
                 "message": "User successfully created"
             }, 201
         except ValueError as e:
-            if "already exists" in str(e):
-                return {"error": str(e)}, 409
             return {"error": str(e)}, 400
     
     @api.response(200, "Users retrieved")
-    @api.marshal_with(user_model, skip_none=True)
     def get(self):
         """Get all users"""
         users = facade.get_all_users()
@@ -72,14 +79,13 @@ class UserResource(Resource):
     
     @api.response(200, "User retrieved")
     @api.response(404, "User not found")
-    @api.marshal_with(user_model, skip_none=True)
     def get(self, user_id):
         """Get user by ID"""
         user = facade.get_user(user_id)
         if not user:
             api.abort(404, "User not found")
         user_data = user.to_dict()
-        # Remove password from response if present
+        # Remove password from response
         user_data.pop("password", None)
         return user_data, 200
     
@@ -89,21 +95,35 @@ class UserResource(Resource):
     @api.response(404, "User not found")
     @jwt_required()
     def put(self, user_id):
-        """Update user (Users can only update their own information)"""
-        current_user = get_jwt_identity()
+        """Update user (Users can update themselves, admins can update anyone)"""
+        current_user_id = get_jwt_identity()
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
         
-        # Check if user is trying to update their own profile
-        if current_user != user_id:
+        # Regular users can only update themselves
+        if not is_admin and current_user_id != user_id:
             return {"error": "Unauthorized action"}, 403
         
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
         
-        # Check if trying to modify email or password
         update_data = api.payload
-        if 'email' in update_data or 'password' in update_data:
-            return {"error": "You cannot modify email or password"}, 400
+        
+        # Only admins can modify email and password
+        if not is_admin:
+            if 'email' in update_data or 'password' in update_data:
+                return {"error": "You cannot modify email or password"}, 400
+        else:
+            # Admin is modifying email - check uniqueness
+            if 'email' in update_data:
+                existing_user = facade.get_user_by_email(update_data['email'])
+                if existing_user and existing_user.id != user_id:
+                    return {"error": "Email already in use"}, 400
+            
+            # Hash password if being updated
+            if 'password' in update_data:
+                update_data['password'] = hash_password(update_data['password'])
         
         try:
             user.update(update_data)
