@@ -13,24 +13,18 @@ from hbnb.app.api.v1.reviews import api as reviews_ns
 bcrypt = Bcrypt()
 
 
-def create_app(config_class=None):
+def create_app():
     """
     Creates and configures the Flask application.
-    
-    Args:
-        config_class: Configuration class to use (default: DevelopmentConfig)
     
     Returns:
         Flask application instance
     """
     app = Flask(__name__)
     
-    # Import config here to avoid circular import
-    if config_class is None:
-        from hbnb.app.config import DevelopmentConfig
-        config_class = DevelopmentConfig
-    
-    app.config.from_object(config_class)
+    # Basic configuration
+    app.config['SECRET_KEY'] = 'dev-secret-key'
+    app.config['DEBUG'] = True
     
     # Initialize extensions
     bcrypt.init_app(app)
