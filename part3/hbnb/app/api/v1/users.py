@@ -1,4 +1,3 @@
-cat > /root/holbertonschool-hbnb/part3/hbnb/app/api/v1/users.py << 'EOF'
 """
 User API endpoints.
 Handles CRUD operations for users.
