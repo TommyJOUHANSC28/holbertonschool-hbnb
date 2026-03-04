@@ -1,4 +1,3 @@
-cat > /root/holbertonschool-hbnb/part3/hbnb/app/api/v1/reviews.py << 'EOF'
 """
 Review API endpoints.
 Handles CRUD operations for reviews.
@@ -114,4 +113,3 @@ class ReviewResource(Resource):
             return {'message': 'Review deleted successfully'}, 200
         except ValueError as e:
             return {'error': str(e)}, 400
-EOF
