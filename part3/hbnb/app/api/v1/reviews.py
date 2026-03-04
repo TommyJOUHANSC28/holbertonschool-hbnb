@@ -3,7 +3,7 @@ Review API endpoints.
 Handles CRUD operations for reviews.
 """
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from hbnb.app.services import facade
 
 api = Namespace('reviews', description='Review operations')
@@ -77,15 +77,18 @@ class ReviewResource(Resource):
     @api.expect(review_update_model, validate=True)
     @jwt_required()
     def put(self, review_id):
-        """Update a review (Author only)"""
-        current_user = get_jwt_identity()
+        """Update a review (Author or Admin)"""
+        current_user_id = get_jwt_identity()
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+        
         review = facade.get_review(review_id)
         
         if not review:
             return {'error': 'Review not found'}, 404
         
-        # Check if the current user is the author
-        if review.user_id != current_user:
+        # Check if user is author or admin
+        if not is_admin and review.user_id != current_user_id:
             return {'error': 'Unauthorized action'}, 403
         
         try:
@@ -97,15 +100,18 @@ class ReviewResource(Resource):
     @api.doc('delete_review')
     @jwt_required()
     def delete(self, review_id):
-        """Delete a review (Author only)"""
-        current_user = get_jwt_identity()
+        """Delete a review (Author or Admin)"""
+        current_user_id = get_jwt_identity()
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+        
         review = facade.get_review(review_id)
         
         if not review:
             return {'error': 'Review not found'}, 404
         
-        # Check if the current user is the author
-        if review.user_id != current_user:
+        # Check if user is author or admin
+        if not is_admin and review.user_id != current_user_id:
             return {'error': 'Unauthorized action'}, 403
         
         try:
