@@ -1,30 +1,29 @@
+cat > /root/holbertonschool-hbnb/part3/hbnb/app/api/v1/users.py << 'EOF'
 """
 User API endpoints.
 Handles CRUD operations for users.
-DELETE is not implemented in Part 2.
 """
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from hbnb.app.services import facade
 from hbnb.app.utils import hash_password
 
-# Namespace for user-related endpoints
 api = Namespace("users", description="User operations")
 
-# Model for creating/updating users
+# Model for creating users
 user_model = api.model("User", {
     'id': fields.String(readOnly=True, description="User ID"),
     "first_name": fields.String(required=True, description='First name of the user'),
     "last_name": fields.String(required=True, description='Last name of the user'),
     "email": fields.String(required=True, description='Email address of the user'),
-    "password": fields.String(required=True, description='User password')
+    "password": fields.String(required=True, description='User password'),
+    "is_admin": fields.Boolean(description='Is user an admin', default=False)
 })
 
-# Separate model for updates to allow partial updates
+# Model for updates (excluding email and password)
 user_update_model = api.model("UserUpdate", {
-    "first_name": fields.String(),
-    "last_name": fields.String(),
-    "email": fields.String(),
-    "password": fields.String()
+    "first_name": fields.String(description='First name of the user'),
+    "last_name": fields.String(description='Last name of the user')
 })
 
 # Model for error responses
@@ -87,15 +86,29 @@ class UserResource(Resource):
     
     @api.expect(user_update_model, validate=True)
     @api.response(200, "User updated")
+    @api.response(403, "Unauthorized action")
     @api.response(404, "User not found")
-    @api.marshal_with(user_model, skip_none=True)
+    @jwt_required()
     def put(self, user_id):
-        """Update user"""
+        """Update user (Users can only update their own information)"""
+        current_user = get_jwt_identity()
+        
+        # Check if user is trying to update their own profile
+        if current_user != user_id:
+            return {"error": "Unauthorized action"}, 403
+        
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
+        
+        # Check if trying to modify email or password
+        update_data = api.payload
+        if 'email' in update_data or 'password' in update_data:
+            return {"error": "You cannot modify email or password"}, 400
+        
         try:
-            user.update(api.payload)
+            user.update(update_data)
             return user.to_dict(), 200
         except ValueError as e:
             return {"error": str(e)}, 400
+EOF
