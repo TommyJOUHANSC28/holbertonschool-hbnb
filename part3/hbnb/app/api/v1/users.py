@@ -76,15 +76,23 @@ class UserResource(Resource):
     Handles single user operations.
     """
 
-    @api.response(200, "User retrieved")
-    @api.response(404, "User not found")
-    @api.marshal_with(user_model, skip_none=True)
-    def get(self, user_id):
-        """Get user by ID"""
-        user = facade.get_user(user_id)
-        if not user:
-            api.abort(404,"User not found"),
-        return user.to_dict(), 200
+   @api.response(200, "User retrieved")
+   @api.response(404, "User not found")
+   @api.marshal_with(user_model, skip_none=True)
+   def get(self, user_id):
+   
+    """Get user by ID"""
+    user = facade.get_user(user_id)
+    if not user:
+        api.abort(404, "User not found")
+
+    user_data = user.to_dict()
+
+    # Remove password from response if present
+    user_data.pop("password", None)
+
+    return user_data, 200
+
 
     @api.expect(user_update_model, validate=True)
     @api.response(200, "User updated")
