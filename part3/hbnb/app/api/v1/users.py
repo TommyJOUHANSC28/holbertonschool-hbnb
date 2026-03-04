@@ -6,6 +6,7 @@ DELETE is not implemented in Part 2.
 
 from flask_restx import Namespace, Resource, fields
 from hbnb.app.services import facade
+from hbnb.app.utils import hash_password
 
 """ Namespace for user-related endpoints. """
 api = Namespace("users", description="User operations")
@@ -17,12 +18,14 @@ user_model = api.model("User", {
     "first_name": fields.String(required=True, description='First name of the user'),
     "last_name": fields.String(required=True, description='Last name of the user'),
     "email": fields.String(required=True, description='Email address of the user')
+    "password": fields.String(required=True, description='User password')
 })
 """ Separate model for updates to allow partial updates (no required fields) """
 user_update_model = api.model("UserUpdate", {
     "first_name": fields.String(),
     "last_name": fields.String(),
     "email": fields.String()
+    "password": fields.String()   
 })
 
 """ Model for error responses. """
@@ -40,14 +43,24 @@ class UserList(Resource):
     @api.response(201, "User created", user_model)
     @api.response(400, "Invalid input data", error_model)
     def post(self):
-        """Create a new user"""
-        try:
-            user = facade.create_user(api.payload)
-            return user.to_dict(), 201
-        except ValueError as e:
-            if "already exists" in str(e):
-                return {"error": str(e)}, 409
-            return {"error": str(e)}, 400
+      """Create a new user"""
+    try:
+        payload = api.payload
+
+        # Hash the password before storing
+        payload["password"] = hash_password(payload["password"])
+
+        user = facade.create_user(payload)
+
+        return {
+            "id": user.id,
+            "message": "User successfully created"
+        }, 201
+
+    except ValueError as e:
+        if "already exists" in str(e):
+            return {"error": str(e)}, 409
+        return {"error": str(e)}, 400
 
     @api.response(200, "Users retrieved")
     @api.marshal_with(user_model, skip_none=True)
