@@ -4,6 +4,8 @@ Supports both in-memory and SQLAlchemy-based persistence.
 """
 from abc import ABC, abstractmethod
 
+# Global storage for InMemoryRepository (persists across instances)
+_GLOBAL_STORAGE = {}
 
 class Repository(ABC):
     """Abstract base repository interface"""
@@ -34,21 +36,28 @@ class Repository(ABC):
 
 
 class InMemoryRepository(Repository):
-    """In-memory repository implementation"""
+    """In-memory repository implementation with global storage"""
     
     def __init__(self):
-        self._storage = {}
+        """Initialize with global storage"""
+        # Use global storage instead of instance storage
+        # This ensures data persists across different repository instances
+        pass
     
     def add(self, obj):
-        self._storage[obj.id] = obj
+        """Add object to global storage"""
+        _GLOBAL_STORAGE[obj.id] = obj
     
     def get(self, obj_id):
-        return self._storage.get(obj_id)
+        """Get object by ID from global storage"""
+        return _GLOBAL_STORAGE.get(obj_id)
     
     def get_all(self):
-        return list(self._storage.values())
+        """Get all objects from global storage"""
+        return list(_GLOBAL_STORAGE.values())
     
     def update(self, obj_id, data):
+        """Update object in global storage"""
         obj = self.get(obj_id)
         if obj:
             obj.update(data)
@@ -56,11 +65,13 @@ class InMemoryRepository(Repository):
         return None
     
     def delete(self, obj_id):
-        if obj_id in self._storage:
-            del self._storage[obj_id]
+        """Delete object from global storage"""
+        if obj_id in _GLOBAL_STORAGE:
+            del _GLOBAL_STORAGE[obj_id]
     
     def get_by_attribute(self, attr_name, attr_value):
-        for obj in self._storage.values():
+        """Get object by attribute from global storage"""
+        for obj in _GLOBAL_STORAGE.values():
             if getattr(obj, attr_name, None) == attr_value:
                 return obj
         return None
