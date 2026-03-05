@@ -88,6 +88,11 @@ class HBnBFacade:
         if not amenity:
             raise ValueError("Amenity not found")
         place.add_amenities(amenity)
+        
+        # Commit via repository if using SQLAlchemy
+        if USE_DATABASE:
+            self.place_repo.update(place_id, {})  # empty dict just to commit changes
+        
         return place
     
     # =========================
@@ -110,11 +115,11 @@ class HBnBFacade:
     
     def update_place(self, place_id, update_data):
         """Update place with new data"""
-        place = self.place_repo.get(place_id)
-        if not place:
+        # Use repository update to ensure commit if using SQLAlchemy
+        updated_place = self.place_repo.update(place_id, update_data)
+        if not updated_place:
             raise ValueError("Place not found")
-        place.update(update_data)
-        return place
+        return updated_place
     
     # =========================
     # REVIEW
@@ -138,8 +143,12 @@ class HBnBFacade:
         self.review_repo.add(review)
         
         place.add_review(review)
-        
         user.reviews.append(review)
+        
+        # Commit relationships if using SQLAlchemy
+        if USE_DATABASE:
+            self.place_repo.update(place.id, {})
+            self.user_repo.update(user.id, {})
         
         return review
     
@@ -171,6 +180,15 @@ class HBnBFacade:
         place = review.place
         if place and review in place.reviews:
             place.reviews.remove(review)
+            if USE_DATABASE:
+                self.place_repo.update(place.id, {})
+        
+        """Also remove review from associated user"""
+        user = review.user
+        if user and review in user.reviews:
+            user.reviews.remove(review)
+            if USE_DATABASE:
+                self.user_repo.update(user.id, {})
         
         """Finally, delete review from repository"""
         self.review_repo.delete(review_id)
