@@ -1,11 +1,9 @@
 """SQLAlchemy repository implementation.
-
 This module provides a concrete implementation of the Repository interface
 using SQLAlchemy for database persistence.
 """
-from app import db
-from app.persistence.repository import Repository
-
+from hbnb.app import db
+from hbnb.app.persistence.repository import Repository
 
 class SQLAlchemyRepository(Repository):
     """SQLAlchemy-based repository implementation.
@@ -16,7 +14,6 @@ class SQLAlchemyRepository(Repository):
     Attributes:
         model: The SQLAlchemy model class this repository manages
     """
-
     def __init__(self, model):
         """Initialize the repository with a specific SQLAlchemy model.
         
@@ -24,7 +21,7 @@ class SQLAlchemyRepository(Repository):
             model: The SQLAlchemy model class to manage
         """
         self.model = model
-
+    
     def add(self, obj):
         """Add a new object to the database.
         
@@ -36,7 +33,7 @@ class SQLAlchemyRepository(Repository):
         """
         db.session.add(obj)
         db.session.commit()
-
+    
     def get(self, obj_id):
         """Retrieve an object by its ID.
         
@@ -47,7 +44,7 @@ class SQLAlchemyRepository(Repository):
             The object if found, None otherwise
         """
         return self.model.query.get(obj_id)
-
+    
     def get_all(self):
         """Retrieve all objects of this model type.
         
@@ -55,7 +52,7 @@ class SQLAlchemyRepository(Repository):
             list: List of all objects
         """
         return self.model.query.all()
-
+    
     def update(self, obj_id, data):
         """Update an object with new data.
         
@@ -71,7 +68,7 @@ class SQLAlchemyRepository(Repository):
             for key, value in data.items():
                 setattr(obj, key, value)
             db.session.commit()
-
+    
     def delete(self, obj_id):
         """Delete an object by its ID.
         
@@ -85,7 +82,7 @@ class SQLAlchemyRepository(Repository):
         if obj:
             db.session.delete(obj)
             db.session.commit()
-
+    
     def get_by_attribute(self, attr_name, attr_value):
         """Retrieve an object by a specific attribute.
         
