@@ -1,7 +1,6 @@
 """
 Models package initializer.
 """
-from hbnb.app.models.engine.db_storage import DBStorage
 from .base_model import BaseModel
 from .user import User
 from .place import Place
