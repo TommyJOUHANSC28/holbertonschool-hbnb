@@ -2,10 +2,8 @@
 Base model providing common attributes and methods
 for all entities.
 """
-
 import uuid
 from datetime import datetime
-
 
 class BaseModel:
     """
@@ -15,7 +13,6 @@ class BaseModel:
     - created_at
     - updated_at
     """
-
     def __init__(self):
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
@@ -26,6 +23,17 @@ class BaseModel:
         Updates modification timestamp.
         """
         self.updated_at = datetime.now()
+
+    def to_dict(self):
+        """
+        Convert object to dictionary.
+        Returns base attributes (id, created_at, updated_at).
+        """
+        return {
+            'id': self.id,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
 
     def update(self, data):
         """
