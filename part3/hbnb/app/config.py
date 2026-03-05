@@ -3,7 +3,6 @@ Configuration settings for HBnB application.
 """
 import os
 
-
 class Config:
     """Base configuration"""
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -15,7 +14,7 @@ class Config:
 class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///development.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 
 
 class ProductionConfig(Config):
