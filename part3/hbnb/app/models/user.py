@@ -3,8 +3,7 @@ User model.
 Represents a user in the system.
 """
 from hbnb.app.models.base_model import BaseModel
-import bcrypt
-
+from hbnb.app.utils import check_password
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, password, is_admin=False, **kwargs):
@@ -14,7 +13,7 @@ class User(BaseModel):
         self.email = email
         self.password = password  # Should be hashed before storage
         self.is_admin = is_admin
-    
+
     def to_dict(self):
         """Convert user to dictionary, excluding password"""
         user_dict = super().to_dict()
@@ -26,19 +25,17 @@ class User(BaseModel):
             # Password is intentionally excluded for security
         })
         return user_dict
-    
+
     def verify_password(self, password):
         """
         Verify if the provided password matches the hashed password.
-        
         Args:
             password (str): Plain text password to verify
-            
         Returns:
             bool: True if password matches, False otherwise
         """
-        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
-    
+        return check_password(self.password, password)
+
     def update(self, data):
         """Update user attributes"""
         for key, value in data.items():
