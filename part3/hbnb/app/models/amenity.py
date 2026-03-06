@@ -2,11 +2,17 @@
 Amenity entity model.
 """
 
-
 from hbnb.app.models.base_model import BaseModel
+from hbnb.app import db
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, db.Model):
+    """Amenity model mapped with SQLAlchemy"""
+    __tablename__ = "amenities"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(1024), nullable=True)
 
     def __init__(self, name, description=None):
         super().__init__()
