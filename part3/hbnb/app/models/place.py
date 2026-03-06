@@ -4,9 +4,19 @@ Supports both owner object and owner_id.
 """
 
 from hbnb.app.models.base_model import BaseModel
+from hbnb.app import db
 
 
-class Place(BaseModel):
+class Place(BaseModel, db.Model):
+    """Place model mapped with SQLAlchemy"""
+    __tablename__ = "places"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(1024), nullable=True)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
 
     def __init__(self, title, description, price, latitude, longitude,
                  owner=None, owner_id=None):
@@ -18,7 +28,6 @@ class Place(BaseModel):
 
         if not isinstance(price, (int, float)) or price < 0:
             raise TypeError("Price must be a number")
-
 
         if not isinstance(latitude, (int, float)) or not (-90 <= latitude <= 90):
             raise ValueError("Latitude must be between -90 and 90")
@@ -32,7 +41,7 @@ class Place(BaseModel):
         self.latitude = latitude
         self.longitude = longitude
 
-        # 🔥 support both test and API usage
+        # support both test and API usage
         if owner:
             self.owner = owner
             self.owner_id = owner.id
@@ -46,16 +55,12 @@ class Place(BaseModel):
         self.reviews = []
 
     def add_review(self, review):
-        """
-        Adds a review to the place.
-        """
+        """Adds a review to the place."""
         self.reviews.append(review)
 
     def add_amenity(self, amenity):
-        """
-        Adds amenities to the place.
-        """
-        if amenity not in self.add_amenities:
+        """Adds amenities to the place."""
+        if amenity not in self.amenities:
             self.amenities.append(amenity)
 
     def to_dict(self):
@@ -66,8 +71,7 @@ class Place(BaseModel):
             "price": self.price,
             "latitude": self.latitude,
             "longitude": self.longitude,
-            "owner_id": self.owner_id,
+            "owner_id": getattr(self, "owner_id", None),
             "amenities": [a.to_dict() for a in self.amenities],
             "reviews": [r.to_dict() for r in self.reviews]
         }
-
