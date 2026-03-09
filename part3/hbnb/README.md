@@ -1058,7 +1058,23 @@ curl -X POST http://127.0.0.1:5000/api/v1/users/ \
 
 # 3. List all places (public)
 curl http://127.0.0.1:5000/api/v1/places/
+
+
+# 4. List tables in database:
+
+sqlite3 instance/development.db ".tables"
+
+
+# 5. To print the content of each table:
+sqlite3 instance/development.db "SELECT * FROM users;"
+sqlite3 instance/development.db "SELECT * FROM places;"
+sqlite3 instance/development.db "SELECT * FROM amenities;"
+sqlite3 instance/development.db "SELECT * FROM reviews;"
+sqlite3 instance/development.db "SELECT * FROM place_amenity;"
+
 ```
+
+
 
 
 
