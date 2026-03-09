@@ -24,6 +24,28 @@ class User(BaseModel, db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, 
                           onupdate=datetime.utcnow, nullable=False)
     
+    # =========================================================================
+    # RELATIONS
+    # =========================================================================
+    
+    # One-to-Many: Un utilisateur peut posséder plusieurs places
+    places = db.relationship(
+        'Place',
+        back_populates='owner',
+        cascade='all, delete-orphan',
+        lazy='select',
+        foreign_keys='Place.owner_id'
+    )
+    
+    # One-to-Many: Un utilisateur peut écrire plusieurs reviews
+    reviews = db.relationship(
+        'Review',
+        back_populates='user',
+        cascade='all, delete-orphan',
+        lazy='select',
+        foreign_keys='Review.user_id'
+    )
+    
     def __init__(self, first_name, last_name, email, password, is_admin=False, **kwargs):
         super().__init__(**kwargs)
         self.first_name = first_name
