@@ -8,6 +8,21 @@ from hbnb.app.models.base_model import BaseModel
 from hbnb.app import db
 
 
+# =========================================================================
+# TABLE D'ASSOCIATION - À DÉFINIR AVANT LES MODÈLES
+# =========================================================================
+
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(36), 
+              db.ForeignKey('places.id', ondelete='CASCADE'), 
+              primary_key=True),
+    db.Column('amenity_id', db.String(36), 
+              db.ForeignKey('amenities.id', ondelete='CASCADE'), 
+              primary_key=True)
+)
+
+
 class Place(BaseModel, db.Model):
     """Place model mapped with SQLAlchemy"""
     __tablename__ = "places"
@@ -47,9 +62,10 @@ class Place(BaseModel, db.Model):
     )
     
     # Many-to-Many: Une place peut avoir plusieurs équipements
+    # ✅ Utiliser place_amenity défini plus haut
     amenities = db.relationship(
         'Amenity',
-        secondary='place_amenity',
+        secondary=place_amenity,
         back_populates='places',
         lazy='select'
     )
