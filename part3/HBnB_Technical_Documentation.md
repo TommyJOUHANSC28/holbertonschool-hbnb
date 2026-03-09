@@ -964,7 +964,7 @@ erDiagram
 ```
 **ER diagram generated:**
 
-![ER Mermaid](hbnb/images/mermaid-er-diagram.png)
+![ER Mermaid](images/mermaid-er-diagram.png)
 
 ---
 

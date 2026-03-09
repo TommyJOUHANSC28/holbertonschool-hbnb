@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fda4f341-69da-4022-ae05-414799c0e8bd" name="Changes" comment="" />
+    <list default="true" id="fda4f341-69da-4022-ae05-414799c0e8bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/part3/HBnB_Technical_Documentation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/part3/images/mermaid-er-diagram.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/part3/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/part3/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/part3/hbnb/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/part3/hbnb/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/part3/instance/development.db" beforeDir="false" afterPath="$PROJECT_DIR$/part3/instance/development.db" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,10 +24,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="3AhvX9LEdMEMx1Jk3A3Mgix48rD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -29,12 +35,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "//wsl.localhost/Ubuntu-24.04/home/tommy/holbertonschool-hbnb/part3"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu-24.04\home\tommy\holbertonschool-hbnb\part3" />
+      <recent name="\\wsl.localhost\Ubuntu-24.04\home\tommy\holbertonschool-hbnb\part3\images" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
