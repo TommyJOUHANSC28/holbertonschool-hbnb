@@ -8,21 +8,6 @@ from hbnb.app.models.base_model import BaseModel
 from hbnb.app import db
 
 
-# =========================================================================
-# TABLE D'ASSOCIATION - À DÉFINIR AVANT LES MODÈLES
-# =========================================================================
-
-place_amenity = db.Table(
-    'place_amenity',
-    db.Column('place_id', db.String(36), 
-              db.ForeignKey('places.id', ondelete='CASCADE'), 
-              primary_key=True),
-    db.Column('amenity_id', db.String(36), 
-              db.ForeignKey('amenities.id', ondelete='CASCADE'), 
-              primary_key=True)
-)
-
-
 class Place(BaseModel, db.Model):
     """Place model mapped with SQLAlchemy"""
     __tablename__ = "places"
@@ -36,6 +21,12 @@ class Place(BaseModel, db.Model):
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'), 
                         nullable=False)
+    
+    # ✅ NOUVEAUX CHAMPS OPTIONNELS
+    number_rooms = db.Column(db.Integer, nullable=True)
+    number_bathrooms = db.Column(db.Integer, nullable=True)
+    max_guest = db.Column(db.Integer, nullable=True)
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, 
                           onupdate=datetime.utcnow, nullable=False)
@@ -62,15 +53,29 @@ class Place(BaseModel, db.Model):
     )
     
     # Many-to-Many: Une place peut avoir plusieurs équipements
-    # ✅ Utiliser place_amenity défini plus haut
     amenities = db.relationship(
         'Amenity',
-        secondary=place_amenity,
+        secondary='place_amenity',
         back_populates='places',
         lazy='select'
     )
     
-    def __init__(self, title, description, price, latitude, longitude, owner_id, **kwargs):
+    def __init__(self, title, description, price, latitude, longitude, owner_id, 
+                 number_rooms=None, number_bathrooms=None, max_guest=None, **kwargs):
+        """
+        Initialize Place with required and optional fields.
+        
+        Args:
+            title (str): Title of the place
+            description (str): Description of the place
+            price (float): Price per night
+            latitude (float): Latitude coordinate
+            longitude (float): Longitude coordinate
+            owner_id (str): ID of the owner (User)
+            number_rooms (int, optional): Number of rooms
+            number_bathrooms (int, optional): Number of bathrooms
+            max_guest (int, optional): Maximum number of guests
+        """
         super().__init__(**kwargs)
         self.title = title
         self.description = description
@@ -78,6 +83,9 @@ class Place(BaseModel, db.Model):
         self.latitude = latitude
         self.longitude = longitude
         self.owner_id = owner_id
+        self.number_rooms = number_rooms
+        self.number_bathrooms = number_bathrooms
+        self.max_guest = max_guest
     
     def __repr__(self):
         return f'<Place {self.title}>'
@@ -99,6 +107,9 @@ class Place(BaseModel, db.Model):
             'latitude': self.latitude,
             'longitude': self.longitude,
             'owner_id': self.owner_id,
+            'number_rooms': self.number_rooms,
+            'number_bathrooms': self.number_bathrooms,
+            'max_guest': self.max_guest,
             'created_at': self.created_at.isoformat() if hasattr(self, 'created_at') else None,
             'updated_at': self.updated_at.isoformat() if hasattr(self, 'updated_at') else None
         }
@@ -116,6 +127,11 @@ class Place(BaseModel, db.Model):
     
     def update(self, data):
         """Update place attributes"""
+        # Champs autorisés à être mis à jour
+        allowed_fields = ['title', 'description', 'price', 'latitude', 'longitude',
+                         'number_rooms', 'number_bathrooms', 'max_guest']
+        
         for key, value in data.items():
-            if hasattr(self, key) and key not in ['id', 'owner_id']:
+            if hasattr(self, key) and key in allowed_fields and key != 'id':
                 setattr(self, key, value)
+
