@@ -1,5 +1,4 @@
-# HBnb Part 2: Implementation of Business Logic and API Endpoints
-## Business Logic & REST API Implementation
+# HBnb Part 2: Part 3: Enhanced Backend with Authentication and Database Integration
 ### Authors: Tommy Jouhans & James Roussel
 ---
 
