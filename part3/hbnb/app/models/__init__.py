@@ -14,7 +14,7 @@ from hbnb.app.models.user import User
 from hbnb.app.models.amenity import Amenity
 
 # 2. Ensuite importer Place (qui utilise place_amenity)
-from hbnb.app.models.place import Place, place_amenity
+from hbnb.app.models.place import Place
 
 # 3. Enfin importer Review (qui dépend de User et Place)
 from hbnb.app.models.review import Review
