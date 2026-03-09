@@ -1,11 +1,11 @@
 """
 Models initialization.
-Initializes all models and associations for the HBnB application.
 """
 from hbnb.app import db
 
 # =========================================================================
-# TABLE D'ASSOCIATION place_amenity (Many-to-Many)
+# TABLE D'ASSOCIATION Many-to-Many Place <-> Amenity
+# Doit être définie AVANT les imports des modèles
 # =========================================================================
 place_amenity = db.Table(
     'place_amenity',
@@ -14,19 +14,13 @@ place_amenity = db.Table(
 )
 
 # =========================================================================
-# IMPORTANT: Importer dans le bon ordre pour éviter les erreurs circulaires
+# IMPORTS dans le bon ordre
 # =========================================================================
-# 1. D'abord User et Amenity (sans dépendances circulaires)
 from hbnb.app.models.user import User
 from hbnb.app.models.amenity import Amenity
-# 2. Ensuite Place (qui utilise place_amenity)
 from hbnb.app.models.place import Place
-# 3. Enfin Review (qui dépend de User et Place)
 from hbnb.app.models.review import Review
 
-# =========================================================================
-# EXPORTER POUR UTILISATION
-# =========================================================================
 __all__ = [
     'User',
     'Place',
