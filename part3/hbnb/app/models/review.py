@@ -70,7 +70,7 @@ class Review(BaseModel, db.Model):
         self.place_id = place_id
 
     def __repr__(self):
-        return f'<Review {self.rating}★ for place {self.place_id}>'
+        return f'<Review {self.rating} for place {self.place_id}>'
 
     def to_dict(self, include_user=False, include_place=False):
         data = {
