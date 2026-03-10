@@ -20,6 +20,10 @@ class Place(BaseModel, db.Model):
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'),
                          nullable=False)
+    amenities_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'),
+                         nullable=False)
+    reviews_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'),
+                         nullable=False)
     
 
     # =========================================================================
@@ -48,8 +52,7 @@ class Place(BaseModel, db.Model):
         lazy='select'
     )
 
-    def __init__(self, title, description, price, latitude, longitude, owner_id,
-                 number_rooms=0, number_bathrooms=0, max_guest=0, **kwargs):
+    def __init__(self, title, description, price, latitude, longitude, owner_id, **kwargs):
         super().__init__(**kwargs)
 
         # =====================================================================
@@ -86,9 +89,7 @@ class Place(BaseModel, db.Model):
         self.latitude = latitude
         self.longitude = longitude
         self.owner_id = owner_id
-        self.number_rooms = number_rooms
-        self.number_bathrooms = number_bathrooms
-        self.max_guest = max_guest
+
 
     def __repr__(self):
         return f'<Place {self.title}>'
@@ -102,8 +103,8 @@ class Place(BaseModel, db.Model):
             'latitude': self.latitude,
             'longitude': self.longitude,
             'owner_id': self.owner_id,
-            "amenities": [a.to_dict() for a in self.amenities],
-            "reviews": [r.to_dict() for r in self.reviews]
+            "amenities_id": [a.to_dict() for a in self.amenities],
+            "reviews_id": [r.to_dict() for r in self.reviews]
         }
         if include_owner and self.owner:
             data['owner'] = self.owner.to_dict()
