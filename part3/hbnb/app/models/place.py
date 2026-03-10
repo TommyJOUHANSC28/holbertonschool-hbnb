@@ -7,37 +7,32 @@ import uuid
 from hbnb.app.models.base_model import BaseModel
 from hbnb.app import db
 
+
 class Place(BaseModel, db.Model):
     """Place model mapped with SQLAlchemy"""
     __tablename__ = "places"
-    
+
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    owner_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'), 
-                        nullable=False)
-    number_rooms = db.Column(db.Integer, default=0)
-    number_bathrooms = db.Column(db.Integer, default=0)
-    max_guest = db.Column(db.Integer, default=0)
-
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, 
-                          onupdate=datetime.utcnow, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete='CASCADE'),
+                         nullable=False)
     
+
     # =========================================================================
     # RELATIONS
     # =========================================================================
-    
+
     owner = db.relationship(
         'User',
         back_populates='places',
         lazy='select',
         foreign_keys=[owner_id]
     )
-    
+
     reviews = db.relationship(
         'Review',
         back_populates='place',
@@ -52,24 +47,39 @@ class Place(BaseModel, db.Model):
         back_populates='places',
         lazy='select'
     )
-    
+
     def __init__(self, title, description, price, latitude, longitude, owner_id,
                  number_rooms=0, number_bathrooms=0, max_guest=0, **kwargs):
-        """
-        Initialize Place with required fields.
-        
-        Args:
-            title (str): Title of the place
-            description (str): Description of the place
-            price (float): Price per night
-            latitude (float): Latitude coordinate
-            longitude (float): Longitude coordinate
-            owner_id (str): ID of the owner (User)
-            number_rooms (int): Number of rooms
-            number_bathrooms (int): Number of bathrooms
-            max_guest (int): Maximum number of guests
-        """
         super().__init__(**kwargs)
+
+        # =====================================================================
+        # VALIDATIONS title
+        # =====================================================================
+        if not isinstance(title, str) or not title.strip():
+            raise ValueError("Title is required")
+        if len(title) > 255:
+            raise ValueError("Title must not exceed 255 characters")
+
+        # =====================================================================
+        # VALIDATIONS description
+        # =====================================================================
+        if description is not None and len(description) > 1000:
+            raise ValueError("Description must not exceed 1000 characters")
+
+        # =====================================================================
+        # VALIDATIONS price
+        # =====================================================================
+        if not isinstance(price, (int, float)) or price < 0:
+            raise ValueError("Price must be a positive number")
+
+        # =====================================================================
+        # VALIDATIONS latitude / longitude
+        # =====================================================================
+        if not isinstance(latitude, (int, float)) or not (-90 <= latitude <= 90):
+            raise ValueError("Latitude must be between -90 and 90")
+        if not isinstance(longitude, (int, float)) or not (-180 <= longitude <= 180):
+            raise ValueError("Longitude must be between -180 and 180")
+
         self.title = title
         self.description = description
         self.price = price
@@ -79,19 +89,11 @@ class Place(BaseModel, db.Model):
         self.number_rooms = number_rooms
         self.number_bathrooms = number_bathrooms
         self.max_guest = max_guest
-    
+
     def __repr__(self):
         return f'<Place {self.title}>'
-    
+
     def to_dict(self, include_owner=False, include_reviews=False, include_amenities=False):
-        """
-        Convert place to dictionary.
-        
-        Args:
-            include_owner (bool): Inclure les détails du propriétaire
-            include_reviews (bool): Inclure la liste des reviews
-            include_amenities (bool): Inclure la liste des amenities
-        """
         data = {
             'id': self.id,
             'title': self.title,
@@ -100,31 +102,44 @@ class Place(BaseModel, db.Model):
             'latitude': self.latitude,
             'longitude': self.longitude,
             'owner_id': self.owner_id,
-            'number_rooms': self.number_rooms,
-            'number_bathrooms': self.number_bathrooms,
-            'max_guest': self.max_guest,
-            'created_at': self.created_at.isoformat() if hasattr(self, 'created_at') else None,
-            'updated_at': self.updated_at.isoformat() if hasattr(self, 'updated_at') else None
+            "amenities": [a.to_dict() for a in self.amenities],
+            "reviews": [r.to_dict() for r in self.reviews]
         }
-        
         if include_owner and self.owner:
             data['owner'] = self.owner.to_dict()
-        
         if include_reviews and self.reviews:
             data['reviews'] = [review.to_dict() for review in self.reviews]
-        
         if include_amenities and self.amenities:
             data['amenities'] = [amenity.to_dict() for amenity in self.amenities]
-        
         return data
-    
+
     def update(self, data):
-        """Update place attributes"""
+        """Update place attributes with validations"""
+        if 'title' in data:
+            if not isinstance(data['title'], str) or not data['title'].strip():
+                raise ValueError("Title is required")
+            if len(data['title']) > 255:
+                raise ValueError("Title must not exceed 255 characters")
+
+        if 'description' in data and data['description'] is not None:
+            if len(data['description']) > 1000:
+                raise ValueError("Description must not exceed 1000 characters")
+
+        if 'price' in data:
+            if not isinstance(data['price'], (int, float)) or data['price'] < 0:
+                raise ValueError("Price must be a positive number")
+
+        if 'latitude' in data:
+            if not (-90 <= data['latitude'] <= 90):
+                raise ValueError("Latitude must be between -90 and 90")
+
+        if 'longitude' in data:
+            if not (-180 <= data['longitude'] <= 180):
+                raise ValueError("Longitude must be between -180 and 180")
+
         allowed_fields = [
-            'title', 'description', 'price', 'latitude', 'longitude',
-            'number_rooms', 'number_bathrooms', 'max_guest'
+            'title', 'description', 'price', 'latitude', 'longitude'
         ]
-        
         for key, value in data.items():
-            if hasattr(self, key) and key in allowed_fields and key != 'id':
+            if hasattr(self, key) and key in allowed_fields:
                 setattr(self, key, value)
