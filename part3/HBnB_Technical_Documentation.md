@@ -148,11 +148,21 @@ def verify_password(self, password):
     return bcrypt.check_password_hash(self.password, password)
 ```
 
+### Test - The POST endpoint /users/ requires an admin token. Log in first:
+
+```bash
+TOKEN=$(curl -s -X POST http://127.0.0.1:5000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"admin123"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+```
+
+
 ### Test - Create User (password hashed, not returned)
 
 ```bash
 curl -X POST "http://127.0.0.1:5000/api/v1/users/" \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{"first_name": "John", "last_name": "Doe", "email": "john@example.com", "password": "pass123"}'
 ```
 
