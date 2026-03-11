@@ -17,7 +17,7 @@ login_model = api.model('Login', {
 
 @api.route('/login')
 class Login(Resource):
-    @api.expect(login_model)
+    @api.expect(login_model, validate=True)
     def post(self):
         """Authenticate user and return a JWT token"""
         credentials = api.payload
