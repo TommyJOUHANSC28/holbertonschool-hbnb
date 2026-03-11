@@ -836,77 +836,73 @@ curl -X PUT "http://127.0.0.1:5000/api/v1/places/86b561aa-b69a-4b8e-974b-b1b508e
 ### Table Creation
 
 ```sql
--- Users table
 CREATE TABLE IF NOT EXISTS users (
-    id CHAR(36) PRIMARY KEY,
+    id         CHAR(36) PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE,
+    last_name  VARCHAR(255) NOT NULL,
+    email      VARCHAR(255) UNIQUE NOT NULL,
+    password   VARCHAR(255) NOT NULL,
+    is_admin   BOOLEAN DEFAULT FALSE
 );
 
--- Places table
 CREATE TABLE IF NOT EXISTS places (
-    id CHAR(36) PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
+    id          CHAR(36) PRIMARY KEY,
+    title       VARCHAR(255) NOT NULL,
     description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    latitude FLOAT NOT NULL,
-    longitude FLOAT NOT NULL,
-    owner_id CHAR(36) NOT NULL,
-    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    price       DECIMAL(10, 2),
+    latitude    FLOAT,
+    longitude   FLOAT,
+    owner_id    CHAR(36) NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES User(id)
 );
 
--- Reviews table
+CREATE TABLE IF NOT EXISTS amenities (
+    id   CHAR(36) PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS reviews (
-    id CHAR(36) PRIMARY KEY,
-    text TEXT NOT NULL,
-    rating INT CHECK (rating BETWEEN 1 AND 5),
-    user_id CHAR(36) NOT NULL,
+    id       CHAR(36) PRIMARY KEY,
+    text     TEXT NOT NULL,
+    rating   INT CHECK (rating BETWEEN 1 AND 5),
+    user_id  CHAR(36) NOT NULL,
     place_id CHAR(36) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id)  REFERENCES User(id),
+    FOREIGN KEY (place_id) REFERENCES Place(id),
     UNIQUE (user_id, place_id)
 );
 
--- Amenities table
-CREATE TABLE IF NOT EXISTS amenities (
-    id CHAR(36) PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- Place_Amenity association table
 CREATE TABLE IF NOT EXISTS place_amenity (
-    place_id CHAR(36) NOT NULL,
+    place_id   CHAR(36) NOT NULL,
     amenity_id CHAR(36) NOT NULL,
     PRIMARY KEY (place_id, amenity_id),
-    FOREIGN KEY (place_id) REFERENCES places(id) ON DELETE CASCADE,
-    FOREIGN KEY (amenity_id) REFERENCES amenities(id) ON DELETE CASCADE
+    FOREIGN KEY (place_id)   REFERENCES Place(id),
+    FOREIGN KEY (amenity_id) REFERENCES Amenity(id)
 );
+
+
 ```
 
 ### Initial Data
 
 ```sql
--- Admin user (password: admin1234 hashed with bcrypt)
-INSERT INTO users (id, first_name, last_name, email, password, is_admin)
+
+-- Admin user
+INSERT INTO users (id, first_name, last_name, email, password, is_admin, created_at, updated_at)
 VALUES (
     '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
-    'Admin',
-    'HBnB',
-    'admin@hbnb.io',
-    '$2b$12$...hashed_password...',
-    TRUE
+    'Admin', 'HBnB', 'admin@hbnb.io',
+    '${HASH}',
+    1,
+    datetime('now'), datetime('now')
 );
 
--- Initial Amenities
-INSERT INTO amenities (id, name) VALUES
-    (uuid(), 'WiFi'),
-    (uuid(), 'Swimming Pool'),
-    (uuid(), 'Air Conditioning');
+-- Amenities
+INSERT INTO amenities (id, name, created_at, updated_at) VALUES
+    ('$(python3 -c "import uuid; print(uuid.uuid4())")', 'WiFi',            datetime('now'), datetime('now')),
+    ('$(python3 -c "import uuid; print(uuid.uuid4())")', 'Piscine',         datetime('now'), datetime('now')),
+    ('$(python3 -c "import uuid; print(uuid.uuid4())")', 'Climatisation',   datetime('now'), datetime('now'));
+
 ```
 
 ---
@@ -917,58 +913,116 @@ INSERT INTO amenities (id, name) VALUES
 
 ```mermaid
 erDiagram
-    USER {
-        char(36) id PK
-        varchar first_name
-        varchar last_name
-        varchar email UK
-        varchar password
-        boolean is_admin
-      
+    User {
+        CHAR(36) id PK
+        VARCHAR(255) first_name
+        VARCHAR(255) last_name
+        VARCHAR(255) email
+        VARCHAR(255) password
+        BOOLEAN is_admin
     }
 
-    PLACE {
-        char(36) id PK
-        varchar title
-        text description
-        decimal price
-        float latitude
-        float longitude
-        char(36) owner_id FK
-        
+    Place {
+        CHAR(36) id PK
+        VARCHAR(255) title
+        TEXT description
+        DECIMAL(10-2) price
+        FLOAT latitude
+        FLOAT longitude
+        CHAR(36) owner_id FK
     }
 
-    REVIEW {
-        char(36) id PK
-        text text
-        int rating
-        char(36) user_id FK
-        char(36) place_id FK
-    
+    Review {
+        CHAR(36) id PK
+        TEXT text
+        INT rating
+        CHAR(36) user_id FK
+        CHAR(36) place_id FK
     }
 
-    AMENITY {
-        char(36) id PK
-        varchar name UK
-      
+    Amenity {
+        CHAR(36) id PK
+        VARCHAR(255) name
     }
 
-    PLACE_AMENITY {
-        char(36) place_id FK
-        char(36) amenity_id FK
+    Place_Amenity {
+        CHAR(36) place_id FK
+        CHAR(36) amenity_id FK
     }
 
-    USER ||--o{ PLACE : "owns (owner_id)"
-    USER ||--o{ REVIEW : "writes (user_id)"
-    PLACE ||--o{ REVIEW : "receives (place_id)"
-    PLACE ||--o{ PLACE_AMENITY : "has"
-    AMENITY ||--o{ PLACE_AMENITY : "belongs to"
+    User ||--o{ Place : "owns"
+    User ||--o{ Review : "writes"
+    Place ||--o{ Review : "has"
+    Place ||--o{ Place_Amenity : "has"
+    Amenity ||--o{ Place_Amenity : "belongs to"
 ```
 **ER diagram generated:**
 
 ![ER Mermaid](https://github.com/Tommy-JOUHANS/holbertonschool-hbnb/blob/main/part3/images/mermaid-er-diagram.png)
 
 ---
+
+*If we can to add Reservation entity:*
+
+```mermaid
+erDiagram
+    User {
+        CHAR(36) id PK
+        VARCHAR(255) first_name
+        VARCHAR(255) last_name
+        VARCHAR(255) email
+        VARCHAR(255) password
+        BOOLEAN is_admin
+    }
+
+    Place {
+        CHAR(36) id PK
+        VARCHAR(255) title
+        TEXT description
+        DECIMAL(10-2) price
+        FLOAT latitude
+        FLOAT longitude
+        CHAR(36) owner_id FK
+    }
+
+    Review {
+        CHAR(36) id PK
+        TEXT text
+        INT rating
+        CHAR(36) user_id FK
+        CHAR(36) place_id FK
+    }
+
+    Amenity {
+        CHAR(36) id PK
+        VARCHAR(255) name
+    }
+
+    Place_Amenity {
+        CHAR(36) place_id FK
+        CHAR(36) amenity_id FK
+    }
+
+     Reservation {
+        CHAR(36) id PK
+        CHAR(36) user_id FK
+        CHAR(36) place_id FK
+        DATE start_date
+        DATE end_date
+        DECIMAL(10-2) total_price
+    }
+
+    User ||--o{ Place : "owns"
+    User ||--o{ Review : "writes"
+    Place ||--o{ Review : "has"
+    Place ||--o{ Place_Amenity : "has"
+    Amenity ||--o{ Place_Amenity : "belongs to"
+    User ||--o{ Reservation : "makes"
+    Place ||--o{ Reservation : "receives"
+```
+
+
+
 
 ## Setup & Installation
 
