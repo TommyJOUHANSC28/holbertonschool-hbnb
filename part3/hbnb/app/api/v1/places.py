@@ -14,7 +14,6 @@ place_model = api.model('Place', {
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(description="Id of user")
 })
 
 place_update_model = api.model('PlaceUpdate', {
@@ -23,7 +22,7 @@ place_update_model = api.model('PlaceUpdate', {
     'price': fields.Float(description='Price per night'),
     'latitude': fields.Float(description='Latitude of the place'),
     'longitude': fields.Float(description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description="ID of user")
+
 })
 
 @api.route('/')
