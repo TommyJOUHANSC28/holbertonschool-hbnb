@@ -1,43 +1,30 @@
 """
-Place_Amenity association table.
-Represents the many-to-many relationship between Place and Amenity.
+hbnb/app/models/place_amenity.py
+ 
+Ce fichier est conservé pour documentation.
+La table d'association est définie dans hbnb/app/models/__init__.py
+afin d'éviter les imports circulaires.
+ 
+Schéma :
+    place_amenity
+    ├── place_id   FK → places.id   CASCADE DELETE
+    └── amenity_id FK → amenities.id CASCADE DELETE
+ 
+Les deux colonnes forment la clé primaire composite.
 """
-from hbnb.app import db
-
-
-# =========================================================================
-# TABLE D'ASSOCIATION POUR LA RELATION MANY-TO-MANY
-# =========================================================================
-
-place_amenity = db.Table(
-    'place_amenity',
-    db.Column('place_id', db.String(36), 
-              db.ForeignKey('places.id', ondelete='CASCADE'), 
-              primary_key=True),
-    db.Column('amenity_id', db.String(36), 
-              db.ForeignKey('amenities.id', ondelete='CASCADE'), 
-              primary_key=True)
-)
-
-"""
-Cette table d'association crée une relation many-to-many entre Place et Amenity.
-
-Utilisation dans les modèles:
-- Place: 
-    amenities = db.relationship(
-        'Amenity',
-        secondary='place_amenity',
-        back_populates='places',
-        lazy='select'
-    )
-
-- Amenity:
-    places = db.relationship(
-        'Place',
-        secondary='place_amenity',
-        back_populates='amenities',
-        lazy='select'
-    )
-
-Les deux colonnes (place_id, amenity_id) forment une clé composite primaire.
-"""
+ 
+# La table réelle est dans models/__init__.py :
+#
+#   place_amenity = db.Table(
+#       'place_amenity',
+#       db.Column('place_id',   db.String(36),
+#                 db.ForeignKey('places.id',   ondelete='CASCADE'),
+#                 primary_key=True),
+#       db.Column('amenity_id', db.String(36),
+#                 db.ForeignKey('amenities.id', ondelete='CASCADE'),
+#                 primary_key=True),
+#       extend_existing=True,
+#   )
+#
+# Place.amenities et Amenity.places utilisent secondary='place_amenity'
+# (référence par nom de table → aucun import circulaire).
